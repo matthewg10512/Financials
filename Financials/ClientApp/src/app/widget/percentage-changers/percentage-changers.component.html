@@ -1,0 +1,43 @@
+
+
+      <div class="card">
+        <div class="card-header ">
+          Stocks Near 52 Week Low
+          <input type="text" [(ngModel)]="perChange52Week">
+
+          <span class="card-header-actions">
+            <button class="btn btn-primary" mat-button (click)="get52WeekLow()"><i class="icon-reload"></i></button>
+          </span>
+        </div>
+        <div class="card-body" style="height:450px;">
+          <div class="overflow-x:auto;width:100%;">
+            <div *ngIf="!weekLowSecurities">
+              <shared-loading-data></shared-loading-data>
+            </div>
+
+            <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="weekLowSecurities">
+              <thead>
+                <tr>
+                  <th style="width:300px">Name</th>
+                  <th style="width:150px">Current Price</th>
+                  <th style="width:100px">Week Low</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let weekLowSecurity of weekLowSecurities">
+                  <td style="width:300px">
+                    <span class="d-inline-block text-truncate" style="max-width: 250px;">
+                      {{ weekLowSecurity.name }} ({{weekLowSecurity.symbol}})
+                    </span>
+                  </td>
+                  <td style="width:150px">{{ weekLowSecurity.currentPrice | number : '1.1-1'}}</td>
+                  <td style="width:100px">{{ weekLowSecurity.yearLow | number : '1.1-1'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+

@@ -1,0 +1,61 @@
+
+<div class="card">
+  <div class="card-header">
+    <strong>Dividends</strong>
+    <span class="card-header-actions">
+      <button class="btn btn-primary" mat-button (click)="updateDividends()"><i class="icon-reload"></i></button>
+    </span>
+  </div>
+  <div class="card-body" style=" overflow: hidden;">
+    <div>
+      <div *ngIf="!dividends">
+        <shared-loading-data></shared-loading-data>
+      </div>
+      <!--  <div style="height:200px;overflow-y: auto">-->
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="dividends">
+        <thead>
+          <tr>
+            <!--
+
+             id: number;
+  securityId: number;
+  announcementDate: string;
+  frequency: string;
+  amount: number;
+  yield: number;
+  exDividendDate: string;
+  recordDate: string;
+  payableDate: string;
+            -->
+            <th class="columnWidth">Announc Date</th>
+            <th class="columnWidth">Amount</th>
+
+            <th class="columnWidth">Ex Date</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dividend of dividends">
+            <td class="columnWidth">
+              {{dividend.announcementDate | date:'longDate'}}
+            </td>
+            <td class="columnWidth">
+              {{dividend.amount}}
+            </td>
+            <td class="columnWidth">
+              {{dividend.exDividendDate | date:'longDate'}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!--</div>-->
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

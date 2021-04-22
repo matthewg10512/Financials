@@ -1,0 +1,22 @@
+  <div class="card">
+    <div class="card-header ">
+      Securities Update
+      <div class="card-header-actions">
+        <!--<span class="badge badge-pill badge-danger">{ { securtiesUpdate}}</span> -->
+      </div>
+    </div>
+    <div class="card-body" style="height:100px;">
+      <!--class="open-close-container" [ngClass]="isOpen ? 'card-body' : ''" [@openClose]="isOpen ? 'open' : 'closed'"-->
+      <div>
+        <button [disabled]="btnUpdateSecurityOn" class="btn btn-primary" mat-button (click)="updateAllSecurities()">Update Securities</button>
+        <br />
+        <div *ngIf="btnUpdateSecurityOn">
+
+          <shared-loading-data></shared-loading-data>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+

@@ -1,0 +1,116 @@
+
+
+  <div class="animated fadeIn">
+
+    <div class="row">
+      <div class="col-md-6">
+
+
+        <div class="card">
+          <div class="card-header">
+            <strong>Earnings</strong>
+            <span class="card-header-actions">
+              <button class="btn btn-primary" mat-button (click)="updateEarnings()"><i class="icon-reload"></i></button>
+            </span>
+          </div>
+          <div class="card-body" style=" overflow: hidden;">
+            <div>
+              <div *ngIf="!earnings">
+                <shared-loading-data></shared-loading-data>
+              </div>
+              <!--  <div style="height:200px;overflow-y: auto">-->
+              <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="earnings">
+                <thead>
+                  <tr>
+                    <!--  <th></th>-->
+                    <th style="width:200px">Earnings Date</th>
+
+
+                    <th style="width:175px">EPS Estimate</th>
+                    <th style="width:175px">Actual EPS</th>
+                    <th style="width:125px">Actual EPS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let earning of earnings">
+                    <td style="width:200px">
+                      {{earning.actualEarningsDate}}
+                    </td>
+                    <td style="width:175px">
+                      {{earning.epsEstimate}}
+                    </td>
+                    <td style="width:175px">
+                      {{earning.reportedEPS}}
+                    </td>
+                    <td style="width:125px">
+                      {{earning.reportTime == 'amc' ? 'After Hours' : 'Before Open'}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!--</div>-->
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="col-md-6">
+
+
+        <div class="card">
+          <div class="card-header">
+            <strong>% Change During Earnings  Total {{earningsPerTotalChange | number:'0.1-5'}}</strong>
+            <span class="card-header-actions">
+              <button class="btn btn-primary" mat-button (click)="getPercentageChangers()"><i class="icon-reload"></i></button>
+            </span>
+          </div>
+          <div class="card-body" style=" overflow: hidden;">
+            <div>
+              <div *ngIf="!percentageChanges">
+                <shared-loading-data></shared-loading-data>
+              </div>
+              <!--  <div style="height:200px;overflow-y: auto">-->
+              <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="percentageChanges">
+                <thead>
+                  <tr>
+                    <!--  <th></th>-->
+                    <th style="width:180px">% Change</th>
+
+
+                    <th style="width:155px">Report</th>
+                    <th style="width:175px">Earnings Date</th>
+                    <th style="width:165px">Historic Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let percentageChange of percentageChanges">
+                    <td style="width:180px">
+                      {{percentageChange.percentageChange}}
+                    </td>
+                    <td style="width:155px">
+                      {{percentageChange.reportTime == 'amc' ? 'After' : 'Before'}}
+                    </td>
+                    <td style="width:175px">
+                      {{percentageChange.actualEarningsDate | date:'longDate'}}
+                    </td>
+                    <td style="width:165px">
+                      {{percentageChange.historicDate | date:'longDate'}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!--</div>-->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+

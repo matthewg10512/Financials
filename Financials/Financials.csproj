@@ -1,0 +1,102 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Core" Version="3.7.0.14" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.0.1" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.0.14" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="RestSharp" Version="106.11.7" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\interfaces\dividend.ts" />
+    <None Remove="ClientApp\src\app\interfaces\dividendresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\dividendsecurity.ts" />
+    <None Remove="ClientApp\src\app\interfaces\earning.ts" />
+    <None Remove="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
+    <None Remove="ClientApp\src\app\interfaces\historicalprice.ts" />
+    <None Remove="ClientApp\src\app\interfaces\security.ts" />
+    <None Remove="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\security-detail\security-detail.component.ts" />
+    <None Remove="ClientApp\src\app\security\security-component.ts" />
+    <None Remove="ClientApp\src\app\services\security.service.ts" />
+    <None Remove="ClientApp\src\app\side-menu\sidebar-menu.component.ts" />
+    <None Remove="ClientApp\src\app\widget\historicDate\update-historical-date.component.ts" />
+    <None Remove="ClientApp\src\app\widget\searchSecurity\search-security.component.ts" />
+    <None Remove="ClientApp\src\app\widget\topMovers\top-movers.component.ts" />
+    <None Remove="ClientApp\src\app\widget\updateSecurity\update-security.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividend.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendsecurity.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earning.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\historicalprice.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\security-detail\security-detail.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\security\security-component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\security.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\side-menu\sidebar-menu.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\widget\historicDate\update-historical-date.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\widget\searchSecurity\search-security.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\widget\topMovers\top-movers.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\widget\updateSecurity\update-security.component.ts" />
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod --base-href /financials/" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

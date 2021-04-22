@@ -1,0 +1,170 @@
+<body class="c-app " style="background-color:white" >
+
+
+
+  <div class="c-sidebar c-sidebar-dark c-sidebar-show sidebar-minimizer" *ngIf="!isHidden">
+    <nav  class="sidebar-nav">
+  
+
+
+
+    <ul class="c-sidebar-nav">
+      <li class="c-sidebar-nav-title">Financials</li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" [routerLink]="['/']">
+          <i class="c-sidebar-nav-icon cil-home"></i>Home
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="#">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i> With badge
+          <span class="badge badge-primary">NEW</span>
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item nav-dropdown">
+        <a class="c-sidebar-nav-link nav-dropdown-toggle" href="#">
+          <i class="c-sidebar-nav-icon cil-puzzle"></i> Nav dropdown
+        </a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="#">
+              <i class="c-sidebar-nav-icon cil-puzzle"></i> Nav dropdown item
+            </a>
+          </li>
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="#">
+              <i class="c-sidebar-nav-icon cil-puzzle"></i> Nav dropdown item
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="c-sidebar-nav-item mt-auto">
+        <a class="c-sidebar-nav-link c-sidebar-nav-link-success" href="https://coreui.io">
+          <i class="c-sidebar-nav-icon cil-cloud-download"></i> Download CoreUI
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link c-sidebar-nav-link-danger" href="https://coreui.io/pro/">
+          <i class="c-sidebar-nav-icon cil-layers"></i> Try CoreUI
+          <strong>PRO</strong>
+        </a>
+      </li>
+    </ul>
+     </nav>
+    <button class="c-sidebar-minimizer c-brand-minimizer" type="button" (click)="toggleView();"></button>
+  </div>
+
+  <div class="c-wrapper">
+    <i class="cil-hamburger-menu" (click)="toggleView();"></i>
+   
+    <app-nav-menu></app-nav-menu>
+    <!-- Header content here -->
+    <div class="c-body bg-light">
+      <main class="c-main">
+        <!-- Main content here -->
+        <div class="container">
+          <router-outlet></router-outlet>
+        </div>
+      </main>
+    </div>
+    <footer class="c-footer">
+
+      <!-- Footer content here -->
+    </footer>
+  </div>
+</body>
+
+<!--
+
+<body class="app aside-menu-fixed">
+  <header class="app-header navbar header-fixed">
+
+  </header>
+  <div class="app-body">
+    <div class="sidebar">
+      <!-- Sidebar content here -- >
+      <div class="c-sidebar c-sidebar-dark c-sidebar-">
+        <ul class="c-sidebar-nav">
+          <li class="c-sidebar-nav-title">Nav Title</li>
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="#">
+              <i class="c-sidebar-nav-icon cil-speedometer"></i> Nav item
+            </a>
+          </li>
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="#">
+              <i class="c-sidebar-nav-icon cil-speedometer"></i> With badge
+              <span class="badge badge-primary">NEW</span>
+            </a>
+          </li>
+
+
+        </ul>
+        <button class="c-sidebar-minimizer c-brand-minimizer" type="button"></button>
+      </div>
+    </div>
+    <main class="main">
+      <!-- Main content here -- >
+
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+    <aside class="aside-menu">
+      <!-- Aside menu content here ---- >
+
+      JUst some text
+    </aside>
+  </div>
+<footer class="app-footer">
+  <!-- Footer content here -- >
+    </footer>
+  </body>
+-->
+<!--
+
+
+<body>
+  <div class="c-sidebar c-sidebar-dark c-sidebar-">
+    <ul class="c-sidebar-nav">
+      <li class="c-sidebar-nav-title">Nav Title</li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="#">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i> Nav item
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="#">
+          <i class="c-sidebar-nav-icon cil-speedometer"></i> With badge
+          <span class="badge badge-primary">NEW</span>
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item nav-dropdown">
+        <a class="c-sidebar-nav-link nav-dropdown-toggle" href="#">
+          <i class="c-sidebar-nav-icon cil-puzzle"></i> Nav dropdown
+        </a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="#">
+              <i class="c-sidebar-nav-icon cil-puzzle"></i> Nav dropdown item
+            </a>
+          </li>
+          <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="#">
+              <i class="c-sidebar-nav-icon cil-puzzle"></i> Nav dropdown item
+            </a>
+          </li>
+        </ul>
+      </li>
+
+    </ul>
+    <button class="c-sidebar-minimizer c-brand-minimizer" type="button"></button>
+  </div>
+  <header class="navbar navbar-light">
+    <button class="navbar-toggler sidebar-toggler" type="button" data-toggle="sidebar-show">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </header>
+>
+</body>
+  -->

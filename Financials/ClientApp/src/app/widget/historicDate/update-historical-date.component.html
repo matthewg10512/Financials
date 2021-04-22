@@ -1,0 +1,31 @@
+<div class="card">
+  <div class="card-header ">
+  Historical Date
+    <span class="card-header-actions">
+      <span class="badge badge-pill badge-danger">{{securtiesUpdate}}</span>
+    </span>
+  </div>
+  <div class="card-body" style="height:100px">
+      <table>
+        <tr>
+          <td>
+            <button class="btn btn-primary" mat-button (click)="retrieveHistoricalPrices()">Update</button>
+          </td>
+          <td>
+            <span class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="historicalPriceSwitch" [(ngModel)]="allHistorical" >
+              <label class="custom-control-label" for="historicalPriceSwitch">All</label>
+            </span>
+          </td>
+          </tr>
+        <!-- Default switch -->
+      </table>
+      <span *ngFor="let securityUpdating of securitiesUpdating">
+
+        {{securityUpdating}},
+
+      </span>
+
+  </div>
+</div>
+

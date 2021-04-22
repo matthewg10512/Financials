@@ -1,0 +1,50 @@
+<div class="card">
+  <div class="card-header">
+    <b>Upcoming Dividends</b>
+  </div>
+  <div class="card-body">
+    <div *ngIf="!dividendSecurities">
+
+      <shared-loading-data></shared-loading-data>
+
+
+    </div>
+
+    <!--<div style="height:250px;overflow-y: auto" >-->
+
+
+
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="dividendSecurities">
+      <thead>
+        <tr>
+          <th width="300px">Name</th>
+          <th width="150px">Announce Date</th>
+          <th width="100px">Amount</th>
+          <th width="150px">Ex Date</th>
+          <th width="150px">Rec Date</th>
+          <th width="150px">Pay Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dividendSecurity of dividendSecurities">
+          <td width="300px">{{ dividendSecurity.security.name }}</td>
+          <td width="150px">{{ dividendSecurity.announcementDate | date:'longDate'}}</td>
+          <td width="100px">{{ dividendSecurity.amount }}</td>
+          <td width="150px">{{ dividendSecurity.exDividendDate | date:'longDate' }}</td>
+          <td width="150px">{{ dividendSecurity.recordDate | date:'longDate' }}</td>
+          <td width="150px">{{ dividendSecurity.payableDate | date:'longDate'}}</td>
+
+
+
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+
+
+  <!-- </div>-->
+</div>

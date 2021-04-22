@@ -1,0 +1,185 @@
+
+
+<div class="card">
+  <div class="card-header">
+    <b>Top Movers</b>
+
+    <span class="card-header-actions">
+      <button class="btn btn-primary" mat-button (click)="getTopMovers()"><i class="icon-reload"></i></button>
+    </span>
+    <br />
+
+    <div class="btn-group dropup">
+      <button style="width:70px;" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        {{rangeLow}}
+      </button>
+      <div class="dropdown-menu">
+        <div class="input-group mb-3">
+          <input type="text" [(ngModel)]="rangeLow" class="form-control" >
+          <div class="input-group-append">
+            <span class="input-group-text">%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    To
+    <div class="btn-group dropup">
+      <button style="width:70px;" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        {{rangeHigh}}
+      </button>
+      <div class="dropdown-menu">
+        <div class="input-group mb-3">
+          <input type="text" [(ngModel)]="rangeHigh" class="form-control">
+          <div class="input-group-append">
+            <span class="input-group-text">%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <!--
+  <span ngbDropdown container="body" style="padding-right:70px">
+    <button class="btn btn-outline-secondary btn-sm" ngbDropdownToggle></button>
+    <div ngbDropdownMenu>
+      <!--  <span class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="negValBelow5" [(ngModel)]="negValBelow5">
+      <label class="custom-control-label" for="negValBelow5">All</label>
+    </span>
+        -->
+    <!--
+    <button class="btn btn-outline-light" (click)="topMoversSearch.negValBelow5 = !topMoversSearch.negValBelow5" [ngClass]="topMoversSearch.negValBelow5 ? 'btn btn-primary' : 'btn btn-outline-light' ">Below 5%</button>
+
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+             -- >
+
+
+
+
+      <button ngbDropdownItem>Move</button>
+      <div class="dropdown-divider"></div>
+      <button ngbDropdownItem>Delete</button>
+    </div>
+  </span>
+        -->
+
+
+
+
+
+
+
+  </div>
+  <div class="card-body">
+
+    <div *ngIf="!TopMovers">
+
+      <shared-loading-data></shared-loading-data>
+
+
+    </div>
+
+    <div style="height:200px;overflow-y: auto">
+      <span *ngFor="let topMover of TopMovers;let i = index">
+
+
+
+        <button type="button" class="btn mr-2" [ngClass]="topMover.percentageChange > 0 ? 'btn-outline-success' : 'btn-outline-danger'" placement="bottom"
+                [ngbPopover]="popContent" popoverTitle="{{topMover.name}}">
+          {{topMover.symbol}} ({{topMover.percentageChange}})
+        </button>
+        <ng-template #popContent>
+          <table class="table">
+            <tr>
+              <td>
+                Last Modified:
+              </td>
+              <td>
+                {{topMover.lastModified}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Day Low:
+              </td>
+              <td>
+                {{topMover.dayLow}}
+              </td>
+            </tr>
+            <tr>
+
+              <td>
+                Day High:
+              </td>
+              <td>
+                {{topMover.dayHigh}}
+              </td>
+            </tr>
+            <tr>
+
+              <td>
+                Current Price:
+              </td>
+              <td>
+                {{topMover.currentPrice}}
+              </td>
+            </tr>
+          </table>
+
+
+        </ng-template>
+        <!--
+      <div class="row">
+        <div class="col">
+          <div ngbDropdown class="d-inline-block">
+            <button class="btn btn-outline-primary" id="dropdownForm1" ngbDropdownToggle>{{topMover.symbol}} ({{topMover.percentageChange}})</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownForm1">
+
+
+              { {topMover.name}}<br />
+              { {topMover.lastModified}}<br />
+              { {topMover.dayLow}}<br />
+              { {topMover.dayHigh}}<br />
+              { {topMover.currentPrice}}
+              <!--
+            <form class="px-4 py-3">
+              <div class="form-group">
+                <label for="exampleDropdownFormEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+              </div>
+              <div class="form-group">
+                <label for="exampleDropdownFormPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                <label class="form-check-label" for="dropdownCheck">
+                  Remember me
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>-->
+    <!--        <div class="dropdown-divider"></div>
+  </div>
+              </div>
+            </div>
+          </div>
+          -->
+    <!--
+    <span [ngClass]="topMover.percentageChange > 0 ? 'positiveChange' : 'negativeChange'">
+      { {topMover.symbol
+                  }} ({{topMover.percentageChange}})
+
+                  <span *ngIf="i % 2 == 1">
+                    <br />
+                  </span>
+  </span>
+      -->
+    </span>
+  </div>
+  </div>
+</div>

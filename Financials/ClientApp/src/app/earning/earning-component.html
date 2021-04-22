@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="card-header">
+    <b>Upcoming Earnings</b>
+  </div>
+  <div class="card-body">
+    <div *ngIf="!earnings">
+      <shared-loading-data></shared-loading-data>
+    </div>
+    <!-- <div style="height:250px;overflow-y: auto">-->
+
+
+
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="earnings">
+      <thead>
+        <tr>
+          <th style="width:300px">Name</th>
+          <th style="width:250px">Earnings Date</th>
+          <th style="width:150px">EPS Estimate</th>
+          <th style="width:150px">Revenue Estimate</th>
+          <th style="width:150px">reportTime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let earning of earnings">
+          <td style="width:300px">{{ earning.security.name }}</td>
+          <td style="width:250px">{{ earning.actualEarningsDate | date:'shortDate' }}</td>
+          <td style="width:150px">{{ earning.epsEstimate }}</td>
+          <td style="width:150px">{{ earning.revenueEstimate }}</td>
+          <td style="width:150px">{{ earning.reportTime == 'amc' ? 'After Hours' : 'Before Open'}}</td>
+
+
+
+
+
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+
+
+  <!-- </div>-->
+</div>
