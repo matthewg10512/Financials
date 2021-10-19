@@ -32,6 +32,8 @@ import { DividendComponent } from './dividend/dividend.component';
 import { DividendWidgetComponent } from './widget/dividend/dividend-widget.component';
 import { LoadingDataComponent } from './shared/loading-data/loading-data.component';
 import { PercentageChangersComponent } from './widget/percentage-changers/percentage-changers.component';
+import { AutoSecurityTradeComponent } from './auto-security-trade/auto-security-trade.component';
+import { SecurityInvestProjectionComponent } from './security-invest-projection/security-invest-projection.component';
 
 
 //'./widget/historicdDate/update-historical-date.component';
@@ -57,6 +59,8 @@ import { PercentageChangersComponent } from './widget/percentage-changers/percen
     DividendWidgetComponent,
     LoadingDataComponent,
     PercentageChangersComponent,
+    AutoSecurityTradeComponent,
+    SecurityInvestProjectionComponent,
     
     
   ],
@@ -72,7 +76,12 @@ import { PercentageChangersComponent } from './widget/percentage-changers/percen
       { path: 'security', component: SecurityComponent },
       { path: 'earning', component: EarningComponent },
       { path: 'dividend', component: DividendComponent },
-      { path: 'detail/:id', component: SecurityDetailComponent }
+      { path: 'detail/:id', component: SecurityDetailComponent },
+      { path: 'auto-security-trade', component: AutoSecurityTradeComponent },
+      { path: 'security-invest-projection', component: SecurityInvestProjectionComponent }
+      
+
+
     ]),
     BrowserAnimationsModule,
     NgbModule,

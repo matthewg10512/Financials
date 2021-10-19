@@ -5,7 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Financials.ResourceParameters;
+using Financials.Services;
+using Financials.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -18,12 +21,23 @@ namespace Financials.Controllers
 
 
 
+        readonly IConfiguration _configuration;
+        readonly IAuthentication _authentication;
+        public HistoricalPriceController(IConfiguration configuration, IAuthentication authentication)
+        {
+
+            _configuration = configuration;
+            _authentication = authentication;
+        }
+
 
         [HttpGet]
         public async Task<IEnumerable<HistoricalPrice>> GetSecurities(int securityId , [FromQuery] HistoricalPricesResourceParameters historicalPricesResourceParameters)
         {
             List<HistoricalPrice> info = new List<HistoricalPrice>();
 
+
+            _authentication.AuthenticationToken(_configuration);
 
             string searchQuery = "";
             if (historicalPricesResourceParameters.HistoricDateHigh != null)
@@ -41,10 +55,12 @@ namespace Financials.Controllers
 
             using (var clients = new HttpClient())
             {
-                string fullUrl = "http://kwik-kards.com/FinancialServices/api/securities/" + securityId.ToString() + "/historicalprices" + searchQuery;
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                string fullUrl = apiUrl + "securities/" + securityId.ToString() + "/historicalprices" + searchQuery;
                 var client = new RestClient(fullUrl);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.GET);
+                _authentication.SetBearerTokenRest(request, _configuration);
                 IRestResponse response = client.Execute(request);
                 string responseString = response.Content;
                 info = JsonConvert.DeserializeObject<List<HistoricalPrice>>(responseString);
@@ -85,10 +101,13 @@ namespace Financials.Controllers
             //  return httpResponseMessage.Result.Content.ReadAsStringAsync();
             //});
 
+            _authentication.AuthenticationToken(_configuration);
+
             using (var client2 = new HttpClient())
             {
                 //api/securities/251/historicalprices
-                var url = "http://kwik-kards.com/FinancialServices/api/securities/" + securityId.ToString() + "/historicalprices";
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "securities/" + securityId.ToString() + "/historicalprices";
 
 
                 /*
@@ -130,7 +149,9 @@ namespace Financials.Controllers
                 client.Timeout = -1;
                 var request = new RestRequest(Method.PUT);
                 request.AddHeader("Accept", "application/json");
+                
                 request.AddHeader("Content-Type", "application/json");
+                _authentication.SetBearerTokenRest(request, _configuration);
                 request.AddParameter("application/json", "{\"securityId\":" + securityId.ToString() + "}", ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
                 Console.WriteLine(response.Content);

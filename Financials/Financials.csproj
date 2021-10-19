@@ -17,6 +17,7 @@
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.0.1" />
     <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.0.14" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Nancy" Version="2.0.0" />
@@ -32,6 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\interfaces\autosecuritytradegroup.ts" />
+    <None Remove="ClientApp\src\app\interfaces\autosecuritytradesecurity.ts" />
+    <None Remove="ClientApp\src\app\interfaces\autosecuritytradesresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\dividend.ts" />
     <None Remove="ClientApp\src\app\interfaces\dividendresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\dividendsecurity.ts" />
@@ -39,8 +43,11 @@
     <None Remove="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
     <None Remove="ClientApp\src\app\interfaces\historicalprice.ts" />
+    <None Remove="ClientApp\src\app\interfaces\investprojection.ts" />
     <None Remove="ClientApp\src\app\interfaces\security.ts" />
+    <None Remove="ClientApp\src\app\interfaces\securitydate.ts" />
     <None Remove="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\stockTranHistory.ts" />
     <None Remove="ClientApp\src\app\security-detail\security-detail.component.ts" />
     <None Remove="ClientApp\src\app\security\security-component.ts" />
     <None Remove="ClientApp\src\app\services\security.service.ts" />
@@ -52,6 +59,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradegroup.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradesecurity.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradesresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividend.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendsecurity.ts" />
@@ -59,8 +69,11 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\historicalprice.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\investprojection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\securitydate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockTranHistory.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\security-detail\security-detail.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\security\security-component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\security.service.ts" />

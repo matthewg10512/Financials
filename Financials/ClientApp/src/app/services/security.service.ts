@@ -14,6 +14,8 @@ import { dividendresourceparameters } from '../interfaces/dividendresourceparame
 import { Dividend } from '../interfaces/dividend';
 import { EarningSecurity } from '../interfaces/earningsecurity';
 import { EarningSecurityPercentage } from '../interfaces/earningsecuritypercentage';
+import { AutoSecurityTradeSecurity } from '../interfaces/autosecuritytradesecurity';
+import { autosecuritytradesresourceparameters } from '../interfaces/autosecuritytradesresourceparameters';
 //import { MessageService } from './message.service';
 
 
@@ -297,7 +299,26 @@ export class SecurityService {
     }, error => console.error(error));
     */
   
-}
+  }
+
+  searchAutoSecurityTrades(autosecuritytradesresourceparameter: autosecuritytradesresourceparameters): Observable<AutoSecurityTradeSecurity[]> {
+
+
+    let searchQuery: string = '';
+  
+    if (autosecuritytradesresourceparameter.positionSold + '' == 'Sold') {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "positionSold=true";
+    }
+    if (autosecuritytradesresourceparameter.positionSold + '' == 'UnSold') {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "positionSold=false";
+    }
+     
+    return this.http.get<AutoSecurityTradeSecurity[]>(this.baseUrl + 'security/SearchAutoSecurityTrades' + searchQuery);
+
+
+  }
 
 /** PUT: update the hero on the server */
   updateSecurity(security: Security): Observable<any> {

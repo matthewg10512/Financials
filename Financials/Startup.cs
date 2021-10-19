@@ -1,5 +1,6 @@
 using Amazon;
 using Amazon.Runtime.CredentialManagement;
+using Financials.Services.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Financials
 {
@@ -28,9 +30,13 @@ namespace Financials
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
-
-          //  services.AddScoped<ISecuritiesRepository, SecuritiesRepository>();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                
+            });
+            services.AddScoped<IAuthentication, Authentication>();
+            services.AddHttpContextAccessor();
+            //  services.AddScoped<ISecuritiesRepository, SecuritiesRepository>();
 
         }
 
@@ -47,7 +53,7 @@ namespace Financials
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())

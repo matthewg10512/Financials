@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input, EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Security } from '../../interfaces/security';
@@ -9,6 +9,7 @@ import { DividendSecurity } from '../../interfaces/dividendsecurity';
 import { dividendresourceparameters } from '../../interfaces/dividendresourceparameters';
 import { earningresourceparameters } from '../../interfaces/earningresourceparameters';
 import { EarningSecurity } from '../../interfaces/earningsecurity';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -36,6 +37,9 @@ import { EarningSecurity } from '../../interfaces/earningsecurity';
   styleUrls: ['./search-security.component.css']
 })
 export class SearchSecurityComponent {
+  @Input() actionItem = '';
+  @Output() securitySelectEvent = new EventEmitter<Security>();
+
   earnings: EarningSecurity[];
   dividendSecurities: DividendSecurity[];
   public securities: Security[];
@@ -44,7 +48,10 @@ export class SearchSecurityComponent {
   buttons: boolean[]
   sortNameDesc = false;
   sortPercentageDesc = false;
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private securityService: SecurityService) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private securityService: SecurityService
+    , private router: Router//, private route: ActivatedRoute
+
+  ) {
     /*
     http.get<PreferredSecurities[]>(baseUrl + 'preferredsecurity').subscribe(result => {
       this.preferredsecurities = result;
@@ -59,6 +66,19 @@ export class SearchSecurityComponent {
     this.GetFutureDividends();
     this.getSecurities();
   }
+
+
+  navigatePage(security: Security) {
+    //routerLink = "/detail/"
+    if (this.actionItem =='populatesecurityid') {
+      this.securitySelectEvent.emit(security);
+    }
+    else {
+      this.router.navigate(['/detail/' + security.id]);
+    }
+    
+  }
+
 
   updatePreferred(security: Security, j: number): void {
     let securityLocal = security;

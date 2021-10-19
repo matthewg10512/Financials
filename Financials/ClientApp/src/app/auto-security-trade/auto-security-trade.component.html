@@ -1,0 +1,242 @@
+<div class="card">
+  <div class="card-header">
+    <b>Auto Security Trades</b>
+  </div>
+  <div class="card-body">
+    <div *ngIf="!autoSecurityTradeSecurities">
+
+      <shared-loading-data></shared-loading-data>
+
+
+    </div>
+
+    <!--
+  <span *ngFor="let autoSecurityTradeGroup of autoSecurityTradeGroups;let i = index">
+
+    { {autoSecurityTradeGroup.securityName }} -  { {autoSecurityTradeGroup.totalSold}}
+    <br />
+  </span>
+      -->
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="autoSecurityTradeGroups">
+      <thead>
+        <tr>
+          <th width="300px">Name</th>
+          <th width="150px">Total Profit</th>
+          <th width="150px">Open Position Loss</th>
+          
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let autoSecurityTradeGroup of autoSecurityTradeGroups">
+          <td width="300px">{{ autoSecurityTradeGroup.securityName }}</td>
+          <td width="150px">
+            {{ (autoSecurityTradeGroup.totalSold - autoSecurityTradeGroup.totalBought)| number:'1.1-2'}}
+
+            <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+                    [ngbPopover]="securityCostBasis" popoverTitle="{{ autoSecurityTradeGroup.securityName }}">
+              <i class="cil-info"></i>
+            </button>
+
+            <ng-template style="width:800px" #securityCostBasis>
+              <table class="table">
+                <tr>
+                  <th>
+                    # of Trades:
+                  </th>
+                  <td>
+                    {{ autoSecurityTradeGroup.tradeCount | number:'1.1-2'}}
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Total Bought:
+                  </th>
+                  <td>
+                    {{ autoSecurityTradeGroup.totalBought | number:'1.1-2'}}
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Total Sold:
+                  </th>
+                  <td>
+                    {{( autoSecurityTradeGroup.totalSold) | number:'1.1-2'}}
+                  </td>
+                </tr>
+
+              </table>
+            </ng-template>
+
+
+          </td>
+
+          
+          <td width="150px">
+            <span>
+              {{( autoSecurityTradeGroup.sharePrices > 0 ? (autoSecurityTradeGroup.currentShares * autoSecurityTradeGroup.currentPrice) - autoSecurityTradeGroup.sharePrices     : 0 ) | number:'1.1-2'}}
+
+
+            </span>
+            <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+                    [ngbPopover]="securityPriceDetails" popoverTitle="{{ autoSecurityTradeGroup.securityName }}">
+              <i class="cil-info"></i>
+            </button>
+            <ng-template style="width:800px" #securityPriceDetails>
+              <table class="table">
+                <tr>
+                  <th>
+                    Current Shares:
+                  </th>
+                  <td>
+                    {{ autoSecurityTradeGroup.currentShares | number:'1.1-2'}}
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Current Price:
+                  </th>
+                  <td>
+                    {{ autoSecurityTradeGroup.currentPrice | number:'1.1-2'}}
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Average Share Price:
+                  </th>
+                  <td>
+                    {{( autoSecurityTradeGroup.sharePrices > 0 ? autoSecurityTradeGroup.sharePrices / autoSecurityTradeGroup.currentShares : 0 ) | number:'1.1-2'}}
+                  </td>
+                </tr>
+
+              </table>
+            </ng-template>
+            
+
+          </td>
+
+
+        </tr>
+      </tbody>
+    </table>
+
+
+    <!--<div style="height:250px;overflow-y: auto" >-->
+    <div style="overflow-x:auto;width:100%;overflow-y:auto;height:400px;">
+      <select name="selectedPurchaseType" id="info" [(ngModel)]="selectedPurchaseType">
+        <option *ngFor="let option of purOptions" [value]="option">{{option}}</option>
+      </select>
+
+
+
+
+      <input style="width:200px" type="text" [(ngModel)]="amountToBuy">
+      <button class="btn btn-primary" (click)="refreshCalculations()">Refresh Calculations</button>
+      <br />
+      <label>Max Investment {{ maxInvestment | number:'1.1-2'}}</label>
+      <br />
+      <label>Current Investment {{ currentInvestment | number:'1.1-2'}}</label>
+
+      <br />
+
+      <button class="btn btn-primary" (click)="searchAutoTrades()">Search Auto Trades</button>
+      <br />
+
+
+      <select name="selectedQuantity" id="aantal" [(ngModel)]="selectedQuantity">
+        <option *ngFor="let option of tranType" [value]="option">{{option}}</option>
+      </select>
+
+      <table>
+        <tr>
+          <td>
+            <label>Total Earned {{ totEarned | number:'1.1-2'}}</label>
+          </td>
+          <td>
+            <label>Total Lost {{ totLost | number:'1.1-2'}}</label>
+          </td>
+          <td>
+            <label>Total {{ totEarned + totLost | number:'1.1-2'}}</label>
+          </td>
+        </tr>
+      </table>
+
+
+      <!--
+    <select [(ngModel)]="selectedLevel" (change)="selected()" value="[0]">
+      <option *ngFor="let item of data" [ngValue]="item.name">{{item.name}}</option>
+    </select>
+    -->
+
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="autoSecurityTradeSecurities">
+        <thead>
+          <tr>
+            <th width="300px">Name</th>
+            <th width="150px">
+              Current Price
+            </th>
+
+            <th width="150px">Purchase Price</th>
+            <th width="150px">Purchase Date</th>
+            <th width="150px">Sell Price</th>
+            <th width="150px">Sell Date</th>
+            <th width="150px">Total Invested</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let autoSecurityTradeSecurity of autoSecurityTradeSecurities">
+            <td width="300px">{{ autoSecurityTradeSecurity.security.name }}</td>
+            <td width="150px">{{ autoSecurityTradeSecurity.security.currentPrice}}</td>
+            <td width="150px">{{ autoSecurityTradeSecurity.purchasePrice}}</td>
+            <td width="150px" title="{{autoSecurityTradeSecurity.purchaseDate | date:'medium'}}">{{ autoSecurityTradeSecurity.purchaseDate | date:'longDate' }}</td>
+            <td width="150px">
+              {{
+ (((autoSecurityTradeSecurity.sellPrice - autoSecurityTradeSecurity.purchasePrice)/autoSecurityTradeSecurity.purchasePrice) * 100 ) | number:'1.1-2'
+              }}
+            </td>
+            <td width="150px" title="{{autoSecurityTradeSecurity.sellDate | date:'medium'}}">
+              {{ autoSecurityTradeSecurity.sellDate | date:'longDate' }}
+              <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+                      [ngbPopover]="topStockContent" popoverTitle="{{ autoSecurityTradeSecurity.security.name }}">
+                <i class="cil-info"></i>
+              </button>
+
+              <ng-template style="width:800px" #topStockContent>
+                <table class="table">
+                  <tr>
+                    <th>
+                      Shares Bought:
+                    </th>
+                    <td>
+                      {{ autoSecurityTradeSecurity.sharesBought }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      Sell Price:
+                    </th>
+                    <td>
+                      {{ autoSecurityTradeSecurity.sellPrice }}
+                    </td>
+                  </tr>
+
+                </table>
+              </ng-template>
+
+
+
+            </td>
+            <td width="150px">{{ autoSecurityTradeSecurity.totalamount | number:'1.1-2'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+
+
+    <!-- </div>-->
+  </div>

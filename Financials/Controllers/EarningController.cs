@@ -5,7 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Financials.ResourceParameters;
+using Financials.Services;
+using Financials.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -17,6 +20,13 @@ namespace Financials.Controllers
     public class EarningController :ControllerBase
     {
 
+        readonly IConfiguration _configuration;
+        readonly IAuthentication _authentication;
+        public EarningController(IConfiguration configuration, IAuthentication authentication)
+        {
+            _configuration = configuration;
+            _authentication = authentication;
+        }
 
 
         [HttpGet]
@@ -37,13 +47,14 @@ namespace Financials.Controllers
             return NoContent();
 
             */
-
+            _authentication.AuthenticationToken(_configuration);
             using (var client = new HttpClient())
             {
-                var url = "http" + "://kwik-kards.com/FinancialServices/api/securities/" + securityId.ToString() + "/earnings";
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "securities/ " + securityId.ToString() + "/earnings";
 
 
-
+                _authentication.SetBearerToken(client, _configuration);
                 client.DefaultRequestHeaders
                    .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
@@ -80,13 +91,14 @@ namespace Financials.Controllers
         public ActionResult<IEnumerable<EarningSecurityPercentage>> GetEarningsSecurityPercentage(int securityId)
         {
             List<EarningSecurityPercentage> info = new List<EarningSecurityPercentage>();
-
+            _authentication.AuthenticationToken(_configuration);
             using (var client = new HttpClient())
             {
-                var url = "http" + "://kwik-kards.com/FinancialServices/api/securities/EarningsPercentage?securityid=" + securityId.ToString();
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "securities/EarningsPercentage?securityid=" + securityId.ToString();
 
 
-
+                _authentication.SetBearerToken(client, _configuration);
                 client.DefaultRequestHeaders
                    .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
@@ -126,7 +138,7 @@ namespace Financials.Controllers
         [Route("~/security/SearchEarnings")]
         public ActionResult<IEnumerable<EarningSecurityDto>> GetEarnings([FromQuery] EarningsResourceParameters earningsResourceParameters)
         {
-           // var earningsFromRepo = _securityRepository.GetEarnings(earningsResourceParameters);
+            // var earningsFromRepo = _securityRepository.GetEarnings(earningsResourceParameters);
 
             //return Ok(_mapper.Map<IEnumerable<EarningDto>>(earningsFromRepo));
             /*
@@ -143,7 +155,7 @@ namespace Financials.Controllers
             }
             */
             // return  Ok(authors);
-
+            _authentication.AuthenticationToken(_configuration);
             List<EarningSecurityDto> info = new List<EarningSecurityDto>();
 
             
@@ -179,10 +191,11 @@ namespace Financials.Controllers
 
             using (var client = new HttpClient())
             {
-                var url = "http://kwik-kards.com/FinancialServices/api/securities/SearchEarnings" + searchQuery;
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "securities/SearchEarnings" + searchQuery;
 
 
-
+                _authentication.SetBearerToken(client, _configuration);
                 client.DefaultRequestHeaders
                    .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
@@ -219,10 +232,13 @@ namespace Financials.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateEarnings(int securityId)
         {
-            var url = "http" + "://kwik-kards.com/FinancialServices/api/securities/" + securityId.ToString() + "/earnings";
+            _authentication.AuthenticationToken(_configuration);
+            string apiUrl = _configuration.GetValue<string>("APIURL");
+            var url = apiUrl + "securities/" + securityId.ToString() + "/earnings";
             var client = new RestClient(url);
             client.Timeout = -1;
             var request = new RestRequest(Method.PUT);
+            _authentication.SetBearerTokenRest(request, _configuration);
             request.AddHeader("Accept", "application/json");
             request.AddHeader("Content-Type", "application/json");
               request.AddParameter("application/json", "{\"securityId\":" + securityId.ToString() + "}", ParameterType.RequestBody);
@@ -238,11 +254,14 @@ namespace Financials.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateFutureEarnings()
         {
-                var url = "http" + "://kwik-kards.com/FinancialServices/api/securities/" + "futureearnings";
+            _authentication.AuthenticationToken(_configuration);
+            string apiUrl = _configuration.GetValue<string>("APIURL");
+            var url = apiUrl + "securities/" + "futureearnings";
                 var client = new RestClient(url);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.PUT);
-                request.AddHeader("Accept", "application/json");
+            _authentication.SetBearerTokenRest(request, _configuration);
+            request.AddHeader("Accept", "application/json");
                 request.AddHeader("Content-Type", "application/json");
               //  request.AddParameter("application/json", "{\"securityId\":" + 251.ToString() + "}", ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);

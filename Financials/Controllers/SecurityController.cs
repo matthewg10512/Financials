@@ -10,6 +10,8 @@ using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Financials.ResourceParameters;
 using Financials.Services;
+using Financials.Services.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -21,13 +23,25 @@ namespace Financials.Controllers
     [Route("[controller]")]
     public class SecurityController : ControllerBase
     {
-     
+
+
+
+        readonly IConfiguration _configuration;
+        readonly IAuthentication _authentication;
+        public SecurityController(IConfiguration configuration, IAuthentication authentication)
+        {
+            _configuration = configuration;
+            _authentication = authentication;
+        }
 
         [HttpGet]
         public async Task<IEnumerable<Security>> GetSecurities([FromQuery] SecuritiesResourceParameters securitiesResourceParameters)
         {
             List<Security> info = new List<Security>();
 
+
+           
+            _authentication.AuthenticationToken(_configuration);
 
             string searchQuery = "";
             if (securitiesResourceParameters.symbol != null)
@@ -102,13 +116,15 @@ namespace Financials.Controllers
 
             using (var client = new HttpClient())
             {
-                var url = "http://kwik-kards.com/FinancialServices/api/securities" + searchQuery;
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "securities" + searchQuery;
                 
 
 
                 client.DefaultRequestHeaders
                    .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
+                _authentication.SetBearerToken(client, _configuration);
                 var response = client.GetAsync(url).Result;
                 if (response.IsSuccessStatusCode)
                 {
@@ -140,16 +156,17 @@ namespace Financials.Controllers
         [HttpPut("UpdateAllSecurities")]
         public async Task<IActionResult> UpdateAllSecurities()
         {
-           
-                var url = "http://kwik-kards.com/FinancialServices/api/" + "UpdateAllSecurities";
+            string apiUrl = _configuration.GetValue<string>("APIURL");
+            var url = apiUrl +  "UpdateAllSecurities";
 
-        
+            _authentication.AuthenticationToken(_configuration);
 
 
             var client = new RestClient(url);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.PUT);
                 request.AddHeader("Accept", "application/json");
+                _authentication.SetBearerTokenRest(request, _configuration);
                 request.AddHeader("Content-Type", "application/json");
                 request.AddParameter("application/json", "", ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
@@ -187,9 +204,9 @@ namespace Financials.Controllers
             //{
             //  return httpResponseMessage.Result.Content.ReadAsStringAsync();
             //});
-            
-
-                var url = "http://kwik-kards.com/FinancialServices/api/securities/" + securityId.ToString();
+            _authentication.AuthenticationToken(_configuration);
+            string apiUrl = _configuration.GetValue<string>("APIURL");
+            var url = apiUrl + "securities/" + securityId.ToString();
 
 
 
@@ -198,7 +215,8 @@ namespace Financials.Controllers
                 var request = new RestRequest(Method.PUT);
                 request.AddHeader("Accept", "application/json");
                 request.AddHeader("Content-Type", "application/json");
-               request.AddParameter("securityId" , securityId.ToString());
+            _authentication.SetBearerTokenRest(request, _configuration);
+            request.AddParameter("securityId" , securityId.ToString());
               request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(security), ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
@@ -224,14 +242,17 @@ namespace Financials.Controllers
         [HttpGet("{securityId}")]
         public async Task<Security> GetAsync(int securityId)
         {
-           Security securityRec = new Security();
+            _authentication.AuthenticationToken(_configuration);
+            Security securityRec = new Security();
             string details = "";
          
             using (var client = new HttpClient())
             {
                 details += "url ";
-                var url = "http://kwik-kards.com/FinancialServices/api/securities/" + securityId.ToString();
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "securities/" + securityId.ToString();
                 details += "urlHit";
+                _authentication.SetBearerToken(client, _configuration);
                 var response = client.GetAsync(url).Result;
 
                 if (response.IsSuccessStatusCode)

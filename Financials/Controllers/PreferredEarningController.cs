@@ -4,8 +4,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Financials.Services;
+using Financials.Services.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace Financials.Controllers
@@ -16,17 +19,26 @@ namespace Financials.Controllers
     {
 
 
+        readonly IConfiguration _configuration;
+        readonly IAuthentication _authentication;
+        public PreferredEarningController(IConfiguration configuration, IAuthentication authentication)
+        {
+            _configuration = configuration;
+            _authentication = authentication;
+        }
+
         [HttpGet]
         public async Task<IEnumerable<PreferredEarning>> GetAsync()
         {
             List<PreferredEarning> info = new List<PreferredEarning>();
             DateTime date = DateTime.Now;
+            _authentication.AuthenticationToken(_configuration);
 
-            
             using (var client = new HttpClient())
             {
-                var url = "http://kwik-kards.com/FinancialServices/api/preferredearnings?actualEarningsDate=" + DateTime.Now.ToString("MM/dd/yyyy");
-
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "preferredearnings?actualEarningsDate=" + DateTime.Now.ToString("MM/dd/yyyy");
+                _authentication.SetBearerToken(client, _configuration);
                 client.DefaultRequestHeaders
                    .Accept
                         .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
