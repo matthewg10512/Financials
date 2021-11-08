@@ -3,8 +3,15 @@ import { SecurityService } from '../services/security.service';
 import { HistoricalPrice } from '../interfaces/historicalprice';
 import { Security } from '../interfaces/security';
 import { Dividend } from '../interfaces/dividend';
-import { InvestProjection, InvestProjectionStock, InvestProjectionStockFactory } from '../interfaces/investprojection';
+
+
 import { ViewChild } from '@angular/core';
+import { InvestProjectionStockFactory } from '../classes/InvestmentProjection/investprojectionstockfactory';
+import { InvestProjectionStock } from '../classes/InvestmentProjection/investprojectionstock';
+import { investmentprojectionsresourceparameters } from '../interfaces/resourceparameters/investmentprojectionsresourceparameters';
+import { InvestProjection } from '../classes/InvestmentProjection/investprojection';
+import { investmentprojectionforupdate } from '../interfaces/investmentprojectionforupdate';
+import { investmentprojectionforadd } from '../interfaces/investmentprojectionforadd';
 @Component({
   selector: 'app-security-invest-projection',
   templateUrl: './security-invest-projection.component.html',
@@ -15,25 +22,13 @@ import { ViewChild } from '@angular/core';
 export class SecurityInvestProjectionComponent implements OnInit {
   currentActionItem = 'populatesecurityid';
 
-
+  investProjectionStockFactoryList: InvestProjectionStockFactory[];
   investProjectionStockFactory: InvestProjectionStockFactory;
   //investProjectionStocks: InvestProjectionStock[];
 
  // investProjections: InvestProjection[];
   @ViewChild('myModalClose', { static: false }) modalClose;
 
-  securityRecord: Security;
-  //numberOfShares: number = 0;
-  //purchaseAmount: number = 0;
-  //dividendProfit: number = 0;
-  yearLow: number = 2015;
-  yearHigh: number= 2021;
-  //numberOfSharesPercent: number = 0;
-  //dividendProfitPercent: number = 0;
-  //purchaseAmountPercent: number = 0;
- // totalYearlyInvestment: number = 10000;
-
- // securityId: number;
 
   constructor(
     private prefSecurityService: SecurityService) {
@@ -42,10 +37,189 @@ export class SecurityInvestProjectionComponent implements OnInit {
     this.investProjectionStockFactory = new InvestProjectionStockFactory();
   }
 
+  isCollapsed: boolean = true;
+
+  collapsed(event: any): void {
+    // console.log(event);
+  }
+
+  expanded(event: any): void {
+    // console.log(event);
+  }
+
+
   ngOnInit() {
 
     //this.getHistoricalPrices();
+    /*
+    let securityList: number[] = [];
+    securityList.push(175); //amazon
+    securityList.push(251);//apple
+    securityList.push(2348);//netflix
+    securityList.push(814);//costco
+    
+    let securityCount: number = securityList.length;
+    for (var i = 0; i < securityCount; i++) {
+      this.addSecurity(securityList[i]);
+    }
+    */
+
+
+
+    let invprojRP: investmentprojectionsresourceparameters = new investmentprojectionsresourceparameters();
+    invprojRP.userId = 1;
+    this.prefSecurityService.getInvestmentProjectionsSecurities(invprojRP).subscribe(investProjections => {
+      this.investProjectionStockFactoryList = [];
+      this.investProjectionStockFactoryList.push(new InvestProjectionStockFactory());
+      this.investProjectionStockFactoryList.push(...investProjections);
+      
+      
+
+    });
+    
+
+    //this.investProjectionStockFactory.investProjectionStocks.push(investProjectionStock);
   }
+
+  onInvestProjectionChange(value: number): void {
+    this.investProjectionStockFactory = new InvestProjectionStockFactory();
+
+
+
+    this.selectSavedInvestProjection(Number(value));
+
+
+
+    
+  }
+
+  selectSavedInvestProjection(projectionId: number): void {
+    this.investProjectionStockFactory = new InvestProjectionStockFactory();
+
+    let index = this.investProjectionStockFactoryList.findIndex(x => x.id === projectionId);
+    if (index == -1) {
+      return;
+    }
+    
+
+    this.investProjectionStockFactory.repeatInvestmentFrequency = this.investProjectionStockFactoryList[index].repeatInvestmentFrequency;
+
+    this.investProjectionStockFactory.purchaseFrequency = this.investProjectionStockFactoryList[index].purchaseFrequency;
+    this.investProjectionStockFactory.repeatInvestmentAmount = this.investProjectionStockFactoryList[index].repeatInvestmentAmount;
+    this.investProjectionStockFactory.yearRangeHigh = this.investProjectionStockFactoryList[index].yearRangeHigh;
+    this.investProjectionStockFactory.yearRangeLow = this.investProjectionStockFactoryList[index].yearRangeLow;
+    this.investProjectionStockFactory.projectionName = this.investProjectionStockFactoryList[index].projectionName;
+    this.investProjectionStockFactory.id = this.investProjectionStockFactoryList[index].id;
+    this.investProjectionStockFactory.userId = this.investProjectionStockFactoryList[index].userId;
+
+    var securityLength = this.investProjectionStockFactoryList[index].securities.length;
+    for (var i = 0; i < securityLength; i++) {
+      this.addSecurity(this.investProjectionStockFactoryList[index].securities[i].id);
+    }
+  }
+
+  newInvestmentProjection(): void {
+    
+    let investmentprojectionforadddto: investmentprojectionforadd = new investmentprojectionforadd();
+    investmentprojectionforadddto.userId = this.investProjectionStockFactory.userId;
+    investmentprojectionforadddto.projectionName = this.investProjectionStockFactory.projectionName;
+    investmentprojectionforadddto.repeatInvestmentAmount = Number(this.investProjectionStockFactory.repeatInvestmentAmount);
+    investmentprojectionforadddto.repeatInvestmentFrequency = Number(this.investProjectionStockFactory.repeatInvestmentFrequency);
+    investmentprojectionforadddto.purchaseFrequency = Number(this.investProjectionStockFactory.purchaseFrequency);
+    investmentprojectionforadddto.yearRangeLow = Number(this.investProjectionStockFactory.yearRangeLow);
+    investmentprojectionforadddto.yearRangeHigh = Number(this.investProjectionStockFactory.yearRangeHigh);
+    investmentprojectionforadddto.securities = [];
+
+    let projStockCount = this.investProjectionStockFactory.investProjectionStocks.length;
+    for (var i = 0; i < projStockCount; i++) {
+      investmentprojectionforadddto.securities.push(this.investProjectionStockFactory.investProjectionStocks[i].securityRecord);
+    }
+
+
+    this.prefSecurityService.addInvestmentProjection(investmentprojectionforadddto).subscribe(prefsecurities => {
+
+
+      this.investProjectionStockFactory.id = Number(prefsecurities);
+      let stockCount = this.investProjectionStockFactory.investProjectionStocks.length;
+
+      for (var i = 0; i < stockCount; i++) {
+        this.investProjectionStockFactory.securities.push(this.investProjectionStockFactory.investProjectionStocks[i].securityRecord);
+      }
+      
+
+      this.investProjectionStockFactoryList.push(this.investProjectionStockFactory);
+
+
+    }); 
+  }
+
+  updateInvestmentProjection(): void {
+    let investmentprojectionforupdatedto: investmentprojectionforupdate = new investmentprojectionforupdate();
+
+    investmentprojectionforupdatedto.id = this.investProjectionStockFactory.id;
+    investmentprojectionforupdatedto.userId = this.investProjectionStockFactory.userId;
+    investmentprojectionforupdatedto.projectionName = this.investProjectionStockFactory.projectionName;
+    investmentprojectionforupdatedto.repeatInvestmentAmount = Number(this.investProjectionStockFactory.repeatInvestmentAmount);
+    investmentprojectionforupdatedto.repeatInvestmentFrequency = Number(this.investProjectionStockFactory.repeatInvestmentFrequency);
+    investmentprojectionforupdatedto.purchaseFrequency = Number(this.investProjectionStockFactory.purchaseFrequency);
+    investmentprojectionforupdatedto.yearRangeLow = Number(this.investProjectionStockFactory.yearRangeLow);
+    investmentprojectionforupdatedto.yearRangeHigh = Number(this.investProjectionStockFactory.yearRangeHigh);
+    investmentprojectionforupdatedto.securities = [];
+
+    let projStockCount = this.investProjectionStockFactory.investProjectionStocks.length;
+    for (var i = 0; i < projStockCount; i++) {
+      investmentprojectionforupdatedto.securities.push(this.investProjectionStockFactory.investProjectionStocks[i].securityRecord);
+    }
+
+
+    this.prefSecurityService.updateInvestmentProjection(investmentprojectionforupdatedto).subscribe(prefsecurities => {
+
+    });
+
+  }
+  newCalculation(): void {
+
+    this.investProjectionStockFactory = new InvestProjectionStockFactory();
+
+  }
+
+
+  deleteCalculations(): void {
+    let investmentProjectionId: number = this.investProjectionStockFactory.id;
+    if (investmentProjectionId > 0) {
+      this.prefSecurityService.deleteInvestmentProjection(investmentProjectionId).subscribe(security => {
+        this.investProjectionStockFactory = new InvestProjectionStockFactory();
+
+        let index = this.investProjectionStockFactoryList.findIndex(x => x.id === investmentProjectionId);
+        if (index > -1) {
+          this.investProjectionStockFactoryList.splice(index, 1);
+        }
+
+
+      });
+    } else {
+      this.investProjectionStockFactory = new InvestProjectionStockFactory();
+    }
+
+    
+  }
+
+  saveCalculations(): void {
+
+    if (this.investProjectionStockFactory.id > 0) {
+      this.updateInvestmentProjection();
+    } else {
+      this.newInvestmentProjection();
+    }
+   
+  }
+  addSecurity(securityId: number): void {
+    this.prefSecurityService.getSecurity(securityId)
+      .subscribe(security => {
+        this.setSecurityId(security);
+      });
+  }
+
   refreshCalculations(): void {
 
     if (this.investProjectionStockFactory.investProjectionStocks.length == 0) {
@@ -56,7 +230,7 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
     this.UpdateStockPrices();
     
-
+    
     
   }
 
@@ -69,7 +243,7 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
   }
   RetrieveStockData(securityId: number): void{
-    this.prefSecurityService.getDividends(this.securityRecord.id).subscribe(dividends => {
+    this.prefSecurityService.getDividends(securityId).subscribe(dividends => {
       //this.dividends = dividends;
       let index = this.investProjectionStockFactory.investProjectionStocks.findIndex(x => x.securityRecord.id === securityId);
       if (index > -1) {
@@ -83,7 +257,6 @@ export class SecurityInvestProjectionComponent implements OnInit {
   
   setSecurityId(security: Security) {
    // this.securityId = security.id;
-    this.securityRecord = security;
 
     let index = this.investProjectionStockFactory.investProjectionStocks.findIndex(x => x.securityRecord.id === security.id);
     if (index == -1) {
@@ -112,6 +285,7 @@ export class SecurityInvestProjectionComponent implements OnInit {
         if (index > -1) {
           this.investProjectionStockFactory.investProjectionStocks[index].historicalPrices = historicalPrices;
           this.investProjectionStockFactory.investProjectionStocks[index].historicalPrices.sort((a, b) => new Date(a.historicDate).getTime() - new Date(b.historicDate).getTime());
+          this.investProjectionStockFactory.investProjectionStocks[index].getTodayAverageGainsFromPastYears();
           this.UpdateStockPrices();
         }
        
@@ -129,231 +303,31 @@ export class SecurityInvestProjectionComponent implements OnInit {
   UpdateStockPrices(): void {
     let stockCount: number = this.investProjectionStockFactory.investProjectionStocks.length;
     for (var i = 0; i < stockCount; i++) {
-      this.GetPrices(this.investProjectionStockFactory.investProjectionStocks[i]);
-
-
-
-
-
-
-
+      this.investProjectionStockFactory.SetupInvestmentProjections(this.investProjectionStockFactory.investProjectionStocks[i]);
+      this.investProjectionStockFactory.GetPrices(i);
+      
+      //this.GetPrices(this.investProjectionStockFactory.investProjectionStocks[i]);
     }
 
    this.investProjectionStockFactory.priceFractionalCost();
 
-  }
+    for (var i = 0; i < stockCount; i++) {
 
-  GetPrices(investProjectionStock: InvestProjectionStock): void {
-  //var historicPriceCount = this.historicalPrices.length;
-    var historicPriceCount = investProjectionStock.historicalPrices.length;
+     this.investProjectionStockFactory.ResetShares(this.investProjectionStockFactory.investProjectionStocks[i]);
+
+      
+      this.investProjectionStockFactory.investProjectionStocks[i].priorCost = 0;
+      this.investProjectionStockFactory.UpdateFractionalPrices(i);
+      //this.GetPrices(this.investProjectionStockFactory.investProjectionStocks[i]);
+      this.investProjectionStockFactory.investProjectionStocks[i].setNextPurchasePrices();
+      this.investProjectionStockFactory.investProjectionStocks[i].setNextDate();
+      
+    }
+
     
 
-  investProjectionStock.investProjections = [];
-  let investProjectionNormal: InvestProjection = new InvestProjection();
-  investProjectionNormal.projectionTypeId = 0;
-  investProjectionNormal.projectionType = 'Normal Purchases';
-  investProjectionStock.investProjections.push(investProjectionNormal);
-
-  let investProjectionProgress: InvestProjection = new InvestProjection();
-  investProjectionProgress.projectionTypeId = 1;
-  investProjectionProgress.projectionType = 'Progressive Purchases';
-  investProjectionStock.investProjections.push(investProjectionProgress);
-
-  let investProjectionPercentage: InvestProjection = new InvestProjection();
-  investProjectionPercentage.projectionTypeId = 2;
-  investProjectionPercentage.projectionType = 'Progressive Percentage';
-  investProjectionStock.investProjections.push(investProjectionPercentage);
-
-  let investProjectionAgressive: InvestProjection = new InvestProjection();
-  investProjectionAgressive.projectionTypeId = 3;
-  investProjectionAgressive.projectionType = 'Aggressive Percentage';
-  investProjectionStock.investProjections.push(investProjectionAgressive);
-
-
-  /*
-  this.dividendProfit = 0;
-  this.dividendProfitPercent = 0;
-
-  this.numberOfShares = 0;
-  this.purchaseAmount = 0;
-
-  this.numberOfSharesPercent = 0;
-  this.purchaseAmountPercent = 0;
-  */
-
-  //let currentPurchaseAmount: number = 1;
-
-  //let currentPurchaseAmountPercent: number = 1;
-
-    investProjectionStock.priorCost = 0;
-
-
-
-  let purchaseFrequency: number = 5;
-  let purchaseCounter: number = 0;
-
-    let investProjectionCount: number = investProjectionStock.investProjections.length;
-
-  for (var i = 0; i < historicPriceCount; i++) {
-    let currentYear = new Date(investProjectionStock.historicalPrices[i].historicDate).getFullYear();
-
-    if (currentYear >= Number(this.yearLow) && currentYear <= Number(this.yearHigh)) {
-      if (purchaseCounter > purchaseFrequency) {
-        purchaseCounter = 0;
-      }
-      
-      if (purchaseCounter == 0) {
-
-
-
-        if (investProjectionStock.historicalPrices[i].open > investProjectionStock.priorCost) {
-          investProjectionStock.priorCost = investProjectionStock.historicalPrices[i].open;
-         // currentPurchaseAmount = 1;
-         // currentPurchaseAmountPercent = 1;
-          for (var i2 = 0; i2 < investProjectionCount; i2++) {
-            investProjectionStock.investProjections[i2].currentPurchaseShares = 1;
-          }
-        }
-        else {
-
-          for (var i2 = 0; i2 < investProjectionCount; i2++) {
-            investProjectionStock.investProjections[i2].calculateShares(investProjectionStock.priorCost, investProjectionStock.historicalPrices[i].open, currentYear);
-          }
-
-          /*
-          if (currentPurchaseAmount < 5) {
-            currentPurchaseAmount += 1;
-          }
-          let percentDrop: number = Math.floor((
-            (priorCost - this.historicalPrices[i].open) / priorCost * 100)
-            / 5
-          )
-          currentPurchaseAmountPercent = 1 + percentDrop;
-          */
-        }
-
-
-
-      //  this.numberOfShares += currentPurchaseAmount;
-       // this.purchaseAmount += this.historicalPrices[i].open * currentPurchaseAmount;
-
-
-        //this.numberOfSharesPercent += currentPurchaseAmountPercent;
-        //this.purchaseAmountPercent += this.historicalPrices[i].open * currentPurchaseAmountPercent;
-       
-
-      }
-
-
-     
-
-
-
-      purchaseCounter += 1;
-     
-    }
-
-    if (investProjectionStock.dividends.length > 0) {
-      let index = investProjectionStock.dividends.findIndex(x => x.payableDate === investProjectionStock.historicalPrices[i].historicDate);
-      if (index > -1) {
-        let dividend: Dividend = investProjectionStock.dividends[index];
-        for (var i2 = 0; i2 < investProjectionCount; i2++) {
-          investProjectionStock.investProjections[i2].AddDividends(dividend.amount, currentYear);
-        }
-      //  this.dividendProfit += (dividend.amount * this.numberOfShares);
-        //this.dividendProfitPercent += (dividend.amount * this.numberOfSharesPercent);
-      }
-    }
-
-
-
-    }
+    
 
   }
-
-
-  /*
-  GetPrices(): void {
-    var historicPriceCount = this.historicalPrices.length;
-
-    this.dividendProfit = 0;
-    this.dividendProfitPercent = 0;
-
-    this.numberOfShares = 0;
-    this.purchaseAmount = 0;
-
-    this.numberOfSharesPercent = 0;
-    this.purchaseAmountPercent = 0;
-
-
-    let currentPurchaseAmount: number = 1;
-
-    let currentPurchaseAmountPercent: number = 1;
-
-    let currentCost: number = 0;
-
-
-
-    let purchaseFrequency: number = 5;
-    let purchaseCounter: number = 0;
-    for (var i = 0; i < historicPriceCount; i++) {
-      let currentYear = new Date(this.historicalPrices[i].historicDate).getFullYear();
-
-      if (currentYear >= Number(this.yearLow) && currentYear <= Number(this.yearHigh)) {
-        if (purchaseCounter > purchaseFrequency) {
-          purchaseCounter = 0;
-        }
-        if (this.historicalPrices[i].open > currentCost) {
-          currentCost = this.historicalPrices[i].open;
-          currentPurchaseAmount = 1;
-          currentPurchaseAmountPercent = 1;
-        }
-        else {
-          if (currentPurchaseAmount < 5) {
-            currentPurchaseAmount += 1;
-          }
-          let percentDrop: number = Math.floor((
-            (currentCost - this.historicalPrices[i].open) / currentCost * 100)
-            / 5
-          )
-          currentPurchaseAmountPercent = 1 + percentDrop;
-
-        }
-        if (purchaseCounter == 0) {
-          this.numberOfShares += currentPurchaseAmount;
-          this.purchaseAmount += this.historicalPrices[i].open * currentPurchaseAmount;
-
-
-          this.numberOfSharesPercent += currentPurchaseAmountPercent;
-          this.purchaseAmountPercent += this.historicalPrices[i].open * currentPurchaseAmountPercent;
-          
-
-        }
-
-   
-        
-
-
-
-        purchaseCounter += 1;
-        
-      }
-
-      if (this.dividends.length > 0) {
-        let historicDate: string = this.historicalPrices[i].historicDate;
-        let index = this.dividends.findIndex(x => x.payableDate === this.historicalPrices[i].historicDate);
-        if (index > -1) {
-          let dividend: Dividend = this.dividends[index];
-          this.dividendProfit += (dividend.amount * this.numberOfShares);
-          this.dividendProfitPercent += (dividend.amount * this.numberOfSharesPercent);
-
-        }
-      }
-
-
-
-      }
-
-    }
-  */
+  
 }

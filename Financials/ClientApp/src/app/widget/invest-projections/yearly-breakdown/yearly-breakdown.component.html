@@ -1,0 +1,74 @@
+<div class="modal fade" [id]="'securityProjectModal' + investProjectionStock.securityRecord.symbol+ investProjection.projectionTypeId" tabindex="-1" role="dialog" aria-labelledby="securityProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="securityProjectModalLabel">{{ investProjection.projectionType }}<br /> {{ investProjectionStock.securityRecord.name}}<br /> Current Price {{investProjectionStock.securityRecord.currentPrice}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table" *ngIf="investProjection.purchaseYearlyAmount">
+
+          <thead>
+            <tr>
+              <th width="150px">Year</th>
+              <th width="150px">Shares</th>
+              <th width="150px">Avg Cost</th>
+              <th width="150px">Cost</th>
+              <th width="350px">Mkt Value</th>
+            </tr>
+          </thead>
+          <tr *ngFor="let purchaseAmountYear of investProjection.purchaseYearlyAmount">
+            <td width="150px">
+              {{ purchaseAmountYear.year }}
+              <!--( {{ purchaseAmountYear.percentageShares | number: '1.1-5' }}  )-->
+            </td>
+            <td width="150px">
+
+              <button type="button" class="btn btn-primary"
+                      [ngbPopover]="securityCostBasis">
+                i
+              </button>
+              {{ purchaseAmountYear.totalShares() | number: '1.0-0' }}
+
+              <ng-template style="width:800px" #securityCostBasis>
+
+                <div *ngFor="let sharePurchase of purchaseAmountYear.sharePurchaseHistory">
+
+                  {{ sharePurchase.purchaseDate| date:'shortDate'}}
+                  -
+                  {{ sharePurchase.shares | number:'1.1-2'}}
+                  -
+                  {{ sharePurchase.sharePurchaseLevel | number:'1.1-2'}}
+                </div>
+              </ng-template>
+
+
+
+            </td>
+
+            <td width="150px">${{ purchaseAmountYear.GetAverageCost() | number: '1.1-2' }}</td>
+            <td width="150px">${{ purchaseAmountYear.totalPurchase() | number: '1.0-0' }}</td>
+            <td width="350px">
+              <span title="{{ ((( investProjectionStock.securityRecord.currentPrice - purchaseAmountYear.GetAverageCost() ) / purchaseAmountYear.GetAverageCost()) * 100) | number:'1.0-0'}}%">
+                ${{ purchaseAmountYear.totalShares() * investProjectionStock.securityRecord.currentPrice | number: '1.0-0' }}
+
+              </span>
+              
+
+
+
+            </td>
+
+
+
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" #securityProjectModal class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

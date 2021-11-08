@@ -68,7 +68,7 @@ namespace Financials.Services
                     var clientPost = new RestClient(apiUrl);
                     // client.Authenticator = new HttpBasicAuthenticator(username, password);
                     var request = new RestRequest("signin");
-                    
+                   
                     request.AddHeader("header", "value");
                     var responseString = clientPost.Post(request);
                     var contentString = responseString.Content; // Raw content as string

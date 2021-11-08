@@ -12,21 +12,123 @@
         <div class="card-body" style=" overflow: hidden;">
 
 
-          Total Investment <input type="text" [(ngModel)]="investProjectionStockFactory.totalYearlyInvestment">
-          <br/>
-          Year Range<br />
-          <input type="text" [(ngModel)]="yearLow"> -  <input type="text" [(ngModel)]="yearHigh">
+
+          <div *ngIf="investProjectionStockFactoryList">
+            <u>Saved Projections</u>
+            <br />
+            <select name="selectedPurchaseType" id="info" #t (change)="onInvestProjectionChange(t.value)">
+              <option *ngFor="let option of investProjectionStockFactoryList" [value]="option.id">{{option.projectionName}}</option>
+            </select>
+          </div>
+
+          <br />
+          <br />
+
+
+
+          <p>
+            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+              Projection Settings
+            </button>
+          </p>
+          <div id="collapseExample" [ngbCollapse]="isCollapsed">
+            <div class="card">
+              <div class="card-body">
+                <button class="btn btn-primary" (click)="newCalculation()">New</button>
+
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInvestmentProjection">
+                  Delete
+                </button>
+
+                <table>
+                  <tr>
+                    <td colspan="2">
+                      Projection Name
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="investProjectionStockFactory.projectionName" />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="2">
+                      Frequency
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="investProjectionStockFactory.purchaseFrequency" />
+                    </td>
+                  </tr>
+
+
+                  <tr>
+                    <td colspan="2">
+                      Total Investment
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="investProjectionStockFactory.repeatInvestmentAmount">
+                      <span>{{(investProjectionStockFactory.repeatInvestmentAmount / 52) | number: '1.1-2' }} a week</span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="2">
+                      Year Range Start
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="investProjectionStockFactory.yearRangeLow">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="2">
+                      Year Range End
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="investProjectionStockFactory.yearRangeHigh">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      Stocks Selected
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#securitySearchModal">
+                        +
+                      </button>
+                    </td>
+                    <td>
+                      <div style="padding-left:20px;" *ngFor="let projectionStock of investProjectionStockFactory.investProjectionStocks"><span title="{{projectionStock.securityRecord.name}}">{{projectionStock.securityRecord.symbol}}</span></div>
+                      <!-- Button trigger modal -->
+
+
+                    </td>
+                  </tr>
+
+                </table>
+
+                <button class="btn btn-primary" (click)="saveCalculations()">Save</button>
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
           <button class="btn btn-primary" (click)="refreshCalculations()">Refresh Calculations</button>
           <br />
-
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#securitySearchModal">
-            Select a Stock
-          </button>
-
-
-
           <br />
+
+
+          <u>Projection Name</u> <br />
+          {{investProjectionStockFactory.projectionName}}
+          <br />
+
+
 
 
           <div *ngIf="investProjectionStockFactory.investProjectionStocks">
@@ -44,14 +146,18 @@
                       Current Price
                     </th>
                     <th>
+                      Est. Price on {{investProjectionStock.getNextYear() | date: 'MM/dd/yyyy'}}
+                    </th>
+                    <th>
                       Last High Price
+
                     </th>
                     <th>
                       <button type="button" class="close btn-close-white" (click)="removeStock(investProjectionStock.securityRecord.id)">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </th>
-</thead>
+                </thead>
                 <tr>
 
                   <td>
@@ -59,116 +165,24 @@
                   </td>
                   <td>
                     {{investProjectionStock.securityRecord.currentPrice}}
+
+                  </td>
+                  <td>
+                    <span title="{{investProjectionStock.averageRisePrice}}% a year increase">
+                      <!--//Matt jump back on this-->
+                      {{ investProjectionStock.getPotentialFutureValue() | number: '1.1-2'}} ({{investProjectionStock.getNextPurchasePrice()}})
+                    </span>
                   </td>
                   <td>
                     {{investProjectionStock.priorCost}}
                   </td>
-                  <td>
-                    </td>
+
+
                 </tr>
 
               </table>
 
-
-              <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="investProjectionStock.investProjections">
-                <thead>
-                  <tr>
-                    <th width="300px">Projection Type</th>
-                    <th width="150px"># Shares</th>
-                    <th width="150px">Purchase Amount</th>
-                    <th width="150px">Average Cost</th>
-
-                    <th width="150px">Current Value</th>
-                    <th width="150px">Dividend Profit</th>
-                    <th width="150px">Share Level</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let investProjection of investProjectionStock.investProjections">
-                    <td width="300px">{{ investProjection.projectionType }}</td>
-                    <td width="150px">{{ investProjection.GetTotalShares()| number: '1.1-2'}}</td>
-                    <!--numberOfShares-->
-                    <td width="150px">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#securityProjectModal' + investProjectionStock.securityRecord.symbol + investProjection.projectionTypeId">
-                        i
-                      </button>
-                      {{ investProjection.GetTotalPurchaseAmount() | number: '1.1-2'}}
-
-
-
-                      <!--Modal Purcahase Amount Details-->
-                      <div class="modal fade" [id]="'securityProjectModal' + investProjectionStock.securityRecord.symbol+ investProjection.projectionTypeId" tabindex="-1" role="dialog" aria-labelledby="securityProjectModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="securityProjectModalLabel">{{ investProjection.projectionType }}<br /> {{ investProjectionStock.securityRecord.name}}<br /> Current Price {{investProjectionStock.securityRecord.currentPrice}}</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <table class="table">
-
-                                <thead>
-                                  <tr>
-                                    <th width="150px">Year</th>
-                                    <th width="150px">Shares</th>
-                                    <th width="150px">Total Purchased</th>
-                                    <th width="150px">Avg Cost</th>
-                                    <th width="350px">Current Value</th>
-                                  </tr>
-                                </thead>
-                                <tr *ngFor="let purchaseAmountYear of investProjection.purchaseAmountYear">
-                                  <td width="150px">{{ purchaseAmountYear.year }}</td>
-                                  <td width="150px">{{ purchaseAmountYear.shares | number: '1.1-2' }}</td>
-                                  <td width="150px">{{ purchaseAmountYear.purchaseAmount | number: '1.1-2' }}</td>
-                                  <td width="150px">{{ purchaseAmountYear.GetAverageCost() | number: '1.1-2' }}</td>
-                                  <td width="350px">
-                                    ${{ purchaseAmountYear.shares * investProjectionStock.securityRecord.currentPrice | number: '1.0-0' }}
-                                    (
-                                    {{ ((( investProjectionStock.securityRecord.currentPrice - purchaseAmountYear.GetAverageCost() ) / purchaseAmountYear.GetAverageCost()) * 100) | number:'1.0-0'}}%
-                                    )
-
-
-                                  </td>
-
-
-
-                                </tr>
-                              </table>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" #securityProjectModal class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-
-                    </td>
-                    <td width="150px">{{ investProjection.GetAverageCost() | number: '1.1-2'}}</td>
-
-
-                    <td width="150px">
-                      {{ investProjection.GetTotalShares() * investProjectionStock.securityRecord.currentPrice | number: '1.1-2' }}
-                      (
-                      {{ ((( investProjectionStock.securityRecord.currentPrice - investProjection.GetAverageCost() ) / investProjection.GetAverageCost()) * 100) | number:'1.1-2'}}
-                      )
-                    </td>
-                    <td width="150px">{{ investProjection.GetTotalDividendProfit() | number:'1.1-2'}}</td>
-                    <td width="150px">
-                      {{ investProjection.currentPurchaseShares | number:'1.1-2'}}
-                      (
-                      {{ investProjection.maxNumberSharePurchase | number:'1.1-2'}}
-                      )
-
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
+              <app-security-projection [investProjectionStock]="investProjectionStock"></app-security-projection>
 
 
 
@@ -229,6 +243,33 @@
 
 
 
+          <!-- Select a Security Modal -->
+          <div class="modal fade" id="deleteInvestmentProjection" tabindex="-1" role="dialog" aria-labelledby="deleteInvestmentProjectionLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteInvestmentProjectionLabel">Confirm</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete
+
+                  <button data-dismiss="modal" class="btn btn-success" (click)="deleteCalculations()">Yes</button>
+                  <button  data-dismiss="modal" class="btn btn-danger">No</button>
+                  <br />
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" #deleteInvestmentProjectionClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
 
 
         </div>
@@ -242,6 +283,8 @@
 
   </div><!--/.row-->
 </div>
+
+
 
 
 

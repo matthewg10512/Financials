@@ -16,6 +16,12 @@ import { EarningSecurity } from '../interfaces/earningsecurity';
 import { EarningSecurityPercentage } from '../interfaces/earningsecuritypercentage';
 import { AutoSecurityTradeSecurity } from '../interfaces/autosecuritytradesecurity';
 import { autosecuritytradesresourceparameters } from '../interfaces/autosecuritytradesresourceparameters';
+import { InvestProjection } from '../classes/InvestmentProjection/investprojection';
+import { investmentprojectionsresourceparameters } from '../interfaces/resourceparameters/investmentprojectionsresourceparameters';
+import { InvestProjectionStockFactory } from '../classes/InvestmentProjection/investprojectionstockfactory';
+import { investmentprojectionforupdate } from '../interfaces/investmentprojectionforupdate';
+import { investmentprojectionforadd } from '../interfaces/investmentprojectionforadd';
+
 //import { MessageService } from './message.service';
 
 
@@ -319,6 +325,42 @@ export class SecurityService {
 
 
   }
+  //Observable<any>
+  updateInvestmentProjection(investmentProjection: investmentprojectionforupdate): Observable<any> {
+
+    /*
+    const params = new HttpParams().set('investmentProjectionId', investmentProjection.id + '');
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    const body = {
+      id: investmentProjection.id,
+      userId: investmentProjection.userId,
+      projectionName: investmentProjection.projectionName,
+      repeatInvestmentAmount: investmentProjection.repeatInvestmentAmount,
+      repeatInvestmentFrequency: investmentProjection.repeatInvestmentFrequency,
+      purchaseFrequency: investmentProjection.purchaseFrequency,
+      yearRangeLow: investmentProjection.yearRangeLow,
+      yearRangeHigh: investmentProjection.yearRangeHigh,
+      securities: investmentProjection.securities 
+    };
+    //return
+    console.log('matt was here');
+    */
+    const params = null;//new HttpParams().set('investmentProjectionId', investmentProjection.id + '');
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    const body = {};
+
+
+
+    
+
+
+  return  this.http.put(this.baseUrl + 'investmentprojection/' + investmentProjection.id, investmentProjection, { headers, params })
+      .pipe(
+      tap(_ => this.log(`updated investmentProjection id=${investmentProjection.id}`)),
+      catchError(this.handleError<any>('updateInvestmentProjection'))
+    );
+    
+  }
 
 /** PUT: update the hero on the server */
   updateSecurity(security: Security): Observable<any> {
@@ -393,7 +435,76 @@ export class SecurityService {
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
    // this.messageService.add(`HeroService: ${message}`);
+    console.log('matt was here');
   }
+
+
+
+
+
+
+  /** GET heroes from the server */
+  getInvestmentProjectionsSecurities(investmentProjectionSearch: investmentprojectionsresourceparameters): Observable<InvestProjectionStockFactory[]> {
+    let searchQuery: string = '';
+
+    //searchQuery = this.SetSearchSecurityQuery(securitySearch);
+
+    
+    if (investmentProjectionSearch.userId) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "userId=" + investmentProjectionSearch.userId;
+    }
+
+
+    return this.http.get<InvestProjectionStockFactory[]>(this.baseUrl + 'investmentprojection' + searchQuery)
+      //  .pipe(
+      //  tap(_ => this.log('fetched heroes')),
+      // catchError(this.handleError<Security[]>('getHeroes', []))
+      //  )
+      ;
+  }
+
+
+
+  deleteInvestmentProjection(investmentProjectionId: number): Observable<any>{
+
+    const params = new HttpParams().set('investmentProjectionId', investmentProjectionId + '');
+    const body = { investmentProjectionId: investmentProjectionId };
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+
+    return this.http.delete(this.baseUrl + 'investmentprojection/' + investmentProjectionId, { headers,  params })
+      .pipe(
+        tap(_ => this.log(`added new investmentProjection`)),
+        catchError(this.handleError<any>('addInvestmentProjection'))
+      );
+
+
+  }
+
+  addInvestmentProjection(newInvestmentProjection: investmentprojectionforadd): Observable<any> {
+
+   
+    const params = null;//new HttpParams().set('investmentProjectionId', investmentProjection.id + '');
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    const body = {};
+
+
+
+
+
+
+    return this.http.post(this.baseUrl + 'investmentprojection', newInvestmentProjection, { headers, params })
+      .pipe(
+        tap(_ => this.log(`added new investmentProjection`)),
+        catchError(this.handleError<any>('addInvestmentProjection'))
+      );
+
+  }
+
+
+
+
+
 
 
 

@@ -33,6 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\classes\InvestmentProjection\investprojectionstock.ts" />
+    <None Remove="ClientApp\src\app\classes\InvestmentProjection\investprojectionstockfactory.ts" />
+    <None Remove="ClientApp\src\app\classes\InvestmentProjection\purchaseyearly.ts" />
+    <None Remove="ClientApp\src\app\classes\InvestmentProjection\sharepurchasehistory.ts" />
     <None Remove="ClientApp\src\app\interfaces\autosecuritytradegroup.ts" />
     <None Remove="ClientApp\src\app\interfaces\autosecuritytradesecurity.ts" />
     <None Remove="ClientApp\src\app\interfaces\autosecuritytradesresourceparameters.ts" />
@@ -43,7 +47,10 @@
     <None Remove="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
     <None Remove="ClientApp\src\app\interfaces\historicalprice.ts" />
+    <None Remove="ClientApp\src\app\interfaces\investmentprojectionforadd.ts" />
+    <None Remove="ClientApp\src\app\interfaces\investmentprojectionforupdate.ts" />
     <None Remove="ClientApp\src\app\interfaces\investprojection.ts" />
+    <None Remove="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\security.ts" />
     <None Remove="ClientApp\src\app\interfaces\securitydate.ts" />
     <None Remove="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
@@ -59,6 +66,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\investprojectionstock.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\investprojectionstockfactory.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\purchaseyearly.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\sharepurchasehistory.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradegroup.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradesecurity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradesresourceparameters.ts" />
@@ -69,7 +80,10 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\historicalprice.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\interfaces\investprojection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\investprojection.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\investmentprojectionforadd.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\investmentprojectionforupdate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securitydate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
@@ -82,6 +96,10 @@
     <TypeScriptCompile Include="ClientApp\src\app\widget\searchSecurity\search-security.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\widget\topMovers\top-movers.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\widget\updateSecurity\update-security.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\widget\invest-projections\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -34,6 +34,8 @@ import { LoadingDataComponent } from './shared/loading-data/loading-data.compone
 import { PercentageChangersComponent } from './widget/percentage-changers/percentage-changers.component';
 import { AutoSecurityTradeComponent } from './auto-security-trade/auto-security-trade.component';
 import { SecurityInvestProjectionComponent } from './security-invest-projection/security-invest-projection.component';
+import { SecurityProjectionComponent } from './widget/invest-projections/security-projection/security-projection.component';
+import { YearlyBreakdownComponent } from './widget/invest-projections/yearly-breakdown/yearly-breakdown.component';
 
 
 //'./widget/historicdDate/update-historical-date.component';
@@ -61,6 +63,8 @@ import { SecurityInvestProjectionComponent } from './security-invest-projection/
     PercentageChangersComponent,
     AutoSecurityTradeComponent,
     SecurityInvestProjectionComponent,
+    SecurityProjectionComponent,
+    YearlyBreakdownComponent,
     
     
   ],
