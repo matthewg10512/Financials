@@ -27,113 +27,221 @@
       <br />
       <br />
       <br />
-      <div style="overflow-x:auto;width:100%;overflow-y:auto;height:400px;">
-        <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="securities">
-          <thead>
-            <tr>
-              <!--  <th></th>-->
-              <th style="width:400px;">
-                Name
-                <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-              </th>
-              <th style="width:125px;">Current Price</th>
-              <th style="width:110px;">% Change <i (click)="sortByPercentage()" [ngClass]="!sortPercentageDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i></th>
-              <th style="width:100px;">Preferred</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let security of securities; index as j">
-              <!--<td>
+      <div *ngIf="actionItem == 'populatesecurityid'">
+
+
+
+
+        <div style="overflow-x:auto;width:100%;overflow-y:auto;height:400px;">
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="securities">
+            <thead>
+              <tr>
+                <!--  <th></th>-->
+                <th style="width:400px;">
+                  Name
+                  <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+                </th>
+                <th style="width:100px;">Preferred</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let security of securities; index as j">
+                <!--<td>
             <button mat-button (click)="viewProfile(security.stockId)">Update</button>
           </td>-->
-              <td style="width: 400px;overflow: hidden;text-align: left;">
-                <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
-                        [ngbPopover]="topStockContent" popoverTitle="{{ security.name
+                <td style="width: 400px;overflow: hidden;text-align: left;">
+                  <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+                          [ngbPopover]="topStockContent" popoverTitle="{{ security.name
       }}">
-      <i class="cil-info"></i>
-      </button>
+                    <i class="cil-info"></i>
+                  </button>
 
-      <span class="d-inline-block text-truncate" style="max-width: 250px;">
-        <!--<a routerLink="/detail/{{security.id}}">-->
+                  <span class="d-inline-block text-truncate" style="max-width: 250px;">
+                    <!--<a routerLink="/detail/{{security.id}}">-->
+                   
 
-        <a (click)="navigatePage(security)">
-          {{ security.name }}
-        </a>
-        <ng-template style="width:800px" #topStockContent>
-          <table class="table">
-            <tr>
-              <th>
-                Symbol:
-              </th>
-              <td>
-                {{ security.symbol }}
-              </td>
-            </tr>
-            <tr>
-              <th>
-                Last Modified:
-              </th>
-              <td>
-                {{ security.lastModified | date:'short' }}
-              </td>
-            </tr>
+                    <a (click)="navigatePage(security)">
+                      {{ security.name }}
+                    </a>
+                    <ng-template style="width:800px" #topStockContent>
+                      <table class="table">
+                        <tr>
+                          <th>
+                            Symbol:
+                          </th>
+                          <td>
+                            {{ security.symbol }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            Last Modified:
+                          </th>
+                          <td>
+                            {{ security.lastModified | date:'short' }}
+                          </td>
+                        </tr>
 
-            <tr>
-              <th>
-                Day Low:
-              </th>
-              <td>
-                {{ security.dayLow }}
-              </td>
-            </tr>
-            <tr>
-              <th>
-                Day High:
-              </th>
-              <td>
-                {{ security.dayHigh }}
-              </td>
-            </tr>
+                        <tr>
+                          <th>
+                            Day Low:
+                          </th>
+                          <td>
+                            {{ security.dayLow }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            Day High:
+                          </th>
+                          <td>
+                            {{ security.dayHigh }}
+                          </td>
+                        </tr>
 
+                      </table>
+
+                    </ng-template>
+
+                  </span>
+                  
+                
+
+
+                </td>
+                <td style="width:100px;">
+                  <input type="checkbox" [(ngModel)]="security.preferred" (click)="updatePreferred(security, j);buttons[j]=true;" [disabled]="buttons[j]">
+
+                </td>
+              </tr>
+            </tbody>
           </table>
-
-        </ng-template>
-
-      </span>
-      <span *ngIf="security.earning" class="badge badge-pill badge-primary float-right"
-            [ngbPopover]="earningPopover" popoverTitle="Upcoming Earning">E</span>
-
-      <ng-template style="width:800px" #earningPopover>
-        <span>  {{ security.earning | date:'longDate' }}</span>
-      </ng-template>
+        </div>
 
 
-      <span *ngIf="security.dividend" class="badge badge-pill badge-primary float-right"
-            [ngbPopover]="dividendPopover" popoverTitle="Upcoming Dividend">D</span>
-      <ng-template style="width:800px" #dividendPopover>
-        <span>
-          {{ security.dividend | date:'longDate' }}   ({{security.dividendamount}})
-        </span>
-      </ng-template>
-      </td>
-      <td style="width:125px;">
-        {{
- security.currentPrice
-        }}
-      </td>
-      <td style="width:110px;">{{security.percentageChange}}</td>
-      <td style="width:100px;">
 
 
-        <input type="checkbox" [(ngModel)]="security.preferred" (click)="updatePreferred(security, j);buttons[j]=true;" [disabled]="buttons[j]">
 
 
-      </td>
-      </tr>
-      </tbody>
-      </table>
-</div>
+
+
       </div>
+
+      <div *ngIf="actionItem != 'populatesecurityid'">
+        <div style="overflow-x:auto;width:100%;overflow-y:auto;height:400px;">
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="securities">
+            <thead>
+              <tr>
+                <!--  <th></th>-->
+                <th style="width:400px;">
+                  Name
+                  <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+                </th>
+                <th style="width:125px;">Current Price</th>
+                <th style="width:110px;">% Change <i (click)="sortByPercentage()" [ngClass]="!sortPercentageDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i></th>
+                <th style="width:100px;">Preferred</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let security of securities; index as j">
+                <!--<td>
+            <button mat-button (click)="viewProfile(security.stockId)">Update</button>
+          </td>-->
+                <td style="width: 400px;overflow: hidden;text-align: left;">
+                  <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+                          [ngbPopover]="topStockContent" popoverTitle="{{ security.name
+      }}">
+                    <i class="cil-info"></i>
+                  </button>
+
+                  <span class="d-inline-block text-truncate" style="max-width: 250px;">
+                    <!--<a routerLink="/detail/{{security.id}}">-->
+                    cl
+
+                    a
+
+                    <a (click)="navigatePage(security)">
+                      {{ security.name }}
+                    </a>
+                    <ng-template style="width:800px" #topStockContent>
+                      <table class="table">
+                        <tr>
+                          <th>
+                            Symbol:
+                          </th>
+                          <td>
+                            {{ security.symbol }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            Last Modified:
+                          </th>
+                          <td>
+                            {{ security.lastModified | date:'short' }}
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <th>
+                            Day Low:
+                          </th>
+                          <td>
+                            {{ security.dayLow }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            Day High:
+                          </th>
+                          <td>
+                            {{ security.dayHigh }}
+                          </td>
+                        </tr>
+
+                      </table>
+
+                    </ng-template>
+
+                  </span>
+                  <span *ngIf="security.earning" class="badge badge-pill badge-primary float-right"
+                        [ngbPopover]="earningPopover" popoverTitle="Upcoming Earning">E</span>
+
+                  <ng-template style="width:800px" #earningPopover>
+                    <span>  {{ security.earning | date:'longDate' }}</span>
+                  </ng-template>
+
+
+                  <span *ngIf="security.dividend" class="badge badge-pill badge-primary float-right"
+                        [ngbPopover]="dividendPopover" popoverTitle="Upcoming Dividend">D</span>
+                  <ng-template style="width:800px" #dividendPopover>
+                    <span>
+                      {{ security.dividend | date:'longDate' }}   ({{security.dividendamount}})
+                    </span>
+                  </ng-template>
+                </td>
+                <td style="width:125px;">
+                  {{
+ security.currentPrice
+                  }}
+                </td>
+                <td style="width:110px;">{{security.percentageChange}}</td>
+                <td style="width:100px;">
+
+
+                  <input type="checkbox" [(ngModel)]="security.preferred" (click)="updatePreferred(security, j);buttons[j]=true;" [disabled]="buttons[j]">
+
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+    </div>
       <!--<div class="card-footer">
     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
     <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>

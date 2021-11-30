@@ -11,7 +11,7 @@
         </div>
         <div class="card-body" style=" overflow: hidden;">
 
-
+          <button (click)="peakRangeInfo()">Click Here</button>
 
           <div *ngIf="investProjectionStockFactoryList">
             <u>Saved Projections</u>
@@ -56,7 +56,7 @@
                       Frequency
                     </td>
                     <td>
-                      <input type="text" [(ngModel)]="investProjectionStockFactory.purchaseFrequency" />
+                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.purchaseFrequency" />
                     </td>
                   </tr>
 
@@ -66,7 +66,7 @@
                       Total Investment
                     </td>
                     <td>
-                      <input type="text" [(ngModel)]="investProjectionStockFactory.repeatInvestmentAmount">
+                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.repeatInvestmentAmount">
                       <span>{{(investProjectionStockFactory.repeatInvestmentAmount / 52) | number: '1.1-2' }} a week</span>
                     </td>
                   </tr>
@@ -76,7 +76,7 @@
                       Year Range Start
                     </td>
                     <td>
-                      <input type="text" [(ngModel)]="investProjectionStockFactory.yearRangeLow">
+                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.yearRangeLow">
                     </td>
                   </tr>
 
@@ -85,26 +85,10 @@
                       Year Range End
                     </td>
                     <td>
-                      <input type="text" [(ngModel)]="investProjectionStockFactory.yearRangeHigh">
+                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.yearRangeHigh">
                     </td>
                   </tr>
 
-                  <tr>
-                    <td>
-                      Stocks Selected
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#securitySearchModal">
-                        +
-                      </button>
-                    </td>
-                    <td>
-                      <div style="padding-left:20px;" *ngFor="let projectionStock of investProjectionStockFactory.investProjectionStocks"><span title="{{projectionStock.securityRecord.name}}">{{projectionStock.securityRecord.symbol}}</span></div>
-                      <!-- Button trigger modal -->
-
-
-                    </td>
-                  </tr>
 
                 </table>
 
@@ -117,16 +101,23 @@
           </div>
 
 
+          <div style="text-align: center;">
+
+            <u>Projection Name</u> <br />
+            {{investProjectionStockFactory.projectionName}}
+            <br />
 
 
-          <button class="btn btn-primary" (click)="refreshCalculations()">Refresh Calculations</button>
+            Stocks Selected <span style="cursor: pointer;"><i class="cil-plus" data-toggle="modal" data-target="#securitySearchModal"></i></span>
+
+            <span style="padding-left:10px;" *ngFor="let projectionStock of investProjectionStockFactory.investProjectionStocks"><span title="{{projectionStock.securityRecord.name}}">{{projectionStock.securityRecord.symbol}} </span></span>
+
+          </div>
+
           <br />
           <br />
 
 
-          <u>Projection Name</u> <br />
-          {{investProjectionStockFactory.projectionName}}
-          <br />
 
 
 
@@ -136,11 +127,69 @@
             <div *ngFor="let investProjectionStock of investProjectionStockFactory.investProjectionStocks">
               <br />
 
+
+
+
+              <div class="modal fade" id="securityPeakModal{{investProjectionStock.securityRecord.symbol}}" *ngIf="investProjectionStock.currentPeakRange" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Select A Stock</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+                      <b>Current Range</b>: {{investProjectionStock.currentPeakRange.rangeName}}<br />
+                      <b>Current Range Days</b>: {{investProjectionStock.currentPeakRange.rangeLength | number : '1.0-0'}}<br />
+                      <b>Current Percent from Peak</b>:    {{investProjectionStock.currentPeakRange.peakRangeCurrentPercentage | number : '1.1-1'}}%
+
+                      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="investProjectionStock.peakRanges">
+                        <thead>
+                          <tr>
+                            <th style="width:150px">Range</th>
+                            <th style="width:100px"># of Instances</th>
+                            <th style="width:100px">Average Range</th>
+                            <th style="width:100px">Max Range</th>
+                            <th style="width:100px">Max Start Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let pRange of investProjectionStock.peakRanges">
+                            <td style="width:150px" [ngClass]="{'class_name': pRange?.rangeName == investProjectionStock.currentPeakRange.rangeName  }">
+                              {{ pRange?.rangeName }}
+                            </td>
+                            <td style="width:100px">{{ pRange?.rangeCount | number : '1.1-1'}}</td>
+                            <td style="width:100px">{{ pRange?.rangeLength / pRange?.rangeCount | number : '1.1-1'}}</td>
+                            <td style="width:100px">{{ pRange?.maxRangeLength | number : '1.1-1'}}</td>
+                            <td style="width:100px">{{ pRange?.maxRangeDateStart | date: 'MM/dd/yyyy'}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
               <table class="table">
                 <thead class="thead-dark">
                   <tr>
                     <th>
-                      Name
+                      Name Peak Range
+                      <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#securityPeakModal' + investProjectionStock.securityRecord.symbol">
+                        i
+                      </button>
                     </th>
                     <th>
                       Current Price
@@ -257,7 +306,7 @@
                   Are you sure you want to delete
 
                   <button data-dismiss="modal" class="btn btn-success" (click)="deleteCalculations()">Yes</button>
-                  <button  data-dismiss="modal" class="btn btn-danger">No</button>
+                  <button data-dismiss="modal" class="btn btn-danger">No</button>
                   <br />
 
                 </div>

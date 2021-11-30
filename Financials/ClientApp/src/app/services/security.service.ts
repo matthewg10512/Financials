@@ -21,6 +21,8 @@ import { investmentprojectionsresourceparameters } from '../interfaces/resourcep
 import { InvestProjectionStockFactory } from '../classes/InvestmentProjection/investprojectionstockfactory';
 import { investmentprojectionforupdate } from '../interfaces/investmentprojectionforupdate';
 import { investmentprojectionforadd } from '../interfaces/investmentprojectionforadd';
+import { CurrentPeakRange } from '../interfaces/currentpeakranges';
+import { PeakRangeDetail } from '../interfaces/peakrangedetail';
 
 //import { MessageService } from './message.service';
 
@@ -504,8 +506,15 @@ export class SecurityService {
 
 
 
+  GetPeakRangeDetails(val: number): Observable<PeakRangeDetail[]> {
+    return this.http.get<PeakRangeDetail[]>(this.baseUrl + 'security/' + val + '/peakrangedetails');
+  }
 
+  GetCurrentPeakRanges(val: number): Observable<CurrentPeakRange[]> {
 
+    
+    return this.http.get<CurrentPeakRange[]>(this.baseUrl + 'security/' + val + '/currentPeakRanges');
+  }
 
 
 

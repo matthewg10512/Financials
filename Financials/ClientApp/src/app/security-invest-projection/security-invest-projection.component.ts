@@ -153,6 +153,12 @@ export class SecurityInvestProjectionComponent implements OnInit {
     }); 
   }
 
+  peakRangeInfo(): void{
+    this.prefSecurityService.GetPeakRangeDetails(251).subscribe(prefsecurities => {
+
+    }); 
+  }
+
   updateInvestmentProjection(): void {
     let investmentprojectionforupdatedto: investmentprojectionforupdate = new investmentprojectionforupdate();
 
@@ -286,6 +292,17 @@ export class SecurityInvestProjectionComponent implements OnInit {
           this.investProjectionStockFactory.investProjectionStocks[index].historicalPrices = historicalPrices;
           this.investProjectionStockFactory.investProjectionStocks[index].historicalPrices.sort((a, b) => new Date(a.historicDate).getTime() - new Date(b.historicDate).getTime());
           this.investProjectionStockFactory.investProjectionStocks[index].getTodayAverageGainsFromPastYears();
+
+          this.prefSecurityService.GetPeakRangeDetails(this.investProjectionStockFactory.investProjectionStocks[index].securityRecord.id).subscribe(peakRangeDetails => {
+            this.investProjectionStockFactory.investProjectionStocks[index].peakRanges = peakRangeDetails;
+          });
+
+          this.prefSecurityService.GetCurrentPeakRanges(this.investProjectionStockFactory.investProjectionStocks[index].securityRecord.id).subscribe(currentPeakRanges => {
+            if (currentPeakRanges.length > 0) {
+              this.investProjectionStockFactory.investProjectionStocks[index].currentPeakRange = currentPeakRanges[0];
+            }
+          });
+
           this.UpdateStockPrices();
         }
        
@@ -305,7 +322,8 @@ export class SecurityInvestProjectionComponent implements OnInit {
     for (var i = 0; i < stockCount; i++) {
       this.investProjectionStockFactory.SetupInvestmentProjections(this.investProjectionStockFactory.investProjectionStocks[i]);
       this.investProjectionStockFactory.GetPrices(i);
-      
+
+    
       //this.GetPrices(this.investProjectionStockFactory.investProjectionStocks[i]);
     }
 
@@ -320,7 +338,18 @@ export class SecurityInvestProjectionComponent implements OnInit {
       this.investProjectionStockFactory.UpdateFractionalPrices(i);
       //this.GetPrices(this.investProjectionStockFactory.investProjectionStocks[i]);
       this.investProjectionStockFactory.investProjectionStocks[i].setNextPurchasePrices();
-      this.investProjectionStockFactory.investProjectionStocks[i].setNextDate();
+      this.investProjectionStockFactory.investProjectionStocks[i].setNextDate(this.investProjectionStockFactory.purchaseFrequency);
+
+    
+
+      
+      
+      
+      
+
+
+      //this.investProjectionStockFactory.investProjectionStocks[i].calculatePeaks( this.prefSecurityService);
+      
       
     }
 

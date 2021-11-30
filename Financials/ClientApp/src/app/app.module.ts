@@ -36,6 +36,7 @@ import { AutoSecurityTradeComponent } from './auto-security-trade/auto-security-
 import { SecurityInvestProjectionComponent } from './security-invest-projection/security-invest-projection.component';
 import { SecurityProjectionComponent } from './widget/invest-projections/security-projection/security-projection.component';
 import { YearlyBreakdownComponent } from './widget/invest-projections/yearly-breakdown/yearly-breakdown.component';
+import { PurchaseDetailComponent } from './widget/invest-projections/purchase-detail/purchase-detail.component';
 
 
 //'./widget/historicdDate/update-historical-date.component';
@@ -65,6 +66,7 @@ import { YearlyBreakdownComponent } from './widget/invest-projections/yearly-bre
     SecurityInvestProjectionComponent,
     SecurityProjectionComponent,
     YearlyBreakdownComponent,
+    PurchaseDetailComponent,
     
     
   ],

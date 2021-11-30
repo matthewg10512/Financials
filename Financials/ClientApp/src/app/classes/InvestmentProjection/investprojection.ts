@@ -88,13 +88,13 @@ export class InvestProjection {
   }
 
 
-  calculateNextDate(): void {
+  calculateNextDate(purchaseFrequency): void {
 
     if (this.lastPurchaseDate) {
 
       var getFutureDate = new Date(this.lastPurchaseDate);
       var purchaseCounter = 0;
-      while (purchaseCounter < 20) {
+      while (purchaseCounter < purchaseFrequency) {
         getFutureDate.setDate(getFutureDate.getDate() + 1);
         if (getFutureDate.getDay() != 0 && getFutureDate.getDay() != 6) {
           if (!(this.getHoliday(getFutureDate.getDate(), getFutureDate.getMonth() + 1, getFutureDate.getFullYear()))){

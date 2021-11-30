@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Financials.Models;
 using Financials.ResourceParameters;
 using Financials.Services;
 using Financials.Services.Authentication;

@@ -17,7 +17,7 @@ namespace Financials.Controllers
 
     [ApiController]
     [Route("/security/{securityid}/[controller]")]
-    public class EarningController :ControllerBase
+    public class EarningController : ControllerBase
     {
 
         readonly IConfiguration _configuration;

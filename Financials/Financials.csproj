@@ -40,6 +40,7 @@
     <None Remove="ClientApp\src\app\interfaces\autosecuritytradegroup.ts" />
     <None Remove="ClientApp\src\app\interfaces\autosecuritytradesecurity.ts" />
     <None Remove="ClientApp\src\app\interfaces\autosecuritytradesresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\currentpeakranges.ts" />
     <None Remove="ClientApp\src\app\interfaces\dividend.ts" />
     <None Remove="ClientApp\src\app\interfaces\dividendresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\dividendsecurity.ts" />
@@ -50,6 +51,7 @@
     <None Remove="ClientApp\src\app\interfaces\investmentprojectionforadd.ts" />
     <None Remove="ClientApp\src\app\interfaces\investmentprojectionforupdate.ts" />
     <None Remove="ClientApp\src\app\interfaces\investprojection.ts" />
+    <None Remove="ClientApp\src\app\interfaces\peakrangedetail.ts" />
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\security.ts" />
     <None Remove="ClientApp\src\app\interfaces\securitydate.ts" />
@@ -73,6 +75,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradegroup.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradesecurity.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\autosecuritytradesresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\currentpeakranges.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividend.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendsecurity.ts" />
@@ -83,6 +86,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\investprojection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\investmentprojectionforadd.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\investmentprojectionforupdate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\peakrangedetail.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securitydate.ts" />
