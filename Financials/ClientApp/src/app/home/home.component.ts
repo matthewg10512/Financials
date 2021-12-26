@@ -43,6 +43,8 @@ export class HomeComponent {
   //  this.getSecurities();
   }
 
+
+  
   getSecurities(): void {
     let securitySearch: SecurityResourceParameters = new SecurityResourceParameters();
     securitySearch.preferred = true;

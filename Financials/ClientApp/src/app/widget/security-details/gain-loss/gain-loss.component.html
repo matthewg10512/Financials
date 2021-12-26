@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-header">
+    <strong>Yearly Gain/Loss</strong>
+  </div>
+  <div class="card-body" style=" overflow: hidden;">
+
+
+    <div style="height:350px;overflow-y:auto">
+      <div *ngIf="!yearGainLoss">
+        <shared-loading-data></shared-loading-data>
+      </div>
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="yearGainLoss">
+        <thead>
+          <tr>
+            <th style="width:100px">Year</th>
+            <th style="width:100px">Gain Loss</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let yeargain of yearGainLoss">
+            <td style="width:100px">{{ yeargain.year }}</td>
+            <td style="width:100px">{{ yeargain.gainLoss | number : '1.1-1'}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+
+  </div>
+</div>

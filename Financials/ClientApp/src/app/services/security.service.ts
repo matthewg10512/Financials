@@ -23,6 +23,7 @@ import { investmentprojectionforupdate } from '../interfaces/investmentprojectio
 import { investmentprojectionforadd } from '../interfaces/investmentprojectionforadd';
 import { CurrentPeakRange } from '../interfaces/currentpeakranges';
 import { PeakRangeDetail } from '../interfaces/peakrangedetail';
+import { SecurityPurchaseCheck } from '../interfaces/SecurityPurchaseCheck';
 
 //import { MessageService } from './message.service';
 
@@ -143,6 +144,11 @@ export class SecurityService {
      return this.http.put<any>(this.baseUrl + 'security/futureearnings', body, { headers, params });
   }
 
+
+  GetSecurityPurchaseCheck(securityId: number): Observable<any>{
+
+    return this.http.get<SecurityPurchaseCheck[]>(this.baseUrl + 'security/' +securityId + '/securitypurchasecheck');
+  }
   updateDividends(securityId: number): Observable<any> {
 
     const params = null;

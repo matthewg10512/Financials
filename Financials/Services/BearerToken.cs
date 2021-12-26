@@ -56,7 +56,6 @@ namespace Financials.Services
 
                  
 
-                    var content = new FormUrlEncodedContent(values);
 
                     //var tokenID =  client.PostAsync(apiUrl + "signin?UserName=user-test&Password=Qwertyuiop01!", content).Result;
 

@@ -55,6 +55,7 @@
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\security.ts" />
     <None Remove="ClientApp\src\app\interfaces\securitydate.ts" />
+    <None Remove="ClientApp\src\app\interfaces\SecurityPurchaseCheck.ts" />
     <None Remove="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockTranHistory.ts" />
     <None Remove="ClientApp\src\app\security-detail\security-detail.component.ts" />
@@ -90,6 +91,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securitydate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\SecurityPurchaseCheck.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockTranHistory.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\security-detail\security-detail.component.ts" />
@@ -104,6 +106,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\widget\invest-projections\" />
+    <Folder Include="ClientApp\src\app\widget\security-details\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

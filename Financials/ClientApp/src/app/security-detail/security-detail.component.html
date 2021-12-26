@@ -1,11 +1,8 @@
-
-
-
 <div class="animated fadeIn">
 
   <div class="row">
-    <div class="col-md-6">
 
+    <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <div *ngIf="security">
@@ -17,199 +14,136 @@
             <button type="button" class="close" aria-label="Close" (click)="goBack()">
               <span aria-hidden="true">&times;</span>
             </button>
-
-
-
           </div>
-
-        </div>
-        <div class="card-body" style=" overflow: hidden;">
-          <div style="height:250px;overflow-y: auto">
-
-
-
-            <div *ngIf="!security">
-
-              <shared-loading-data></shared-loading-data>
-
-            </div>
-
-
-
-            <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="security">
-              <tbody>
-                <tr>
-                  <th style="width:85px;" align="left">Symbol:</th>
-                  <td align="right"> {{security.symbol}}</td>
-                  <th style="width:125px;" align="left">Last Modified: </th>
-                  <td align="right"> {{security.lastModified | date:'short'}}</td>
-                  <th style="width:125px;" align="left">Preferred: </th>
-                  <td align="right">
-                    <input type="checkbox" class="custom-control-input" (click)="setPreferred()" id="customSwitches" [(ngModel)]="onlyPreferred">
-                    <label class="custom-control-label" for="customSwitches"></label>
-
-                  </td>
-
-                </tr>
-                <tr>
-                  <th style="width:85px;" align="left">Low: </th>
-                  <td align="right"> {{security.dayLow}}</td>
-                  <th style="width:125px;" align="left">High: </th>
-                  <td align="right"> {{security.dayHigh}}</td>
-                  <th style="width:125px;" align="left">Current Price: </th>
-                  <td align="right"> {{security.currentPrice}}</td>
-
-                </tr>
-                <tr>
-                  <th style="width:85px;" align="left">52w Low: </th>
-                  <td align="right"> {{security.yearLow}}</td>
-                  <th style="width:125px;" align="left">52w High: </th>
-                  <td align="right"> {{security.yearHigh}}</td>
-                  <th style="width:125px;" align="left">Current Price: </th>
-                  <td align="right"> {{security.currentPrice}}</td>
-
-                </tr>
-              </tbody>
-            </table>
-         
-
-
-        
-
-
-
-
-         
-
-          </div>
-          <!--<div class="card-footer">
-            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
-            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
-          </div>
-            -->
-        </div>
-      </div>
-
-
-
-
-
-
-
-    </div>
-
-
-
-
-    <div class="col-md-6">
-
-      <div class="card">
-        <div class="card-header">
-          <b>History</b>
-
-          <div style="padding-left:40px;" class="btn-group">
-            <button class="btn btn-secondary btn-sm" style="width:100px;" type="button">
-              {{historyPriceName}}
-            </button>
-
-
-            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-              <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" (click)="changeHistory(1)">1 Day</a>
-              <a class="dropdown-item" (click)="changeHistory(2)">5 Days</a>
-              <a class="dropdown-item" (click)="changeHistory(3)">1 Month</a>
-              <a class="dropdown-item" (click)="changeHistory(4)">6 Months</a>
-              <a class="dropdown-item" (click)="changeHistory(5)">1 Year</a>
-              <a class="dropdown-item" (click)="changeHistory(6)">5 Years</a>
-            </div>
-          </div>
-
-        </div>
-        <div class="card-body" style="height:300px;">
-          <div *ngIf="!historicalPrices">
-            <shared-loading-data></shared-loading-data>
-          </div>
-            <div style="padding-bottom:20px;" *ngIf="historicalPrices" class="chart-wrapper">
-              <div style="height:90%;width:90%;">
-                <canvas baseChart
-                        [datasets]="lineChartData"
-                        [labels]="lineChartLabels"
-                        [options]="lineChartOptions"
-                        [colors]="lineChartColors"
-                        [legend]="lineChartLegend"
-                        [chartType]="lineChartType"
-                        [plugins]="lineChartPlugins">
-                </canvas>
-              </div>
-          </div>
-
-
-        </div>
-      </div>
-
-
-    </div><!--/.col-->
-
-
-
-  </div><!--/.row-->
-
-
-</div>
-
-
-
-
-<div class="animated fadeIn">
-
-  <div class="row">
-    <div class="col-md-6">
-      <app-dividend-widget></app-dividend-widget>
-      <!--
-      <div class="card">
-        <div class="card-header">
-
-        </div>
-        <div class="card-body" style=" overflow: hidden;">
-
-        </div>
-        </div>
-        -->
-    </div>
-
-
-    <div class="col-md-6">
-
-      <div class="card">
-        <div class="card-header">
-          <strong>Yearly Gain/Loss</strong>
         </div>
         <div class="card-body" style=" overflow: hidden;">
 
 
-          <div style="height:350px;">
-            <div *ngIf="!yearGainLoss">
-              <shared-loading-data></shared-loading-data>
-            </div>
-            <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="yearGainLoss">
-              <thead>
-                <tr>
-                  <th style="width:100px">Year</th>
-                  <th style="width:100px">Gain Loss</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let yeargain of yearGainLoss">
-                  <td style="width:100px">{{ yeargain.year }}</td>
-                  <td style="width:100px">{{ yeargain.gainLoss | number : '1.1-1'}}</td>
-                </tr>
-              </tbody>
-            </table>
 
-          </div>
+          <ul ngbNav #nav="ngbNav" class="nav-tabs">
 
+            <li ngbNavItem [destroyOnHide]="false">
+              <a ngbNavLink>Details</a>
+              <ng-template ngbNavContent>
+                <app-details [security]="security" [secPurCheck]="secPurCheck"></app-details>
+              </ng-template>
+            </li>
+
+
+            <li ngbNavItem [destroyOnHide]="false">
+              <a ngbNavLink>Dividends</a>
+              <ng-template ngbNavContent>
+                <app-dividend-widget></app-dividend-widget>
+
+              </ng-template>
+            </li>
+            <li ngbNavItem>
+              <a ngbNavLink>Yearly Gain/Loss</a>
+              <ng-template ngbNavContent>
+                <app-gain-loss [historicalPrices]="historicalPrices"></app-gain-loss>
+
+
+              </ng-template>
+            </li>
+            <li ngbNavItem>
+              <a ngbNavLink>History</a>
+              <ng-template ngbNavContent>
+
+                <div class="card">
+                  <div class="card-header">
+                    <b>History</b>
+
+                    <div style="padding-left:40px;" class="btn-group">
+                      <button class="btn btn-secondary btn-sm" style="width:100px;" type="button">
+                        {{historyPriceName}}
+                      </button>
+
+
+                      <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" (click)="changeHistory(1)">1 Day</a>
+                        <a class="dropdown-item" (click)="changeHistory(2)">5 Days</a>
+                        <a class="dropdown-item" (click)="changeHistory(3)">1 Month</a>
+                        <a class="dropdown-item" (click)="changeHistory(4)">6 Months</a>
+                        <a class="dropdown-item" (click)="changeHistory(5)">1 Year</a>
+                        <a class="dropdown-item" (click)="changeHistory(6)">5 Years</a>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="card-body" style="height:500px;">
+                    <div *ngIf="!historicalPrices">
+                      <shared-loading-data></shared-loading-data>
+                    </div>
+                    <div style="padding-bottom:20px;align-content:center;" *ngIf="historicalPrices" class="chart-wrapper">
+                      <div style="height:80%;width:80%;">
+                        <canvas baseChart
+                                [datasets]="lineChartData"
+                                [labels]="lineChartLabels"
+                                [options]="lineChartOptions"
+                                [colors]="lineChartColors"
+                                [legend]="lineChartLegend"
+                                [chartType]="lineChartType"
+                                [plugins]="lineChartPlugins">
+                        </canvas>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+
+
+
+              </ng-template>
+            </li>
+
+
+            <li ngbNavItem>
+              <a ngbNavLink>Peak Ranges</a>
+              <ng-template ngbNavContent>
+
+                <b>Current Range</b>: {{currentPeakRange.rangeName}}<br />
+                <b>Current Range Days</b>: {{currentPeakRange.rangeLength | number : '1.0-0'}}<br />
+                <b>Current Percent from Peak</b>:    {{currentPeakRange.peakRangeCurrentPercentage | number : '1.1-1'}}%
+                <div style="overflow-x:auto">
+                  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="peakRanges">
+                    <thead>
+                      <tr>
+                        <th style="width:150px"><span class="spanPeakRangeTableSpace">Range</span></th>
+                        <th style="width:150px"><span class="spanPeakRangeTableSpace"># of Instances</span></th>
+                        <th style="width:150px"><span class="spanPeakRangeTableSpace">Average Range</span></th>
+                        <th style="width:150px"><span class="spanPeakRangeTableSpace">Max Range</span></th>
+                        <th style="width:150px"><span class="spanPeakRangeTableSpace">Max Start Date</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let pRange of peakRanges">
+                        <td style="width:150px" [ngClass]="{'class_name': pRange?.rangeName == currentPeakRange.rangeName  }">
+                          {{ pRange?.rangeName }}
+                        </td>
+                        <td style="width:150px">{{ pRange?.rangeCount | number : '1.1-1'}}</td>
+                        <td style="width:150px">{{ pRange?.rangeLength / pRange?.rangeCount | number : '1.1-1'}}</td>
+                        <td style="width:150px">{{ pRange?.maxRangeLength | number : '1.1-1'}}</td>
+                        <td style="width:150px">{{ pRange?.maxRangeDateStart | date: 'MM/dd/yyyy'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-template>
+            </li>
+            <li ngbNavItem [destroyOnHide]="false">
+              <a ngbNavLink>Earning</a>
+              <ng-template ngbNavContent>
+                <app-earning-widget></app-earning-widget>
+              </ng-template>
+            </li>
+
+          </ul>
+          <div [ngbNavOutlet]="nav"></div>
 
 
         </div>
@@ -222,4 +156,6 @@
 
 
 
-<app-earning-widget></app-earning-widget>
+
+
+

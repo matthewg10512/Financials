@@ -1,0 +1,82 @@
+<div style="overflow-x: auto">
+  <div *ngIf="!security  || !secPurCheck">
+    <shared-loading-data></shared-loading-data>
+  </div>
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="security  && secPurCheck">
+    <tbody>
+      <tr>
+        <td style="width:85px;" align="center">
+          <span style="display: inline-block;width:155px">
+            <b><u>Symbol</u></b>
+          </span>
+          <br /> {{security.symbol}}
+        </td>
+
+        <td style="width:125px;" align="center">
+          <span class="spanTableSpace">
+            <b><u>Last Modified</u></b>
+          </span><br />
+          <span title="{{security.lastModified | date:'short'}}">  {{security.lastModified | date:'shortTime'}}</span>
+        </td>
+
+        <td style="width:125px;" align="center">
+          <span class="spanTableSpace">
+            <b><u>Preferred</u></b>
+          </span><br />
+
+          <input type="checkbox" class="custom-control-input" (click)="setPreferred()" id="customSwitches" [(ngModel)]="security.preferred">
+          <label class="custom-control-label" for="customSwitches"></label>
+
+        </td>
+
+        <td style="width:155px;" align="center">
+          <span class="spanTableSpace"> Pur Est Shares</span><br />
+          {{secPurCheck.shares}}
+        </td>
+
+
+      </tr>
+      <tr>
+        <td style="width:85px;" align="center">
+          <span class="spanTableSpace"> Low</span> <br />
+          {{security.dayLow}}
+
+        </td>
+        <td style="width:125px;" align="center">
+          <span class="spanTableSpace">
+            High
+          </span><br />
+          {{security.dayHigh}}
+        </td>
+        <td style="width:125px;" align="center">
+          <span class="spanTableSpace">
+            Current
+          </span><br />
+          {{security.currentPrice}}
+        </td>
+        <td style="width:155px;" align="center">
+          <span class="spanTableSpace">
+            Mkt Cost
+          </span> <br />
+          {{secPurCheck.purchasePrice| currency}}
+        </td>
+
+      </tr>
+      <tr>
+        <td style="width:85px;" align="center">
+          <span class="spanTableSpace">52w Low</span><br />{{security.yearLow}}
+        </td>
+        <td style="width:125px;" align="left">
+          <span class="spanTableSpace">52w High</span><br />{{security.yearHigh}}
+        </td>
+        <td style="width:125px;" align="center">
+          <span class="spanTableSpace">Current Price </span><br />{{security.currentPrice}}
+        </td>
+        <td style="width:155px;" align="center">
+          <span class="spanTableSpace">Cur Mkt Value </span><br />
+          {{(secPurCheck.shares * security.currentPrice)| currency}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

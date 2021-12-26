@@ -12,6 +12,8 @@ import { HistoricalPrice } from '../interfaces/historicalprice';
 
 import { DatePipe } from '@angular/common';
 import { PeakRangeDetail } from '../interfaces/peakrangedetail';
+import { CurrentPeakRange } from '../interfaces/currentpeakranges';
+import { SecurityPurchaseCheck } from '../interfaces/SecurityPurchaseCheck';
 
 
 
@@ -41,7 +43,8 @@ export class SecurityDetailComponent implements OnInit {
       backgroundColor: 'rgba(255,255,255, 0.0)',
     },
   ];
-
+  currentPeakRange: CurrentPeakRange;
+  peakRanges: PeakRangeDetail[];
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType = 'line';
@@ -50,10 +53,12 @@ export class SecurityDetailComponent implements OnInit {
   historicalPrices: HistoricalPrice[];
   historyPriceSearch: number = 1;
   historyPriceName: string;
-  yearGainLoss: Array<YearGainLoss>;
-  onlyPreferred = false;
-  btnUpdateSave = false;
   
+  
+  btnUpdateSave = false;
+
+  secPurCheck: SecurityPurchaseCheck;
+
   constructor(
     private route: ActivatedRoute,
     private prefSecurityService: SecurityService,
@@ -91,11 +96,7 @@ export class SecurityDetailComponent implements OnInit {
     }
     this.historyPriceName = hisPriceName;
   }
-  setPreferred(): void {
-    
-
-    this.security.preferred = !(this.onlyPreferred);
-  }
+  
 
   getSecurity(): void {
     const id = +this.route.snapshot.paramMap.get('id');
@@ -103,7 +104,24 @@ export class SecurityDetailComponent implements OnInit {
       .subscribe(security => {
         this.security = security
 
-        this.onlyPreferred = this.security.preferred;
+        //this.onlyPreferred = this.security.preferred;
+
+
+        this.prefSecurityService.GetPeakRangeDetails(security.id).subscribe(peakRangeDetails => {
+          this.peakRanges = peakRangeDetails;
+        });
+
+        this.prefSecurityService.GetCurrentPeakRanges(security.id).subscribe(currentPeakRanges => {
+          if (currentPeakRanges.length > 0) {
+            this.currentPeakRange = currentPeakRanges[0];
+          }
+        });
+
+        this.prefSecurityService.GetSecurityPurchaseCheck(security.id).subscribe(securityPurchaseCheck => {
+          this.secPurCheck = securityPurchaseCheck;
+        });
+
+
       });
   }
 
@@ -210,7 +228,7 @@ export class SecurityDetailComponent implements OnInit {
       .subscribe(historicalPrices => {
         this.historicalPrices = historicalPrices;
         this.historicalPrices.sort((a, b) => new Date(a.historicDate).getTime() - new Date(b.historicDate).getTime());
-        this.getYearlyGainLoss();
+      //  this.getYearlyGainLoss();
         this.SetHistoricalChart();
          
 
@@ -225,34 +243,7 @@ export class SecurityDetailComponent implements OnInit {
 
 
   }
-  getYearlyGainLoss(): void {
-    var historicPriceCount = this.historicalPrices.length;
-
-    if (historicPriceCount == 0) {
-      return;
-    }
-    let yearLoss: YearGainLoss = new YearGainLoss();
-    yearLoss.year = new Date(this.historicalPrices[0].historicDate).getFullYear();
-    yearLoss.gainLoss = 0;
-    this.yearGainLoss = [];
-    this.yearGainLoss.push(yearLoss);
-    let currentPrice = this.historicalPrices[0].close;
-    for (var i = 0; i < historicPriceCount; i++) {
-      let currentYear = new Date(this.historicalPrices[i].historicDate).getFullYear();
-      if (currentYear != this.yearGainLoss[this.yearGainLoss.length -1].year) {
-        let yearLoss: YearGainLoss = new YearGainLoss();
-        yearLoss.year = currentYear; 
-        yearLoss.gainLoss = 0;
-        this.yearGainLoss.push(yearLoss);
-
-      }
-      this.yearGainLoss[this.yearGainLoss.length - 1].gainLoss = this.yearGainLoss[this.yearGainLoss.length - 1].gainLoss + this.historicalPrices[i].close - currentPrice
-
-      currentPrice = this.historicalPrices[i].close;
-    }
-
-    
-  }
+ 
   SetHistoricalChart(): void {
     var historicPriceCount = this.historicalPrices.length;
     if (historicPriceCount==0) {
@@ -352,7 +343,3 @@ export class DateRange{
   rangeOfDays: number;
 }
 
-export class YearGainLoss {
-  year: number;
-  gainLoss: number;
-}

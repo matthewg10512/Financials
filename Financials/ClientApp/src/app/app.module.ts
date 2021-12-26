@@ -37,6 +37,8 @@ import { SecurityInvestProjectionComponent } from './security-invest-projection/
 import { SecurityProjectionComponent } from './widget/invest-projections/security-projection/security-projection.component';
 import { YearlyBreakdownComponent } from './widget/invest-projections/yearly-breakdown/yearly-breakdown.component';
 import { PurchaseDetailComponent } from './widget/invest-projections/purchase-detail/purchase-detail.component';
+import { DetailsComponent } from './widget/security-details/details/details.component';
+import { GainLossComponent } from './widget/security-details/gain-loss/gain-loss.component';
 
 
 //'./widget/historicdDate/update-historical-date.component';
@@ -67,6 +69,8 @@ import { PurchaseDetailComponent } from './widget/invest-projections/purchase-de
     SecurityProjectionComponent,
     YearlyBreakdownComponent,
     PurchaseDetailComponent,
+    DetailsComponent,
+    GainLossComponent,
     
     
   ],

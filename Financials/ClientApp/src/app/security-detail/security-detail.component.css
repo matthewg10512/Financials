@@ -10,3 +10,16 @@ table tbody, table thead {
 table td {
   text-align: center;
 }
+
+.class_name {
+  background-color: dodgerblue;
+  color: white;
+}
+
+
+.spanPeakRangeTableSpace {
+  display: inline-block;
+  width: 105px;
+  font-weight: bold;
+  text-decoration: underline;
+}

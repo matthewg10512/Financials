@@ -1,0 +1,19 @@
+.spanTableSpace {
+  display: inline-block;
+  width: 105px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+table tbody {
+  height: 300px;
+  overflow-y: auto
+}
+
+table tbody, table thead {
+  display: block;
+}
+
+table td {
+  text-align: center;
+}
