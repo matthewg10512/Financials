@@ -23,3 +23,25 @@ table td {
   font-weight: bold;
   text-decoration: underline;
 }
+
+
+.buyAverageDropStock {
+  background-color: greenyellow;
+  color: black;
+}
+
+
+.buyper15Stock {
+  background-color: lightgreen;
+  color: black;
+}
+
+.buyper10Stock {
+  background-color: darkseagreen;
+  color: black;
+}
+
+.buyper5Stock {
+  background-color: forestgreen;
+  color: black;
+}

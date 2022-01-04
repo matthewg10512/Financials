@@ -39,6 +39,8 @@ import { YearlyBreakdownComponent } from './widget/invest-projections/yearly-bre
 import { PurchaseDetailComponent } from './widget/invest-projections/purchase-detail/purchase-detail.component';
 import { DetailsComponent } from './widget/security-details/details/details.component';
 import { GainLossComponent } from './widget/security-details/gain-loss/gain-loss.component';
+import { StockPurchaseOptionComponent } from './widget/StockPurchaseOption/stock-purchase-option/stock-purchase-option.component';
+import { SpoPeakRangeComponent } from './widget/StockPurchaseOption/spo-peak-range/spo-peak-range.component';
 
 
 //'./widget/historicdDate/update-historical-date.component';
@@ -71,6 +73,8 @@ import { GainLossComponent } from './widget/security-details/gain-loss/gain-loss
     PurchaseDetailComponent,
     DetailsComponent,
     GainLossComponent,
+    StockPurchaseOptionComponent,
+    SpoPeakRangeComponent,
     
     
   ],

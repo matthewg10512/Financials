@@ -8,6 +8,8 @@ import { SecurityService } from '../services/security.service';
 import { SecurityResourceParameters } from '../interfaces/securityresourceparameters';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Earning } from '../interfaces/earning';
+import { StockPurchaseOption } from '../interfaces/StockPurchaseOption';
+import { StockPurchaseOptionsResourceParameters } from '../interfaces/resourceparameters/StockPurchaseOptionsResourceParameters';
 //ng g c dividend --module app
 
 
@@ -19,9 +21,15 @@ import { Earning } from '../interfaces/earning';
 export class HomeComponent {
 
  // public preferredsecurities: PreferredSecurities[];
+  public stockPurchaseOptions: StockPurchaseOption[];
   public securities: Security[];
   public earnings: Earning[];
-
+  public averageDropLowParam: StockPurchaseOptionsResourceParameters;
+  public percent15DropLowParam: StockPurchaseOptionsResourceParameters;
+  public averageDropCurrentParam: StockPurchaseOptionsResourceParameters;
+  public percent15DropCurrentParam: StockPurchaseOptionsResourceParameters;
+  
+  
   //  const headers = new HttpHeaders().append('header', 'value');
   //this.http.get('url', { headers, params }); 
 
@@ -38,12 +46,81 @@ export class HomeComponent {
   }
 
 
+
+
   ngOnInit() {
-    
+    this.setAverageDrop();
+    this.setpercent15Droppers();
+    this.setaverageDropCurrentParam();
+    this.setpercent15DropCurrentParam();
   //  this.getSecurities();
   }
 
+  
 
+  setpercent15Droppers(): void {
+    let stockOptionResourceParams: StockPurchaseOptionsResourceParameters = new StockPurchaseOptionsResourceParameters();
+    var d = new Date();
+    d.setDate(d.getDate() - 2);
+    stockOptionResourceParams.securityLastModifiedRangeLow = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();//d;
+    stockOptionResourceParams.securitypercentChangeRangeHigh = '0';
+    stockOptionResourceParams.securityPercentDropperType = 'percent15Low';
+    stockOptionResourceParams.securityPurchaseCheckSharesRangeLow = '60';
+    stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow = '10';
+    stockOptionResourceParams.securityVolumeRangeLow = '100000';
+    this.averageDropCurrentParam = stockOptionResourceParams;
+  }
+
+  
+  setaverageDropCurrentParam(): void {
+    let stockOptionResourceParams: StockPurchaseOptionsResourceParameters = new StockPurchaseOptionsResourceParameters();
+    var d = new Date();
+    d.setDate(d.getDate() - 2);
+    stockOptionResourceParams.securityLastModifiedRangeLow = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();//d;
+    stockOptionResourceParams.securitypercentChangeRangeHigh = '0';
+    stockOptionResourceParams.securityPercentDropperType = 'averagedrop50CurrentPrice';
+    stockOptionResourceParams.securityPurchaseCheckSharesRangeLow = '60';
+    stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow = '10';
+    stockOptionResourceParams.securityVolumeRangeLow = '100000';
+    this.averageDropCurrentParam = stockOptionResourceParams;
+  }
+
+  setpercent15DropCurrentParam(): void {
+    let stockOptionResourceParams: StockPurchaseOptionsResourceParameters = new StockPurchaseOptionsResourceParameters();
+    var d = new Date();
+    d.setDate(d.getDate() - 2);
+    stockOptionResourceParams.securityLastModifiedRangeLow = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();//d;
+    stockOptionResourceParams.securitypercentChangeRangeHigh = '0';
+    stockOptionResourceParams.securityPercentDropperType = 'percent15CurrentPrice';
+    stockOptionResourceParams.securityPurchaseCheckSharesRangeLow = '60';
+    stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow = '10';
+    stockOptionResourceParams.securityVolumeRangeLow = '100000';
+    this.percent15DropCurrentParam = stockOptionResourceParams;
+  }
+  setAverageDrop(): void {
+
+    let stockOptionResourceParams: StockPurchaseOptionsResourceParameters = new StockPurchaseOptionsResourceParameters();
+    var d = new Date();
+    d.setDate(d.getDate() - 2);
+    stockOptionResourceParams.securityLastModifiedRangeLow = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();//d;
+    stockOptionResourceParams.securitypercentChangeRangeHigh = '0';
+    stockOptionResourceParams.securityPercentDropperType = 'averagedrop50Low';
+    stockOptionResourceParams.securityPurchaseCheckSharesRangeLow = '60';
+    stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow = '10';
+    stockOptionResourceParams.securityVolumeRangeLow = '100000';
+    this.averageDropLowParam = stockOptionResourceParams;
+  }
+
+  getStockPurchaseOptions(): void {
+
+    /*
+    this.securityService.getStockPurchaseOptions().subscribe(stockPurchaseOptions =>
+
+      this.stockPurchaseOptions = stockPurchaseOptions
+
+    );
+    */
+  }
   
   getSecurities(): void {
     let securitySearch: SecurityResourceParameters = new SecurityResourceParameters();

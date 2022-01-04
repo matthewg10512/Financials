@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { PeakRangeDetail } from '../interfaces/peakrangedetail';
 import { CurrentPeakRange } from '../interfaces/currentpeakranges';
 import { SecurityPurchaseCheck } from '../interfaces/SecurityPurchaseCheck';
+import { SecurityPercentageStatistic } from '../interfaces/SecurityPercentageStatistic';
 
 
 
@@ -53,7 +54,7 @@ export class SecurityDetailComponent implements OnInit {
   historicalPrices: HistoricalPrice[];
   historyPriceSearch: number = 1;
   historyPriceName: string;
-  
+  securityPercentageStatistic: SecurityPercentageStatistic;
   
   btnUpdateSave = false;
 
@@ -121,6 +122,10 @@ export class SecurityDetailComponent implements OnInit {
           this.secPurCheck = securityPurchaseCheck;
         });
 
+        this.prefSecurityService.GetSecurityPercentageStatistic(security.id).subscribe(securityPercentageStatistic => {
+          this.securityPercentageStatistic = securityPercentageStatistic;
+        });
+        
 
       });
   }

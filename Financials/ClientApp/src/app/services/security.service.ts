@@ -24,6 +24,9 @@ import { investmentprojectionforadd } from '../interfaces/investmentprojectionfo
 import { CurrentPeakRange } from '../interfaces/currentpeakranges';
 import { PeakRangeDetail } from '../interfaces/peakrangedetail';
 import { SecurityPurchaseCheck } from '../interfaces/SecurityPurchaseCheck';
+import { SecurityPercentageStatistic } from '../interfaces/SecurityPercentageStatistic';
+import { StockPurchaseOption } from '../interfaces/StockPurchaseOption';
+import { StockPurchaseOptionsResourceParameters } from '../interfaces/resourceparameters/StockPurchaseOptionsResourceParameters';
 
 //import { MessageService } from './message.service';
 
@@ -110,20 +113,7 @@ export class SecurityService {
       ;
   }
 
-  /* GET heroes whose name contains search term 
-  searchHeroes(term: string): Observable<Hero[]> {
-    if (!term.trim()) {
-      // if not search term, return empty hero array.
-      return of([]);
-    }
-    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
-      tap(x => x.length ?
-        this.log(`found heroes matching "${term}"`) :
-        this.log(`no heroes matching "${term}"`)),
-      catchError(this.handleError<Hero[]>('searchHeroes', []))
-    );
-  }
-  */
+
   //////// Save methods //////////
 
 
@@ -149,6 +139,14 @@ export class SecurityService {
 
     return this.http.get<SecurityPurchaseCheck[]>(this.baseUrl + 'security/' +securityId + '/securitypurchasecheck');
   }
+
+  GetSecurityPercentageStatistic(securityId: number): Observable<any> {
+
+    return this.http.get<SecurityPercentageStatistic>(this.baseUrl + 'security/' + securityId + '/SecurityPercentageStatistic');
+  }
+
+  
+
   updateDividends(securityId: number): Observable<any> {
 
     const params = null;
@@ -227,6 +225,66 @@ export class SecurityService {
 
 
 
+  getStockPurchaseOptions(stockOptionResourceParams: StockPurchaseOptionsResourceParameters): Observable<StockPurchaseOption[]>{
+    //let stockOptionResourceParams: StockPurchaseOptionsResourceParameters = new StockPurchaseOptionsResourceParameters();
+    /*
+    var d = new Date();
+    d.setDate(d.getDate() - 2);
+    stockOptionResourceParams.securityLastModifiedRangeLow = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();//d;
+    stockOptionResourceParams.securitypercentChangeRangeHigh = '0';
+    stockOptionResourceParams.securityPercentDropperType = 'averagedrop50Low';
+    stockOptionResourceParams.securityPurchaseCheckSharesRangeLow = '60';
+    stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow = '10';
+    stockOptionResourceParams.securityVolumeRangeLow = '100000';
+    */
+    let searchQuery :string = '';
+
+    if (stockOptionResourceParams.securityLastModifiedRangeLow ) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "securityLastModifiedRangeLow=" + stockOptionResourceParams.securityLastModifiedRangeLow;
+      
+    }
+    if (stockOptionResourceParams.securitypercentChangeRangeHigh
+      && !isNaN(Number((stockOptionResourceParams.securitypercentChangeRangeHigh)))
+    ) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "securitypercentChangeRangeHigh=" + stockOptionResourceParams.securitypercentChangeRangeHigh;
+    }
+
+    if (stockOptionResourceParams.securityPercentDropperType) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "securityPercentDropperType=" + stockOptionResourceParams.securityPercentDropperType;
+    }
+
+
+    if (stockOptionResourceParams.securityPurchaseCheckSharesRangeLow
+      && !isNaN(Number((stockOptionResourceParams.securityPurchaseCheckSharesRangeLow)))
+    ) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "securityPurchaseCheckSharesRangeLow=" + stockOptionResourceParams.securityPurchaseCheckSharesRangeLow;
+
+    }
+
+    if (stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow
+      && !isNaN(Number((stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow)))
+    ) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "securityPurchaseCheckYearlyPercentRangeLow=" + stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow;
+
+    }
+
+    if (stockOptionResourceParams.securityVolumeRangeLow
+      && !isNaN(Number((stockOptionResourceParams.securityVolumeRangeLow)))
+    ) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "securityVolumeRangeLow=" + stockOptionResourceParams.securityVolumeRangeLow;
+
+    }
+
+    let urlQuery: string = this.baseUrl + 'StockPurchaseOptions' + searchQuery;
+
+    return this.http.get<StockPurchaseOption[]>(urlQuery);
+  }
 
 
 

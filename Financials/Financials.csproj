@@ -53,10 +53,13 @@
     <None Remove="ClientApp\src\app\interfaces\investprojection.ts" />
     <None Remove="ClientApp\src\app\interfaces\peakrangedetail.ts" />
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\resourceparameters\StockPurchaseOptionsResourceParameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\security.ts" />
     <None Remove="ClientApp\src\app\interfaces\securitydate.ts" />
+    <None Remove="ClientApp\src\app\interfaces\SecurityPercentageStatistic.ts" />
     <None Remove="ClientApp\src\app\interfaces\SecurityPurchaseCheck.ts" />
     <None Remove="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\StockPurchaseOption.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockTranHistory.ts" />
     <None Remove="ClientApp\src\app\security-detail\security-detail.component.ts" />
     <None Remove="ClientApp\src\app\security\security-component.ts" />
@@ -89,10 +92,13 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\investmentprojectionforupdate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\peakrangedetail.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\StockPurchaseOptionsResourceParameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securitydate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\SecurityPercentageStatistic.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\SecurityPurchaseCheck.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\StockPurchaseOption.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockTranHistory.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\security-detail\security-detail.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\security\security-component.ts" />

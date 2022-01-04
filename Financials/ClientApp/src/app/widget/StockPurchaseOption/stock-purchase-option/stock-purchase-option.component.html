@@ -1,0 +1,143 @@
+<div *ngIf="stockPurchaseOptions" style="height:400px;overflow-y:auto">
+
+
+
+
+
+
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stockPurchaseOptions">
+    <thead>
+      <tr>
+        <th width="300px">Name</th>
+        <th width="150px">Current Price</th>
+        <th width="150px">Percent Change</th>
+        <th width="150px">Current Peak Range</th>
+        <th width="150px">Open Position Loss</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stockPurchaseOption of stockPurchaseOptions">
+        <td width="300px">
+          <span title="stockPurchaseOption.security.symbol">{{stockPurchaseOption.security.name}}</span>
+
+        </td>
+        <td width="150px">
+          {{stockPurchaseOption.security.currentPrice}}
+        </td>
+        <td width="150px">
+
+
+          <button type="button" class="btn btn-primary" placement="left"
+                  [ngbPopover]="popContent" popoverTitle="Percentage Statistics">
+            i
+          </button>
+          {{stockPurchaseOption.security.percentageChange}}
+          <ng-template #popContent>
+            <table class="table">
+              <tr>
+                <td>
+                  Average Drop:
+                </td>
+                <td>
+                  {{stockPurchaseOption.securityPercentageStatistic.averageDrop}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Top 15 Droppers:
+                </td>
+                <td>
+                  {{stockPurchaseOption.securityPercentageStatistic.percent15}}
+                </td>
+              </tr>
+              <tr>
+
+                <td>
+                  Top 10 Droppers:
+                </td>
+                <td>
+                  {{stockPurchaseOption.securityPercentageStatistic.percent10}}
+                </td>
+              </tr>
+              <tr>
+
+                <td>
+                  Top 5 Droppers:
+                </td>
+                <td>
+                  {{stockPurchaseOption.securityPercentageStatistic.percent5}}
+                </td>
+              </tr>
+            </table>
+
+
+          </ng-template>
+        </td>
+        <td width="150px">
+
+          <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#peakRangeDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
+            i
+          </button>
+          <!-- Select a Security Modal -->
+          <app-spo-peak-range [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-peak-range>
+
+        </td>
+        <td width="150px">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+<!--
+  security: Security;
+          id: number;
+          name: string;
+          symbol: string;
+          lastModified: string;
+          dayLow: number;
+          dayHigh: number;
+          currentPrice: number;
+          preferred: boolean;
+          priorDayOpen: number;
+          percentageChange: number;
+          yearLow: number;
+          yearHigh: number;
+          dividend: Date;
+          dividendamount: number;
+          earning: string;
+ securityPercentageStatistic: SecurityPercentageStatistic;
+          id: number;
+          securityId: number;
+          dateCreated: Date;
+          dateModified: Date;
+          averageDrop: number;
+          percent5 : number;
+          percent10 : number;
+          percent15 : number;
+          totalPercentSum : number;
+          highLowRangeAverage : number;
+          belowAverageCount : number;
+ currentPeakRange: CurrentPeakRange;
+          id: number;
+          securityId: number;
+          rangeName: string;
+          dateCreated: Date;
+          dateModified: Date;
+          rangeLength: number;
+          rangeDateStart: Date;
+          peakRangeCurrentPercentage: number;
+  securityPurchaseCheck: SecurityPurchaseCheck;
+          id: number;
+          securityId: number;
+          dateCreated: Date;
+          dateModified: Date;
+          shares: number;
+          purchasePrice: number;
+-->

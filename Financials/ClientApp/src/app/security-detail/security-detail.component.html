@@ -142,6 +142,112 @@
               </ng-template>
             </li>
 
+            <li ngbNavItem [destroyOnHide]="false">
+              <a ngbNavLink>Statistics</a>
+              <ng-template ngbNavContent>
+                <div style="overflow-x:auto">
+                  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="securityPercentageStatistic">
+                    <tbody>
+                      <tr>
+                        <td style="width:85px;" align="center" [ngClass]="{'buyper5Stock': securityPercentageStatistic?.percent5 > security.percentageChange && !securityPercentageStatistic?.percent5 == 0 }">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>5 Percent</u></b>
+                          </span>
+                          <br />
+                          <span *ngIf="securityPercentageStatistic?.percent5==0">No Data</span>
+                          <span *ngIf="securityPercentageStatistic?.percent5!=0">{{ securityPercentageStatistic?.percent5  | number : '1.1-2'}}</span>
+                          
+                        </td>
+
+                        <td style="width:85px;" align="center" [ngClass]="{'buyper10Stock': securityPercentageStatistic?.percent10 > security.percentageChange && !securityPercentageStatistic?.percent10 == 0  }">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>10 Percent</u></b>
+                          </span>
+                          <br />
+                          <span *ngIf="securityPercentageStatistic?.percent10==0">No Data</span>
+                          <span *ngIf="securityPercentageStatistic?.percent10!=0">{{ securityPercentageStatistic?.percent10  | number : '1.1-2'}}</span>
+                          
+                        </td>
+                        <td style="width:85px;" align="center" [ngClass]="{'buyper15Stock': securityPercentageStatistic?.percent15 > security.percentageChange  && !securityPercentageStatistic?.percent15 == 0 }">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>15 Percent</u></b>
+                          </span>
+                          <br />
+                          <span *ngIf="securityPercentageStatistic?.percent15==0">No Data</span>
+                          <span *ngIf="securityPercentageStatistic?.percent15!=0">{{ securityPercentageStatistic?.percent15  | number : '1.1-2'}}</span>
+                        </td>
+                        </tr>
+                      <tr>
+                        <td style="width:85px;" align="center" [ngClass]="{'buyAverageDropStock': securityPercentageStatistic?.averageDrop * 1.5 > security.percentageChange && !securityPercentageStatistic?.averageDrop == 0  }">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>Average Drop</u></b>
+                          </span>
+                          <br />
+                          <span *ngIf="securityPercentageStatistic?.averageDrop==0">No Data</span>
+                          <span *ngIf="securityPercentageStatistic?.averageDrop!=0">{{ securityPercentageStatistic?.averageDrop  | number : '1.1-2'}}</span>
+                        </td>
+
+                        <td style="width:85px;" align="center">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>Total Percent Sum</u></b>
+                          </span>
+                          <br />
+                          <span *ngIf="securityPercentageStatistic?.totalPercentSum==0">No Data</span>
+                          <span *ngIf="securityPercentageStatistic?.totalPercentSum!=0">{{ securityPercentageStatistic?.totalPercentSum  | number : '1.1-2'}}</span>
+                        </td>
+                        <td style="width:85px;" align="center">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>High Low Range Avg</u></b>
+                          </span>
+                          <br />
+                          <span *ngIf="securityPercentageStatistic?.highLowRangeAverage==0">No Data</span>
+                          <span *ngIf="securityPercentageStatistic?.highLowRangeAverage!=0">{{ securityPercentageStatistic?.highLowRangeAverage  | number : '1.1-2'}}</span>
+
+                        </td>
+                        </tr>
+                      <tr>
+                        <td style="width:85px;" align="center">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>Below Average Count</u></b>
+                          </span>
+                          <br />
+
+                          <span *ngIf="securityPercentageStatistic?.belowAverageCount==0">No Data</span>
+                          <span *ngIf="securityPercentageStatistic?.belowAverageCount!=0">{{ securityPercentageStatistic?.belowAverageCount  | number : '1.0-0'}}</span>
+                        </td>
+                        <td style="width:85px;" align="center">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>Day's Current Return</u></b>
+                          </span>
+                          <br /> {{ security.percentageChange  | number : '1.1-2'}}
+                        </td>
+                        <td style="width:85px;" align="center">
+                          <span style="display: inline-block;width:155px">
+                            <b><u>Date Calculated</u></b>
+                          </span>
+                          <br /> {{ securityPercentageStatistic?.dateModified | date: 'MM/dd/yyyy'}}
+                        </td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+                    </div>
+                    
+              </ng-template>
+            </li>
+            
+
+
+
+
+
+
+
+
+
+
+
+
           </ul>
           <div [ngbNavOutlet]="nav"></div>
 
