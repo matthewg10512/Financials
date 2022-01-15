@@ -1,8 +1,8 @@
 <div style="overflow-x: auto">
-  <div *ngIf="!security  || !secPurCheck">
+  <div *ngIf="!security  || !priorPurEst">
     <shared-loading-data></shared-loading-data>
   </div>
-  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="security  && secPurCheck">
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="security  && priorPurEst">
     <tbody>
       <tr>
         <td style="width:85px;" align="center">
@@ -31,7 +31,7 @@
 
         <td style="width:155px;" align="center">
           <span class="spanTableSpace"> Pur Est Shares</span><br />
-          {{secPurCheck.shares}}
+          {{priorPurEst.shares}}
         </td>
 
 
@@ -58,7 +58,7 @@
           <span class="spanTableSpace">
             Mkt Cost
           </span> <br />
-          {{secPurCheck.purchasePrice| currency}}
+          {{priorPurEst.purchasePrice| currency}}
         </td>
 
       </tr>
@@ -74,7 +74,7 @@
         </td>
         <td style="width:155px;" align="center">
           <span class="spanTableSpace">Cur Mkt Value </span><br />
-          {{(secPurCheck.shares * security.currentPrice)| currency}}
+          {{(priorPurEst.shares * security.currentPrice)| currency}}
         </td>
       </tr>
     </tbody>

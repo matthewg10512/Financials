@@ -179,58 +179,58 @@
 
 
 
+              <!--style="height:450px;width:1000px"-->
 
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>
+                        Name Peak Range
+                        <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#securityPeakModal' + investProjectionStock.securityRecord.symbol">
+                          i
+                        </button>
+                      </th>
+                      <th>
+                        Current Price
+                      </th>
+                      <th>
+                        Est. Price on {{investProjectionStock.getNextYear() | date: 'MM/dd/yyyy'}}
+                      </th>
+                      <th>
+                        Last High Price
 
-
-              <table class="table">
-                <thead class="thead-dark">
+                      </th>
+                      <th>
+                        <button type="button" class="close btn-close-white" (click)="removeStock(investProjectionStock.securityRecord.id)">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </th>
+                  </thead>
                   <tr>
-                    <th>
-                      Name Peak Range
-                      <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#securityPeakModal' + investProjectionStock.securityRecord.symbol">
-                        i
-                      </button>
-                    </th>
-                    <th>
-                      Current Price
-                    </th>
-                    <th>
-                      Est. Price on {{investProjectionStock.getNextYear() | date: 'MM/dd/yyyy'}}
-                    </th>
-                    <th>
-                      Last High Price
 
-                    </th>
-                    <th>
-                      <button type="button" class="close btn-close-white" (click)="removeStock(investProjectionStock.securityRecord.id)">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </th>
-                </thead>
-                <tr>
+                    <td>
+                      {{investProjectionStock.securityRecord.name}}
+                    </td>
+                    <td>
+                      {{investProjectionStock.securityRecord.currentPrice}}
 
-                  <td>
-                    {{investProjectionStock.securityRecord.name}}
-                  </td>
-                  <td>
-                    {{investProjectionStock.securityRecord.currentPrice}}
-
-                  </td>
-                  <td>
-                    <span title="{{investProjectionStock.averageRisePrice}}% a year increase">
-                      <!--//Matt jump back on this-->
-                      {{ investProjectionStock.getPotentialFutureValue() | number: '1.1-2'}} ({{investProjectionStock.getNextPurchasePrice()}})
-                    </span>
-                  </td>
-                  <td>
-                    {{investProjectionStock.priorCost}}
-                  </td>
+                    </td>
+                    <td>
+                      <span title="{{investProjectionStock.averageRisePrice}}% a year increase">
+                        <!--//Matt jump back on this-->
+                        {{ investProjectionStock.getPotentialFutureValue() | number: '1.1-2'}} ({{investProjectionStock.getNextPurchasePrice()}})
+                      </span>
+                    </td>
+                    <td>
+                      {{investProjectionStock.priorCost}}
+                    </td>
 
 
-                </tr>
+                  </tr>
 
-              </table>
-
+                </table>
+              </div>
               <app-security-projection [investProjectionStock]="investProjectionStock"></app-security-projection>
 
 

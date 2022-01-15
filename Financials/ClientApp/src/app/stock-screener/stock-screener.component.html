@@ -1,0 +1,72 @@
+
+
+
+<input type="text" class="form-control" id="shareRangesLow"
+       [(ngModel)]="stockScreenerSPO.priorPurchaseEstimateSharesRangeLow">
+
+<input type="text" class="form-control" id="securityVolumeRangeLow"
+       [(ngModel)]="stockScreenerSPO.securityVolumeRangeLow">
+
+<input type="text" class="form-control" id="securityLastModifiedRangeLow"
+       [(ngModel)]="stockScreenerSPO.securityLastModifiedRangeLow">
+
+<input type="text" class="form-control" id="securitypercentChangeRangeHigh"
+       [(ngModel)]="stockScreenerSPO.securitypercentChangeRangeHigh">
+
+<input type="text" class="form-control" id="priorPurchaseEstimateYearlyPercentRangeLow"
+       [(ngModel)]="stockScreenerSPO.priorPurchaseEstimateYearlyPercentRangeLow">
+
+<input type="text" class="form-control" id="securityPercentDropperType"
+       [(ngModel)]="stockScreenerSPO.securityPercentDropperType">
+
+
+
+<div class="animated fadeIn">
+
+  <div class="row">
+    <div class="col-md-12">
+
+
+      <div class="card">
+        <div class="card-header ">
+          Stocks Near 52 Week Low
+
+
+
+
+        </div>
+        <div class="card-body" style="height:450px;">
+
+
+          <app-stock-purchase-option [stockPurchaseOptResourceParams]="stockScreenerSPO" [purOptionTabNum]="8"></app-stock-purchase-option>
+
+
+
+
+          <br />
+          <br />
+
+
+
+          <br />
+          <br />
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+
+
+
+  </div><!--/.row-->
+
+
+</div>
+
+
+
+

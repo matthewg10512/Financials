@@ -23,10 +23,11 @@ import { investmentprojectionforupdate } from '../interfaces/investmentprojectio
 import { investmentprojectionforadd } from '../interfaces/investmentprojectionforadd';
 import { CurrentPeakRange } from '../interfaces/currentpeakranges';
 import { PeakRangeDetail } from '../interfaces/peakrangedetail';
-import { SecurityPurchaseCheck } from '../interfaces/SecurityPurchaseCheck';
+
 import { SecurityPercentageStatistic } from '../interfaces/SecurityPercentageStatistic';
 import { StockPurchaseOption } from '../interfaces/StockPurchaseOption';
 import { StockPurchaseOptionsResourceParameters } from '../interfaces/resourceparameters/StockPurchaseOptionsResourceParameters';
+import { PriorPurchaseEstimate } from '../interfaces/PriorPurchaseEstimate';
 
 //import { MessageService } from './message.service';
 
@@ -135,9 +136,9 @@ export class SecurityService {
   }
 
 
-  GetSecurityPurchaseCheck(securityId: number): Observable<any>{
+  GetPriorPurchaseEstimate(securityId: number): Observable<any>{
 
-    return this.http.get<SecurityPurchaseCheck[]>(this.baseUrl + 'security/' +securityId + '/securitypurchasecheck');
+    return this.http.get<PriorPurchaseEstimate[]>(this.baseUrl + 'security/' + securityId + '/priorPurchaseEstimate');
   }
 
   GetSecurityPercentageStatistic(securityId: number): Observable<any> {
@@ -233,8 +234,8 @@ export class SecurityService {
     stockOptionResourceParams.securityLastModifiedRangeLow = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();//d;
     stockOptionResourceParams.securitypercentChangeRangeHigh = '0';
     stockOptionResourceParams.securityPercentDropperType = 'averagedrop50Low';
-    stockOptionResourceParams.securityPurchaseCheckSharesRangeLow = '60';
-    stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow = '10';
+    stockOptionResourceParams.priorPurchaseEstimateSharesRangeLow = '60';
+    stockOptionResourceParams.priorPurchaseEstimateYearlyPercentRangeLow = '10';
     stockOptionResourceParams.securityVolumeRangeLow = '100000';
     */
     let searchQuery :string = '';
@@ -257,19 +258,19 @@ export class SecurityService {
     }
 
 
-    if (stockOptionResourceParams.securityPurchaseCheckSharesRangeLow
-      && !isNaN(Number((stockOptionResourceParams.securityPurchaseCheckSharesRangeLow)))
+    if (stockOptionResourceParams.priorPurchaseEstimateSharesRangeLow
+      && !isNaN(Number((stockOptionResourceParams.priorPurchaseEstimateSharesRangeLow)))
     ) {
       searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
-      searchQuery = searchQuery + "securityPurchaseCheckSharesRangeLow=" + stockOptionResourceParams.securityPurchaseCheckSharesRangeLow;
+      searchQuery = searchQuery + "priorPurchaseEstimateSharesRangeLow=" + stockOptionResourceParams.priorPurchaseEstimateSharesRangeLow;
 
     }
 
-    if (stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow
-      && !isNaN(Number((stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow)))
+    if (stockOptionResourceParams.priorPurchaseEstimateYearlyPercentRangeLow
+      && !isNaN(Number((stockOptionResourceParams.priorPurchaseEstimateYearlyPercentRangeLow)))
     ) {
       searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
-      searchQuery = searchQuery + "securityPurchaseCheckYearlyPercentRangeLow=" + stockOptionResourceParams.securityPurchaseCheckYearlyPercentRangeLow;
+      searchQuery = searchQuery + "priorPurchaseEstimateYearlyPercentRangeLow=" + stockOptionResourceParams.priorPurchaseEstimateYearlyPercentRangeLow;
 
     }
 

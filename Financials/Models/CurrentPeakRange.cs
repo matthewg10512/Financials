@@ -16,5 +16,6 @@ namespace Financials.Models
         public int RangeLength { get; set; }
         public DateTime RangeDateStart { get; set; }
         public decimal PeakRangeCurrentPercentage { get; set; }
+        public decimal? LastOpenHigh { get; set; }
     }
 }

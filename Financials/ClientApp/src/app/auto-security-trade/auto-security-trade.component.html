@@ -187,8 +187,8 @@
         <tbody>
           <tr *ngFor="let autoSecurityTradeSecurity of autoSecurityTradeSecurities">
             <td width="300px">{{ autoSecurityTradeSecurity.security.name }}</td>
-            <td width="150px">{{ autoSecurityTradeSecurity.security.currentPrice}}</td>
-            <td width="150px">{{ autoSecurityTradeSecurity.purchasePrice}}</td>
+            <td width="150px">{{ autoSecurityTradeSecurity.security.currentPrice | currency}}</td>
+            <td width="150px">{{ autoSecurityTradeSecurity.purchasePrice | currency}}</td>
             <td width="150px" title="{{autoSecurityTradeSecurity.purchaseDate | date:'medium'}}">{{ autoSecurityTradeSecurity.purchaseDate | date:'longDate' }}</td>
             <td width="150px">
               {{

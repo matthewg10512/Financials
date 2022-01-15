@@ -76,10 +76,10 @@ namespace Financials.Controllers
         private string GetQueryString(StockPurchaseOptionsResourceParameters stockPurOptionResourceParameters)
         {
             string searchQuery = "";
-            if (stockPurOptionResourceParameters.securityPurchaseCheckSharesRangeLow.HasValue)
+            if (stockPurOptionResourceParameters.priorPurchaseEstimateSharesRangeLow.HasValue)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "securityPurchaseCheckSharesRangeLow=" + stockPurOptionResourceParameters.securityPurchaseCheckSharesRangeLow;
+                searchQuery += "priorPurchaseEstimateSharesRangeLow=" + stockPurOptionResourceParameters.priorPurchaseEstimateSharesRangeLow;
             }
 
             if (stockPurOptionResourceParameters.securityVolumeRangeLow.HasValue)
@@ -101,10 +101,10 @@ namespace Financials.Controllers
                 searchQuery += "securitypercentChangeRangeHigh=" + stockPurOptionResourceParameters.securitypercentChangeRangeHigh;
             }
 
-            if (stockPurOptionResourceParameters.securityPurchaseCheckYearlyPercentRangeLow.HasValue)
+            if (stockPurOptionResourceParameters.priorPurchaseEstimateYearlyPercentRangeLow.HasValue)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "securityPurchaseCheckYearlyPercentRangeLow=" + stockPurOptionResourceParameters.securityPurchaseCheckYearlyPercentRangeLow;
+                searchQuery += "priorPurchaseEstimateYearlyPercentRangeLow=" + stockPurOptionResourceParameters.priorPurchaseEstimateYearlyPercentRangeLow;
             }
 
             if (stockPurOptionResourceParameters.securityPercentDropperType != null && stockPurOptionResourceParameters.securityPercentDropperType != "")
@@ -116,7 +116,7 @@ namespace Financials.Controllers
 
 
 
-        public decimal? securityPurchaseCheckYearlyPercentRangeLow { get; set; }
+        public decimal? priorPurchaseEstimateYearlyPercentRangeLow { get; set; }
 
         public string securityPercentDropperType { get; set; } 
              

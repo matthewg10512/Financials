@@ -14,4 +14,7 @@ export interface Security {
   dividend: Date;
   dividendamount: number;
   earning: string;
+  description: string;
+  iPODate: Date;
+
 }

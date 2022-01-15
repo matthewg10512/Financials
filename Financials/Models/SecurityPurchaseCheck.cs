@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Financials.Models
 {
-    public class SecurityPurchaseCheck
+    public class PriorPurchaseEstimate
     {
         public int Id { get; set; }
         public int SecurityId { get; set; }
@@ -16,6 +16,8 @@ namespace Financials.Models
         public decimal Shares { get; set; }
 
         public decimal PurchasePrice { get; set; }
+        public DateTime FirstPurchaseDate { get; set; }
+        public int PurchaseFrequency { get; set; }
 
     }
 }

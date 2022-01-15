@@ -41,6 +41,10 @@ import { DetailsComponent } from './widget/security-details/details/details.comp
 import { GainLossComponent } from './widget/security-details/gain-loss/gain-loss.component';
 import { StockPurchaseOptionComponent } from './widget/StockPurchaseOption/stock-purchase-option/stock-purchase-option.component';
 import { SpoPeakRangeComponent } from './widget/StockPurchaseOption/spo-peak-range/spo-peak-range.component';
+import { SpoSecPurStatComponent } from './widget/StockPurchaseOption/spo-sec-pur-stat/spo-sec-pur-stat.component';
+import { SpoInvestProjectionComponent } from './widget/StockPurchaseOption/spo-invest-projection/spo-invest-projection.component';
+import { SpoSecDetailComponent } from './widget/StockPurchaseOption/spo-sec-detail/spo-sec-detail.component';
+import { StockScreenerComponent } from './stock-screener/stock-screener.component';
 
 
 //'./widget/historicdDate/update-historical-date.component';
@@ -75,6 +79,10 @@ import { SpoPeakRangeComponent } from './widget/StockPurchaseOption/spo-peak-ran
     GainLossComponent,
     StockPurchaseOptionComponent,
     SpoPeakRangeComponent,
+    SpoSecPurStatComponent,
+    SpoInvestProjectionComponent,
+    SpoSecDetailComponent,
+    StockScreenerComponent,
     
     
   ],
@@ -93,6 +101,8 @@ import { SpoPeakRangeComponent } from './widget/StockPurchaseOption/spo-peak-ran
       { path: 'detail/:id', component: SecurityDetailComponent },
       { path: 'auto-security-trade', component: AutoSecurityTradeComponent },
       { path: 'security-invest-projection', component: SecurityInvestProjectionComponent }
+      ,
+      { path: 'stock-screener', component: StockScreenerComponent }
       
 
 

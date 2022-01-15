@@ -1,92 +1,89 @@
-<div *ngIf="stockPurchaseOptions" style="height:400px;overflow-y:auto">
+<div *ngIf="!stockPurchaseOptions">
+  <shared-loading-data></shared-loading-data>
+</div>
+
+<div *ngIf="stockPurchaseOptions" style="height:600px;overflow-y:auto">
+
+  <button type="button" class="btn btn-primary" data-toggle="modal" (click)="processStockPurchaseOptions()">
+    Refresh
+  </button>
 
 
 
+  <div class="table-responsive" style="height:450px;width:1000px">
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stockPurchaseOptions">
+      <thead>
+        <tr>
+          <th class="cellshort" width="30px">#</th>
+          <th class="celllong" width="300px">
+            Name
+            <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+          </th>
+          <th width="150px">Current Price</th>
+          <th width="150px">
+            Percent Change
+            <i (click)="sortByPercentage()" [ngClass]="!sortPercentDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+          </th>
+          <th width="200px">
+            % from Last High
+            <i (click)="sortByCurPerFromHigh()" [ngClass]="!sortPercentCurPerFromHigh ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+          </th>
+          <th width="250px">% Avg Year Monthly Purchase</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stockPurchaseOption of stockPurchaseOptions;let i = index">
+          <td class="cellshort" width="30px">{{i + 1 }}</td>
+          <td class="celllong" width="300px">
 
+            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#secDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
+              i
+            </button>
+            <span title="{{stockPurchaseOption.security.symbol}}">{{stockPurchaseOption.security.name}}</span>
 
+            <app-spo-sec-detail [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-sec-detail>
 
-  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stockPurchaseOptions">
-    <thead>
-      <tr>
-        <th width="300px">Name</th>
-        <th width="150px">Current Price</th>
-        <th width="150px">Percent Change</th>
-        <th width="150px">Current Peak Range</th>
-        <th width="150px">Open Position Loss</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let stockPurchaseOption of stockPurchaseOptions">
-        <td width="300px">
-          <span title="stockPurchaseOption.security.symbol">{{stockPurchaseOption.security.name}}</span>
+          </td>
+          <td width="150px">
+            {{stockPurchaseOption.security.currentPrice | currency}}
+          </td>
+          <td width="150px">
 
-        </td>
-        <td width="150px">
-          {{stockPurchaseOption.security.currentPrice}}
-        </td>
-        <td width="150px">
+            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#secPurStats' + stockPurchaseOption.security.symbol + purOptionTabNum">
+              i
+            </button>
+            {{stockPurchaseOption.security.percentageChange}}
+            <app-spo-sec-pur-stat [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-sec-pur-stat>
+          </td>
+          <td width="200px">
 
+            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#peakRangeDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
+              i
+            </button>
+            <!-- Select a Security Modal -->
+            {{(((stockPurchaseOption.security.currentPrice - stockPurchaseOption.currentPeakRange.lastOpenHigh ) / stockPurchaseOption.currentPeakRange.lastOpenHigh) * 100) | number : '1.1-1'}}
+            <app-spo-peak-range [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-peak-range>
 
-          <button type="button" class="btn btn-primary" placement="left"
-                  [ngbPopover]="popContent" popoverTitle="Percentage Statistics">
-            i
-          </button>
-          {{stockPurchaseOption.security.percentageChange}}
-          <ng-template #popContent>
-            <table class="table">
-              <tr>
-                <td>
-                  Average Drop:
-                </td>
-                <td>
-                  {{stockPurchaseOption.securityPercentageStatistic.averageDrop}}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Top 15 Droppers:
-                </td>
-                <td>
-                  {{stockPurchaseOption.securityPercentageStatistic.percent15}}
-                </td>
-              </tr>
-              <tr>
+          </td>
+          <td width="250px">
 
-                <td>
-                  Top 10 Droppers:
-                </td>
-                <td>
-                  {{stockPurchaseOption.securityPercentageStatistic.percent10}}
-                </td>
-              </tr>
-              <tr>
+            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#invProjection' + stockPurchaseOption.security.symbol + purOptionTabNum">
+              i
+            </button>
+            {{
+          ((((stockPurchaseOption.priorPurchaseEstimate.shares * stockPurchaseOption.security.currentPrice) - stockPurchaseOption.priorPurchaseEstimate.purchasePrice)
+          / stockPurchaseOption.priorPurchaseEstimate.purchasePrice) * 100 ) / ( stockPurchaseOption.priorPurchaseEstimate.shares / 12)
+          | number : '1.1-1'
+            }}
+            ({{stockPurchaseOption.priorPurchaseEstimate.shares}})
 
-                <td>
-                  Top 5 Droppers:
-                </td>
-                <td>
-                  {{stockPurchaseOption.securityPercentageStatistic.percent5}}
-                </td>
-              </tr>
-            </table>
+            <app-spo-invest-projection [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-invest-projection>
 
-
-          </ng-template>
-        </td>
-        <td width="150px">
-
-          <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#peakRangeDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
-            i
-          </button>
-          <!-- Select a Security Modal -->
-          <app-spo-peak-range [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-peak-range>
-
-        </td>
-        <td width="150px">
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 
@@ -133,7 +130,7 @@
           rangeLength: number;
           rangeDateStart: Date;
           peakRangeCurrentPercentage: number;
-  securityPurchaseCheck: SecurityPurchaseCheck;
+  priorPurchaseEstimate: PriorPurchaseEstimate;
           id: number;
           securityId: number;
           dateCreated: Date;

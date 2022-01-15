@@ -33,6 +33,8 @@ namespace Financials
         public bool preferred { get; set; }
         public decimal? PriorDayOpen { get; set; }
         public decimal? PercentageChange { get; set; }
+        public string Description { get; set; }
+        public DateTime? IPODate { get; set; }
 
     }
 }

@@ -7,15 +7,15 @@ namespace Financials.ResourceParameters
 {
     public class StockPurchaseOptionsResourceParameters
     {
-
-        public int? securityPurchaseCheckSharesRangeLow { get; set; } // 60
+        
+        public int? priorPurchaseEstimateSharesRangeLow { get; set; } // 60
         public int? securityVolumeRangeLow { get; set; } //100000
         public DateTime? securityLastModifiedRangeLow { get; set; }//Prior days
 
         public decimal? securitypercentChangeRangeHigh { get; set; } //0
 
 
-        public decimal? securityPurchaseCheckYearlyPercentRangeLow { get; set; }
+        public decimal? priorPurchaseEstimateYearlyPercentRangeLow { get; set; }
 
         public string securityPercentDropperType { get; set; }
         /*

@@ -1,11 +1,11 @@
 export class StockPurchaseOptionsResourceParameters {
 
 
-  securityPurchaseCheckSharesRangeLow: string;
+  priorPurchaseEstimateSharesRangeLow: string;
   securityVolumeRangeLow: string;
   securityLastModifiedRangeLow: string;
   securitypercentChangeRangeHigh: string;
-  securityPurchaseCheckYearlyPercentRangeLow: string;
+  priorPurchaseEstimateYearlyPercentRangeLow: string;
   securityPercentDropperType: string;
-
+  
 }

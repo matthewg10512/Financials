@@ -13,7 +13,7 @@ import { HistoricalPrice } from '../interfaces/historicalprice';
 import { DatePipe } from '@angular/common';
 import { PeakRangeDetail } from '../interfaces/peakrangedetail';
 import { CurrentPeakRange } from '../interfaces/currentpeakranges';
-import { SecurityPurchaseCheck } from '../interfaces/SecurityPurchaseCheck';
+import { PriorPurchaseEstimate } from '../interfaces/PriorPurchaseEstimate';
 import { SecurityPercentageStatistic } from '../interfaces/SecurityPercentageStatistic';
 
 
@@ -27,7 +27,7 @@ import { SecurityPercentageStatistic } from '../interfaces/SecurityPercentageSta
 })
 export class SecurityDetailComponent implements OnInit {
   lineChartData: ChartDataSets[] = [
-    { data: [85, 72, 78, 75, 71.1, 71.2], label: 'Crude oil prices' },
+    { data: [85, 72, 78, 75, 71.1, 71.2], label: 'Stock History' },
   ];
 
   lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
@@ -58,7 +58,7 @@ export class SecurityDetailComponent implements OnInit {
   
   btnUpdateSave = false;
 
-  secPurCheck: SecurityPurchaseCheck;
+  priorPurEst: PriorPurchaseEstimate;
 
   constructor(
     private route: ActivatedRoute,
@@ -118,8 +118,8 @@ export class SecurityDetailComponent implements OnInit {
           }
         });
 
-        this.prefSecurityService.GetSecurityPurchaseCheck(security.id).subscribe(securityPurchaseCheck => {
-          this.secPurCheck = securityPurchaseCheck;
+        this.prefSecurityService.GetPriorPurchaseEstimate(security.id).subscribe(priorPurchaseEstimate => {
+          this.priorPurEst = priorPurchaseEstimate;
         });
 
         this.prefSecurityService.GetSecurityPercentageStatistic(security.id).subscribe(securityPercentageStatistic => {
@@ -251,7 +251,7 @@ export class SecurityDetailComponent implements OnInit {
  
   SetHistoricalChart(): void {
     var historicPriceCount = this.historicalPrices.length;
-    if (historicPriceCount==0) {
+    if (historicPriceCount == 0) {
       return;
     }
     var dataDetails = new Array();

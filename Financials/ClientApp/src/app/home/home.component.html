@@ -17,7 +17,7 @@
 
 
     <div class="col-md-4">
-      <top-movers></top-movers>
+      <!--<top-movers></top-movers>-->
 
       <widget-percentage-changers></widget-percentage-changers>
       <!--    <update-security></update-security>
@@ -67,7 +67,7 @@
         
 
         </div>
-        <div class="card-body" style="height:450px;">
+        <div class="card-body" style="height:700px;">
 
 
 
@@ -79,26 +79,56 @@
                 <app-stock-purchase-option [stockPurchaseOptResourceParams]="averageDropLowParam" [purOptionTabNum]="1"></app-stock-purchase-option>
               </ng-template>
             </li>
-            <li ngbNavItem [destroyOnHide]="false">
+
+            <li ngbNavItem [destroyOnHide]="true">
+              <a ngbNavLink>Average Drop Current</a>
+              <ng-template ngbNavContent>
+                <app-stock-purchase-option [stockPurchaseOptResourceParams]="averageDropCurrentParam" [purOptionTabNum]="3"></app-stock-purchase-option>
+              </ng-template>
+            </li>
+            <li ngbNavItem [destroyOnHide]="true">
               <a ngbNavLink>15 Percent Low</a>
               <ng-template ngbNavContent>
                 <app-stock-purchase-option [stockPurchaseOptResourceParams]="percent15DropLowParam" [purOptionTabNum]="2"></app-stock-purchase-option>
               </ng-template>
             </li>
 
-            <li ngbNavItem [destroyOnHide]="false">
-              <a ngbNavLink>Average Drop Current</a>
-              <ng-template ngbNavContent>
-                <app-stock-purchase-option [stockPurchaseOptResourceParams]="averageDropCurrentParam" [purOptionTabNum]="3"></app-stock-purchase-option>
-              </ng-template>
-            </li>
-            
-            <li ngbNavItem [destroyOnHide]="false">
+            <li ngbNavItem [destroyOnHide]="true">
               <a ngbNavLink>15 Percent Current</a>
               <ng-template ngbNavContent>
                 <app-stock-purchase-option [stockPurchaseOptResourceParams]="percent15DropCurrentParam" [purOptionTabNum]="4"></app-stock-purchase-option>
               </ng-template>
             </li>
+
+
+            <li ngbNavItem [destroyOnHide]="true">
+              <a ngbNavLink>10 Percent Low</a>
+              <ng-template ngbNavContent>
+                <app-stock-purchase-option [stockPurchaseOptResourceParams]="percent10DropLowParam" [purOptionTabNum]="5"></app-stock-purchase-option>
+              </ng-template>
+            </li>
+
+            <li ngbNavItem [destroyOnHide]="true">
+              <a ngbNavLink>10 Percent Current</a>
+              <ng-template ngbNavContent>
+                <app-stock-purchase-option [stockPurchaseOptResourceParams]="percent10DropCurrentParam" [purOptionTabNum]="6"></app-stock-purchase-option>
+              </ng-template>
+            </li>
+
+            <li ngbNavItem [destroyOnHide]="true">
+              <a ngbNavLink>5 Percent Low</a>
+              <ng-template ngbNavContent>
+                <app-stock-purchase-option [stockPurchaseOptResourceParams]="percent5DropLowParam" [purOptionTabNum]="7"></app-stock-purchase-option>
+              </ng-template>
+            </li>
+
+            <li ngbNavItem [destroyOnHide]="true">
+              <a ngbNavLink>5 Percent Current</a>
+              <ng-template ngbNavContent>
+                <app-stock-purchase-option [stockPurchaseOptResourceParams]="percent5DropCurrentParam" [purOptionTabNum]="8"></app-stock-purchase-option>
+              </ng-template>
+            </li>
+
           </ul>
           <div [ngbNavOutlet]="nav"></div>
 

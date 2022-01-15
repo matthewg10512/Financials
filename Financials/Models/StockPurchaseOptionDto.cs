@@ -11,7 +11,9 @@ namespace Financials.Models
         public SecurityPercentageStatistic SecurityPercentageStatistic { get; set; }
         public CurrentPeakRange CurrentPeakRange { get; set; }
 
-        public SecurityPurchaseCheck SecurityPurchaseCheck { get; set; }
+        public PriorPurchaseEstimate PriorPurchaseEstimate { get; set; }
+
+        public List<PeakRangeDetail> PeakRangeDetail { get; set; }
 
     }
 }

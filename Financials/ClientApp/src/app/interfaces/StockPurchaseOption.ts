@@ -1,7 +1,8 @@
 import { Security } from "./security";
 import { SecurityPercentageStatistic } from "./SecurityPercentageStatistic";
 import { CurrentPeakRange } from "./currentpeakranges";
-import { SecurityPurchaseCheck } from "./SecurityPurchaseCheck";
+import { PriorPurchaseEstimate } from "./PriorPurchaseEstimate";
+import { PeakRangeDetail } from "./peakrangedetail";
 
 export interface StockPurchaseOption {
 
@@ -9,5 +10,6 @@ export interface StockPurchaseOption {
   security: Security;
   securityPercentageStatistic: SecurityPercentageStatistic;
   currentPeakRange: CurrentPeakRange;
-  securityPurchaseCheck: SecurityPurchaseCheck;
+  priorPurchaseEstimate: PriorPurchaseEstimate;
+  peakRangeDetail: PeakRangeDetail[];
 }

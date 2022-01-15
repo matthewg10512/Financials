@@ -1,72 +1,73 @@
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="investProjectionStock.investProjections">
-  <thead>
-    <tr>
-      <th width="150px">Projection Type</th>
-      <th width="100px"># Shares</th>
-      <th width="100px">Cost</th>
-      <th width="100px">Avg Share Cost</th>
+<div class="table-responsive" >
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="investProjectionStock.investProjections">
+    <thead>
+      <tr>
+        <th width="150px">Projection Type</th>
+        <th width="100px"># Shares</th>
+        <th width="100px">Cost</th>
+        <th width="100px">Avg Share Cost</th>
 
-      <th width="150px">Mkt Value</th>
-      <th width="150px">Total Dividend</th>
-      <th width="150px">Next # of Shares</th>
-      <th width="150px">Next Pur Date</th>
+        <th width="150px">Mkt Value</th>
+        <th width="150px">Total Dividend</th>
+        <th width="150px">Next # of Shares</th>
+        <th width="150px">Next Pur Date</th>
 
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let investProjection of investProjectionStock.investProjections">
-      <td width="150px">{{ investProjection.projectionType }}</td>
-      <td width="100px">{{ investProjection.GetTotalShares()| number: '1.1-2'}}</td>
-      <!--numberOfShares-->
-      <td width="100px">
-        <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#securityProjectModal' + investProjectionStock.securityRecord.symbol + investProjection.projectionTypeId">
-          i
-        </button>
-        {{ investProjection.GetTotalPurchaseAmount() | number: '1.0-0'}}
-        <!--Modal Purcahase Amount Details-->
-        <app-yearly-breakdown [investProjectionStock]="investProjectionStock" [investProjection]="investProjection"></app-yearly-breakdown>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let investProjection of investProjectionStock.investProjections">
+        <td width="150px">{{ investProjection.projectionType }}</td>
+        <td width="100px">{{ investProjection.GetTotalShares()| number: '1.1-2'}}</td>
+        <!--numberOfShares-->
+        <td width="100px">
+          <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#securityProjectModal' + investProjectionStock.securityRecord.symbol + investProjection.projectionTypeId">
+            i
+          </button>
+          {{ investProjection.GetTotalPurchaseAmount() | number: '1.0-0'}}
+          <!--Modal Purcahase Amount Details-->
+          <app-yearly-breakdown [investProjectionStock]="investProjectionStock" [investProjection]="investProjection"></app-yearly-breakdown>
 
-      </td>
-      <td width="100px">{{ investProjection.GetAverageCost() | number: '1.1-2'}}</td>
-
-
-      <td width="150px">
-        {{ investProjection.GetTotalShares() * investProjectionStock.securityRecord.currentPrice | number: '1.1-2' }}
-        (
-        {{ ((( investProjectionStock.securityRecord.currentPrice - investProjection.GetAverageCost() ) / investProjection.GetAverageCost()) * 100) | number:'1.1-2'}}
-        )
-      </td>
-      <td width="150px">{{ investProjection.GetTotalDividendProfit() | number:'1.1-2'}}</td>
-      <td width="150px">
-
-        <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#purchaseDetailModal' + investProjectionStock.securityRecord.symbol + investProjection.projectionTypeId">
-          i
-        </button>
-        <span title="${{ (investProjection.getSharePurchaseRecommend() * investProjection.recommendCurrentPurchaseLevel) * investProjectionStock.securityRecord.currentPrice | number:'1.1-2'}}">{{ investProjection.getSharePurchaseRecommend() * investProjection.recommendCurrentPurchaseLevel | number:'1.1-2'}}</span>
-          
-      <app-purchase-detail [investProjectionStock]="investProjectionStock" [investProjection]="investProjection"></app-purchase-detail>
+        </td>
+        <td width="100px">{{ investProjection.GetAverageCost() | number: '1.1-2'}}</td>
 
 
+        <td width="150px">
+          {{ investProjection.GetTotalShares() * investProjectionStock.securityRecord.currentPrice | number: '1.1-2' }}
+          (
+          {{ ((( investProjectionStock.securityRecord.currentPrice - investProjection.GetAverageCost() ) / investProjection.GetAverageCost()) * 100) | number:'1.1-2'}}
+          )
+        </td>
+        <td width="150px">{{ investProjection.GetTotalDividendProfit() | number:'1.1-2'}}</td>
+        <td width="150px">
+
+          <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#purchaseDetailModal' + investProjectionStock.securityRecord.symbol + investProjection.projectionTypeId">
+            i
+          </button>
+          <span title="${{ (investProjection.getSharePurchaseRecommend() * investProjection.recommendCurrentPurchaseLevel) * investProjectionStock.securityRecord.currentPrice | number:'1.1-2'}}">{{ investProjection.getSharePurchaseRecommend() * investProjection.recommendCurrentPurchaseLevel | number:'1.1-2'}}</span>
+
+          <app-purchase-detail [investProjectionStock]="investProjectionStock" [investProjection]="investProjection"></app-purchase-detail>
 
 
-      </td>
-      <td width="150px">
-        <span title="Last Purchase {{investProjection.lastPurchaseDate | date:'shortDate'}}">
-          {{investProjection.nextDate | date:'shortDate'}}
-        </span>
 
-      </td>
-    </tr>
-  </tbody>
-</table>
 
-<!--This was the last current purchase share level made
-{ { investProjection.currentPurchaseShares | number:'1.1-2'}}
-(
-This is the max number share purchase made during the timespan
-{ { investProjection.maxNumberSharePurchase | number:'1.1-2'}}
-)
-  -->
+        </td>
+        <td width="150px">
+          <span title="Last Purchase {{investProjection.lastPurchaseDate | date:'shortDate'}}">
+            {{investProjection.nextDate | date:'shortDate'}}
+          </span>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <!--This was the last current purchase share level made
+  { { investProjection.currentPurchaseShares | number:'1.1-2'}}
+  (
+  This is the max number share purchase made during the timespan
+  { { investProjection.maxNumberSharePurchase | number:'1.1-2'}}
+  )
+    -->
 
 
 

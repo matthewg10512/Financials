@@ -25,7 +25,7 @@
             <li ngbNavItem [destroyOnHide]="false">
               <a ngbNavLink>Details</a>
               <ng-template ngbNavContent>
-                <app-details [security]="security" [secPurCheck]="secPurCheck"></app-details>
+                <app-details [security]="security" [priorPurEst]="priorPurEst"></app-details>
               </ng-template>
             </li>
 
@@ -77,23 +77,26 @@
                     <div *ngIf="!historicalPrices">
                       <shared-loading-data></shared-loading-data>
                     </div>
-                    <div style="padding-bottom:20px;align-content:center;" *ngIf="historicalPrices" class="chart-wrapper">
-                      <div style="height:80%;width:80%;">
-                        <canvas baseChart
-                                [datasets]="lineChartData"
-                                [labels]="lineChartLabels"
-                                [options]="lineChartOptions"
-                                [colors]="lineChartColors"
-                                [legend]="lineChartLegend"
-                                [chartType]="lineChartType"
-                                [plugins]="lineChartPlugins">
-                        </canvas>
+                    <div  *ngIf="historicalPrices.length ==0">
+                      No History Found
                       </div>
+                      <div style="padding-bottom:20px;align-content:center;" *ngIf="historicalPrices.length >0" class="chart-wrapper">
+                        <div style="height:80%;width:80%;">
+                          <canvas baseChart
+                                  [datasets]="lineChartData"
+                                  [labels]="lineChartLabels"
+                                  [options]="lineChartOptions"
+                                  [colors]="lineChartColors"
+                                  [legend]="lineChartLegend"
+                                  [chartType]="lineChartType"
+                                  [plugins]="lineChartPlugins">
+                          </canvas>
+                        </div>
+                      </div>
+
+
                     </div>
-
-
                   </div>
-                </div>
 
 
 

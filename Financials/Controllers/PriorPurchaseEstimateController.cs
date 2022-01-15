@@ -15,14 +15,14 @@ namespace Financials.Controllers
 
     [ApiController]
     [Route("/security/{securityid}/[controller]")]
-    public class SecurityPurchaseCheckController : ControllerBase
+    public class PriorPurchaseEstimateController : ControllerBase
     {
 
 
 
         readonly IConfiguration _configuration;
         readonly IAuthentication _authentication;
-        public SecurityPurchaseCheckController(IConfiguration configuration, IAuthentication authentication)
+        public PriorPurchaseEstimateController(IConfiguration configuration, IAuthentication authentication)
         {
             _configuration = configuration;
             _authentication = authentication;
@@ -33,15 +33,15 @@ namespace Financials.Controllers
 
 
         
-        public async Task<SecurityPurchaseCheck> GetAsync(int securityId)
+        public async Task<PriorPurchaseEstimate> GetAsync(int securityId)
         {
-            SecurityPurchaseCheck info = new SecurityPurchaseCheck();
+            PriorPurchaseEstimate info = new PriorPurchaseEstimate();
             
             _authentication.AuthenticationToken(_configuration);
             using (var client = new HttpClient())
             {
                 string apiUrl = _configuration.GetValue<string>("APIURL");
-                var url = apiUrl + "securities/ " + securityId.ToString() + "/securitypurchasechecks";
+                var url = apiUrl + "securities/ " + securityId.ToString() + "/PriorPurchaseEstimates";
 
 
                 _authentication.SetBearerToken(client, _configuration);
@@ -60,7 +60,7 @@ namespace Financials.Controllers
 
                     try
                     {
-                        info = JsonConvert.DeserializeObject<SecurityPurchaseCheck>(responseString);
+                        info = JsonConvert.DeserializeObject<PriorPurchaseEstimate>(responseString);
 
                     }
                     catch (Exception ex)

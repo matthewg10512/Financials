@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var investmentprojectionforupdatedto = /** @class */ (function () {
-    function investmentprojectionforupdatedto() {
+var investmentprojectionforupdate = /** @class */ (function () {
+    function investmentprojectionforupdate() {
     }
-    return investmentprojectionforupdatedto;
+    return investmentprojectionforupdate;
 }());
-exports.investmentprojectionforupdatedto = investmentprojectionforupdatedto;
-//# sourceMappingURL=investmentprojectionforupdatedto.js.map
+exports.investmentprojectionforupdate = investmentprojectionforupdate;
+//# sourceMappingURL=investmentprojectionforupdate.js.map

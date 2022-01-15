@@ -21,21 +21,39 @@
           </tr>
           <tr>
             <td>
-              Current Range Length:
+              Last High Date:
             </td>
             <td>
-              <span title="{{stockPurchaseOption.currentPeakRange.dateModified}}">
-                {{stockPurchaseOption.currentPeakRange.rangeLength}}
-              </span>
+              {{stockPurchaseOption.currentPeakRange.rangeDateStart | date: 'MM/dd/yyyy'}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Percentage from High:
+            </td>
+            <td>
+              {{
+(((stockPurchaseOption.security.currentPrice - stockPurchaseOption.currentPeakRange.lastOpenHigh ) / stockPurchaseOption.currentPeakRange.lastOpenHigh) * 100) | number : '1.1-1'
+              }}
+
             </td>
           </tr>
           <tr>
 
             <td>
-              Current Percentage:
+              Last Open High:
             </td>
             <td>
-              {{stockPurchaseOption.currentPeakRange.peakRangeCurrentPercentage}}
+              {{stockPurchaseOption.currentPeakRange.lastOpenHigh | currency}}
+            </td>
+          </tr>
+          <tr>
+
+            <td>
+              Current Price:
+            </td>
+            <td>
+              {{stockPurchaseOption.security.currentPrice | currency}}
             </td>
           </tr>
           <tr>
@@ -49,10 +67,31 @@
           </tr>
         </table>
 
-
-
-
-
+        Prior Peak Ranges
+        <div class="table-responsive">
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stockPurchaseOption.peakRangeDetail">
+            <thead>
+              <tr>
+                <th style="width:150px">Range</th>
+                <th style="width:100px"># of Instances</th>
+                <th style="width:100px">Average Range</th>
+                <th style="width:100px">Max Range</th>
+                <th style="width:100px">Max Start Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pRange of stockPurchaseOption.peakRangeDetail">
+                <td style="width:150px" [ngClass]="{'class_name': pRange?.rangeName == stockPurchaseOption.currentPeakRange.rangeName  }">
+                  {{ pRange?.rangeName }}
+                </td>
+                <td style="width:100px">{{ pRange?.rangeCount | number : '1.1-1'}}</td>
+                <td style="width:100px">{{ pRange?.rangeLength / pRange?.rangeCount | number : '1.1-1'}}</td>
+                <td style="width:100px">{{ pRange?.maxRangeLength | number : '1.1-1'}}</td>
+                <td style="width:100px">{{ pRange?.maxRangeDateStart | date: 'MM/dd/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
       </div>
       <div class="modal-footer">
