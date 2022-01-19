@@ -72,13 +72,13 @@ export class InvestProjection {
         return this.recommendYearlyShare / (maxIndexValue * purchaseHistoryLen);
 
       }
-
+      /*
       var purchaseHistoryLength = this.purchaseYearlyAmount[0].sharePurchaseHistory.length;
       if (purchaseHistoryLength) {
         return this.recommendYearlyShare / purchaseHistoryLength;
       }
       
-
+      */
 
     }
 

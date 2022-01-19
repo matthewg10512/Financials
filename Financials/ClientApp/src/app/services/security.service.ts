@@ -28,6 +28,11 @@ import { SecurityPercentageStatistic } from '../interfaces/SecurityPercentageSta
 import { StockPurchaseOption } from '../interfaces/StockPurchaseOption';
 import { StockPurchaseOptionsResourceParameters } from '../interfaces/resourceparameters/StockPurchaseOptionsResourceParameters';
 import { PriorPurchaseEstimate } from '../interfaces/PriorPurchaseEstimate';
+import { StockScreenerRecordDto } from '../interfaces/stockscreener/StockScreenerRecordDto';
+import { ScreenerCriteria } from '../interfaces/stockscreener/ScreenerCriteria';
+import { ScreeneCriteriaDetailDto } from '../interfaces/stockscreener/ScreeneCriteriaDetailDto';
+import { StockScreenerSearchResourceParameters } from '../interfaces/resourceparameters/StockScreenerSearchResourceParameters';
+import { StockScreener } from '../interfaces/stockscreener/StockScreener';
 
 //import { MessageService } from './message.service';
 
@@ -146,7 +151,73 @@ export class SecurityService {
     return this.http.get<SecurityPercentageStatistic>(this.baseUrl + 'security/' + securityId + '/SecurityPercentageStatistic');
   }
 
+
+  GetStockScreenerResultsFromId(stockScreenerId: number): Observable<any>{
+    let screenerUrl: string = this.baseUrl + 'stockscreener/' + stockScreenerId +'/StockScreenerResults' ;
+    return this.http.get<StockPurchaseOption>(screenerUrl);
+  }
+
+
+  GetStockScreeners(): Observable<any> {
+    let screenerUrl: string = this.baseUrl + 'StockScreener/SearchStockScreeners';
+    return this.http.get<StockScreener[]>(screenerUrl);
+  }
+
   
+  GetStockScreenerResult(stockScreenerSearchCritieria: StockScreenerSearchResourceParameters): Observable<any> {
+    
+    //return this.http.get<StockPurchaseOption>(screenerUrl);
+
+
+    const params = null; //new HttpParams().set('securityId', '' + val);
+    let screenerUrl: string = this.baseUrl + 'stockscreener/GetStockScreenerResults';
+
+    let searchQuery: string = '';
+    var i = 0;
+    for (var name in stockScreenerSearchCritieria) {
+     // alert(name);
+     // var value = obj[name];
+     // alert(value);
+      if (stockScreenerSearchCritieria[name] != '') {
+        if (i > 0) {
+          searchQuery += '&';
+        } else {
+          searchQuery += '?';
+        }
+        var value = stockScreenerSearchCritieria[name];
+        searchQuery += name + '=' + stockScreenerSearchCritieria[name];
+        i++
+      }
+     
+    }
+
+    const body = JSON.stringify(stockScreenerSearchCritieria);
+    //new URLSearchParams(stockScreenerSearchCritieria[0]); 
+    return this.http.get<any>(screenerUrl + searchQuery);
+
+
+  }
+  
+
+
+  GetStockScreenerRecord(stockScreenerId: number): Observable<any> {
+    let screenerUrl: string = this.baseUrl + 'StockScreener/' + stockScreenerId;
+    return this.http.get<StockScreenerRecordDto>(screenerUrl);
+  }
+
+
+  UpsertStockScreenerRecord(stockScreenerRecord: StockScreenerRecordDto): Observable<any> {
+  //  let screenerUrl: string = this.baseUrl + 'StockScreener/' + stockScreenerId;
+    //return this.http.get<StockScreenerRecordDto>(screenerUrl);
+
+
+    const params = null; //new HttpParams().set('securityId', '' + val);
+    stockScreenerRecord.stockScreener
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    const body = JSON.stringify(stockScreenerRecord);
+    return this.http.put<any>(this.baseUrl + 'StockScreener', body, { headers, params });
+
+  }
 
   updateDividends(securityId: number): Observable<any> {
 
@@ -212,6 +283,10 @@ export class SecurityService {
   }
 
 
+  GetAllScreenerCriterias(): Observable<any> {
+
+    return this.http.get<ScreenerCriteria[]>(this.baseUrl + 'ScreenerCriteria/GetAllScreenerCriterias');
+  }
 
   earningsPercentage(securityId: number): Observable<EarningSecurityPercentage[]> {
 

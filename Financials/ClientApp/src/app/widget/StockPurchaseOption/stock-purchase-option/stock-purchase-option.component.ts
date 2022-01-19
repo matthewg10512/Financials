@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { StockPurchaseOptionsResourceParameters } from '../../../interfaces/resourceparameters/StockPurchaseOptionsResourceParameters';
 import { SecurityService } from '../../../services/security.service';
 import { StockPurchaseOption } from '../../../interfaces/StockPurchaseOption';
+import { ScreeneCriteriaDetailDto } from '../../../interfaces/stockscreener/ScreeneCriteriaDetailDto';
 
 @Component({
   selector: 'app-stock-purchase-option',
@@ -12,6 +13,10 @@ export class StockPurchaseOptionComponent implements OnInit {
   
   private stockPurchaseOptions: StockPurchaseOption[];
   @Input() stockPurchaseOptResourceParams: StockPurchaseOptionsResourceParameters;
+
+
+  @Input() stockScreenerSearchCritieria: ScreeneCriteriaDetailDto[];
+
   @Input() purOptionTabNum: number;
   sortNameDesc = false;
   sortPercentDesc = false;
@@ -26,6 +31,14 @@ export class StockPurchaseOptionComponent implements OnInit {
 
 
   processStockPurchaseOptions(): void {
+
+
+
+
+    //stockScreenerSearchCritieria
+
+    
+
     this.stockPurchaseOptions = null;
     this.securityService.getStockPurchaseOptions(this.stockPurchaseOptResourceParams).subscribe(stockPurchaseOptions => {
       this.stockPurchaseOptions = stockPurchaseOptions;
@@ -36,7 +49,7 @@ export class StockPurchaseOptionComponent implements OnInit {
       }
     });
     
-
+    
 
   }
 
