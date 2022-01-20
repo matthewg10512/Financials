@@ -38,25 +38,26 @@
                 <button (click)="UpsertStockScreenerRecord()">
                   {{stockScreenerRec.stockScreener.id == 0 ? 'Save New' : 'Save Changes'}}
                 </button>
-              </div>              
+
+                <button (click)="UpsertStockScreenerRecord()">
+                  {{stockScreenerRec.stockScreener.id == 0 ? 'Clear' : 'Cancel'}}
+                </button>
+              </div>
 
               <br />
               <button (click)="RunScreenerSearch()">Run Search</button>
 
 
               <div class="card-body" style="height:450px;overflow-y:auto">
-                <div *ngFor="let screenerCritProp of screenerCritProps">
-                </div>
 
-                
+
                 <table *ngIf="stockScreenerRec">
                   <tr>
                     <td>
                       Screener Name
                     </td>
                     <td>
-                      <input type="text" class="form-control" id="{{stockScreenerName
-                  }}"
+                      <input type="text" class="form-control" id="stockScreenerName"
                              [(ngModel)]="stockScreenerRec.stockScreener.name">
                     </td>
                   </tr>
@@ -66,10 +67,34 @@
                     </td>
                     <td>
 
-                      <input type="number" class="form-control" id="{{stockScreenAlertType}}"
+                      <input type="number" class="form-control" id="stockScreenAlertType"
                              [(ngModel)]="stockScreenerRec.stockScreener.alertType">
                     </td>
+                    </tr>
+                  <tr>
+                    <td>
+                      AutoTrade
+                    </td>
+                    <td style="text-align:center">
+
+                      <input type="checkbox" class="custom-control-input" id="stockScreenAutoTrade"
+                             [(ngModel)]="stockScreenerRec.stockScreener.autoTrade">
+                      <label class="custom-control-label" for="stockScreenAutoTrade"></label>
+                    </td>
+
                   </tr>
+                  <tr>
+                    <td>
+                      Only Preferred Stocks
+                    </td>
+                    <td style="text-align:center">
+
+                      <input type="checkbox" class="custom-control-input" id="stockScreenPreferredStocks"
+                             [(ngModel)]="stockScreenerRec.stockScreener.onlyPreferred">
+                      <label class="custom-control-label" for="stockScreenPreferredStocks"></label>
+                    </td>
+                  </tr>
+                  
                 </table>
 
 
@@ -78,7 +103,7 @@
 
 
 
-                <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="screenerCritProps">
+                <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="screenerCritierias">
                   <thead>
                     <tr>
                       <th width="300px">Search</th>
@@ -86,37 +111,37 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let screenerCritProp of screenerCritProps">
+                    <tr *ngFor="let screenerCritieria of screenerCritierias">
                       <td width="300px">
-                        {{criteriaNames[screenerCritProp]}}
+                        {{screenerCritieria.criteriaName}}
+
 
                       </td>
                       <td width="150px">
-                        <div *ngIf="screenerCritProp=='percentDropType'">
-                          <!--(change)="onInvestProjectionChange(t.value)"-->
-                          <select name="percentDropTypesList" id="info" #t [(ngModel)]="searchObjects[screenerCritProp]">
+                        
+
+                        <div *ngIf="screenerCritieria.jsonObjectName=='percentDropType'">
+    <!--(change)="onInvestProjectionChange(t.value)"-->
+                          <select name="percentDropTypesList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
                             <option *ngFor="let option of percentDropTypesList" [value]="option.id">{{option.name}}</option>
                           </select>
-
                         </div>
-                        <div *ngIf="screenerCritProp=='calculatedPercentDropType'">
-                          <select name="calculatedPercentDropTypeList" id="info" #t [(ngModel)]="searchObjects[screenerCritProp]">
+                        <div *ngIf="screenerCritieria.jsonObjectName=='calculatedPercentDropType'">
+                          <select name="calculatedPercentDropTypeList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
                             <option *ngFor="let option of calculatedPercentDropTypeList" [value]="option.id">{{option.name}}</option>
                           </select>
                         </div>
-                        <div *ngIf="!(screenerCritProp=='percentDropType') && !(screenerCritProp=='calculatedPercentDropType')">
-                          <input type="text" class="form-control" id="{{screenerCritProp}}"
-                                 [(ngModel)]="searchObjects[screenerCritProp]">
+                        <div *ngIf="!(screenerCritieria.jsonObjectName=='percentDropType') && !(screenerCritieria.jsonObjectName=='calculatedPercentDropType')">
+                          <input type="text" class="form-control" id="{{screenerCritieria.jsonObjectName}}"
+                                 [(ngModel)]="screenerCritieria.value">
                         </div>
-
-
                       </td>
 
 
 
-                    </tr>
-                  </tbody>
-                </table>
+              </tr>
+              </tbody>
+              </table>
 
 
 
@@ -126,7 +151,7 @@
 
 
 
-              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -156,10 +181,10 @@
 
 
         </div>
-        <div class="card-body" style="height:450px;">
+        <div class="card-body" style="height:750px;">
 
 
-          <app-stock-purchase-option [stockPurchaseOptResourceParams]="stockScreenerSPO" [purOptionTabNum]="8"></app-stock-purchase-option>
+          <app-stock-purchase-option [stockScreenerSearchResourceParameters]="stockScreenerParams" [stockScreenerSearchCritieria]="screenerCritierias" [purOptionTabNum]="8"></app-stock-purchase-option>
 
 
 

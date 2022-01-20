@@ -5,4 +5,5 @@ export class ScreenerCriteria {
   description: string;
   jsonObjectName: string;
   objectType: string;
+  value: string;
 }

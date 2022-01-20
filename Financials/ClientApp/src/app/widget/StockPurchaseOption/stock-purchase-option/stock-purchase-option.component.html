@@ -1,12 +1,13 @@
 <div *ngIf="!stockPurchaseOptions">
   <shared-loading-data></shared-loading-data>
 </div>
+<button type="button" class="btn btn-primary" data-toggle="modal" (click)="processStockPurchaseOptions()">
+  Refresh
+</button>
 
 <div *ngIf="stockPurchaseOptions" style="height:600px;overflow-y:auto">
 
-  <button type="button" class="btn btn-primary" data-toggle="modal" (click)="processStockPurchaseOptions()">
-    Refresh
-  </button>
+  
 
 
 

@@ -15,16 +15,23 @@ import { StockScreenerSearchDetail } from '../interfaces/stockscreener/StockScre
   styleUrls: ['./stock-screener.component.css']
 })
 export class StockScreenerComponent implements OnInit {
-  public stockScreenerSPO: StockPurchaseOptionsResourceParameters;
-  searchObjects: {} = {};
-  criteriaNames: {} = {};
-  percentDropTypesList: any[]= [];
+
+  percentDropTypesList: any[] = [];
   calculatedPercentDropTypeList: any[] = [];
+
+  public stockScreenerSPO: StockPurchaseOptionsResourceParameters;
+
+  screenerCritierias: ScreenerCriteria[];
+  
+  
+  
   stockOptions: StockPurchaseOption[];
   stockScreenerRec: StockScreenerRecordDto;
-  screenerCritProps: string[] =[];
-  screenerCritierias: ScreenerCriteria[];
+
+
+  
   stockScreeners: StockScreener[];
+  stockScreenerParams: StockScreenerSearchResourceParameters = new StockScreenerSearchResourceParameters();
   constructor(private securityService: SecurityService) { }
 
   ngOnInit() {
@@ -69,12 +76,6 @@ export class StockScreenerComponent implements OnInit {
     percentDropDayLow.name = 'Day Low';
     this.percentDropTypesList.push(percentDropDayLow);
 
-
-
-
-    
-
-
     this.AddCalcPercentDropList('average', 'Average Drop');
 
     this.AddCalcPercentDropList('averagetimesoneandhalfpercent', 'One and A Half Percent (150%) Average Drop');
@@ -100,16 +101,16 @@ export class StockScreenerComponent implements OnInit {
 
 
   UpsertStockScreenerRecord(): void {
-    var screenCritPropsLen = this.screenerCritProps.length;
+    var screenCritLen = this.screenerCritierias.length;
     var detailLen = this.stockScreenerRec.stockScreenerSearchDetails.length;
 
-    for (var i2 = 0; i2 < screenCritPropsLen;i2++) {
+    for (var i2 = 0; i2 < screenCritLen;i2++) {
       let criteriaFound: boolean = false;
       
       for (var i = 0; i < detailLen; i++) {
         var jsonName = this.stockScreenerRec.stockScreenerSearchDetails[i].screenerCriteria.jsonObjectName;  
-        if (jsonName == this.screenerCritProps[i2]) {
-          this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue = this.searchObjects[jsonName]
+        if (jsonName == this.screenerCritierias[i2].jsonObjectName) {
+          this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value;
           criteriaFound = true;
         }
       
@@ -118,24 +119,16 @@ export class StockScreenerComponent implements OnInit {
         var screenLength = this.screenerCritierias.length;
         for (var iscreen = 0; iscreen < screenLength; iscreen++) {
 
-          if (this.screenerCritierias[iscreen].jsonObjectName == this.screenerCritProps[i2]) {
+          if (this.screenerCritierias[iscreen].jsonObjectName == this.screenerCritierias[i2].jsonObjectName) {
             let info: ScreeneCriteriaDetailDto = new ScreeneCriteriaDetailDto();
             info.screenerCriteria = this.screenerCritierias[iscreen];
             info.stockScreenerSearchDetail = new StockScreenerSearchDetail();
             info.stockScreenerSearchDetail.screenerCriteriaId = this.screenerCritierias[iscreen].id;
-            info.stockScreenerSearchDetail.searchValue = this.searchObjects[this.screenerCritProps[i2]];
+            info.stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value;
             info.stockScreenerSearchDetail.stockScreenerId = this.stockScreenerRec.stockScreener.id ? this.stockScreenerRec.stockScreener.id : 0 ;
-
             this.stockScreenerRec.stockScreenerSearchDetails.push(info);
-
           }
-
         }
-
-
-
-
-
       }
     }
 
@@ -145,40 +138,21 @@ export class StockScreenerComponent implements OnInit {
 
     
     this.securityService.UpsertStockScreenerRecord(this.stockScreenerRec).subscribe(screenerCritieriaResults => {
-      
       console.log('Test info');
-    
-      
     });
     
   }
 
 
   GetAllScreenerCriterias(): void {
-
-
     this.securityService.GetAllScreenerCriterias().subscribe(screenerCritieriaResults => {
-      this.screenerCritierias = screenerCritieriaResults;
-
-      for (var i = 0; i < this.screenerCritierias.length; i++) {
-        var criteriaName = this.screenerCritierias[i].criteriaName;
-
-        var jsonObjName = this.screenerCritierias[i].jsonObjectName;
-        this.criteriaNames[jsonObjName] = criteriaName
-        this.searchObjects[jsonObjName] = '';
-
-      
+      let localScreenerCriteria: ScreenerCriteria[]= screenerCritieriaResults;
+      for (var i = 0; i < localScreenerCriteria.length; i++) {
+        localScreenerCriteria[i].value = '';
       }
 
-
-      for (var prop in this.searchObjects) {
-
-        this.screenerCritProps.push(prop);
-      }
-
+      this.screenerCritierias = localScreenerCriteria;
       this.SetInitialStockScreener();
-
-
     });
 
 
@@ -199,6 +173,27 @@ export class StockScreenerComponent implements OnInit {
     this.stockScreenerRec = blanksStockScreen;
   }
 
+
+
+
+  RunScreenerSearch(): void {
+    this.stockScreenerParams =  new StockScreenerSearchResourceParameters();
+    var screenCritLen = this.screenerCritierias.length;
+
+    for (var i2 = 0; i2 < screenCritLen; i2++) {
+      var jsonName = this.screenerCritierias[i2].jsonObjectName
+       
+      this.stockScreenerParams[jsonName] = this.screenerCritierias[i2].value;
+    }
+    this.securityService.GetStockScreenerResult(this.stockScreenerParams).subscribe(stockOptions => {
+      this.stockOptions = stockOptions;
+
+
+    });
+  }
+
+
+
   GetStockScreenerRecord(stockScreenerId): void {
     this.securityService.GetStockScreenerRecord(stockScreenerId).subscribe(priorPurchaseEstimate => {
       this.stockScreenerRec = priorPurchaseEstimate;
@@ -207,51 +202,16 @@ export class StockScreenerComponent implements OnInit {
       for (var i = 0; i < screenDetailsLength; i++) {
         var jsonName = this.stockScreenerRec.stockScreenerSearchDetails[i].screenerCriteria.jsonObjectName;
         var searchValue = this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue;
-
-        //this.stockScreenerRec.stockScreenerSearchDetails[i].screenerCriteria[jsonName] = searchValue;
         this.stockScreenerSPO[jsonName] = searchValue;
-
-        this.searchObjects[jsonName] = searchValue;
-
+        for (var i2 = 0; i2 < this.screenerCritierias.length; i2++) {
+          if (this.screenerCritierias[i2].jsonObjectName == jsonName) {
+            this.screenerCritierias[i2].value = searchValue;
+          }
+        }
       }
-      
-
-      
-
-
     });
 
   }
 
-
-
-
-  RunScreenerSearch(): void {
-
-
-
-
-    let stockScreenerParams: StockScreenerSearchResourceParameters = new StockScreenerSearchResourceParameters();
-
-    this.searchObjects
-
-
-    var screenCritPropsLen = this.screenerCritProps.length;
-    
-
-    for (var i2 = 0; i2 < screenCritPropsLen; i2++) {
-      var jsonName = this.screenerCritProps[i2]
-       
-      stockScreenerParams[jsonName] = this.searchObjects[jsonName];
-    }
-
-
-    this.securityService.GetStockScreenerResult(stockScreenerParams).subscribe(stockOptions => {
-
-      this.stockOptions = stockOptions;
-
-
-    });
-  }
 
 }

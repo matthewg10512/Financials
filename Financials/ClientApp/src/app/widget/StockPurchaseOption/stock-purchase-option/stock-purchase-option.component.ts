@@ -3,6 +3,8 @@ import { StockPurchaseOptionsResourceParameters } from '../../../interfaces/reso
 import { SecurityService } from '../../../services/security.service';
 import { StockPurchaseOption } from '../../../interfaces/StockPurchaseOption';
 import { ScreeneCriteriaDetailDto } from '../../../interfaces/stockscreener/ScreeneCriteriaDetailDto';
+import { ScreenerCriteria } from '../../../interfaces/stockscreener/ScreenerCriteria';
+import { StockScreenerSearchResourceParameters } from '../../../interfaces/resourceparameters/StockScreenerSearchResourceParameters';
 
 @Component({
   selector: 'app-stock-purchase-option',
@@ -14,8 +16,8 @@ export class StockPurchaseOptionComponent implements OnInit {
   private stockPurchaseOptions: StockPurchaseOption[];
   @Input() stockPurchaseOptResourceParams: StockPurchaseOptionsResourceParameters;
 
-
-  @Input() stockScreenerSearchCritieria: ScreeneCriteriaDetailDto[];
+  @Input() stockScreenerSearchResourceParameters: StockScreenerSearchResourceParameters;
+  @Input() stockScreenerSearchCritieria: ScreenerCriteria[];
 
   @Input() purOptionTabNum: number;
   sortNameDesc = false;
@@ -37,18 +39,59 @@ export class StockPurchaseOptionComponent implements OnInit {
 
     //stockScreenerSearchCritieria
 
-    
+    if (this.stockPurchaseOptResourceParams == null) {
 
-    this.stockPurchaseOptions = null;
-    this.securityService.getStockPurchaseOptions(this.stockPurchaseOptResourceParams).subscribe(stockPurchaseOptions => {
-      this.stockPurchaseOptions = stockPurchaseOptions;
+      if (!this.stockScreenerSearchCritieria) {
+        this.stockPurchaseOptions = [];
+        return;
 
-      var purchaseOptionsCount = this.stockPurchaseOptions.length;
-      for (var i = 0; i < purchaseOptionsCount; i++) {
-        this.stockPurchaseOptions[i].peakRangeDetail.sort((a, b) => Number(a.rangeName.substring(0, 2).replace('%', '')) - Number(b.rangeName.substring(0, 2).replace('%', '')));
       }
-    });
-    
+      var stockScreenerLen = this.stockScreenerSearchCritieria.length;
+      var noValues = true;
+      for (var i = 0; i < stockScreenerLen; i++) {
+        if (this.stockScreenerSearchCritieria[i].value) {
+          noValues = false;
+          break;
+        }
+      }
+
+      if (noValues) {
+        this.stockPurchaseOptions = [];
+        return;
+      }
+      var screenCritLen = this.stockScreenerSearchCritieria.length;
+
+      for (var i2 = 0; i2 < screenCritLen; i2++) {
+        var jsonName = this.stockScreenerSearchCritieria[i2].jsonObjectName
+
+        this.stockScreenerSearchResourceParameters[jsonName] = this.stockScreenerSearchCritieria[i2].value;
+      }
+
+      this.stockPurchaseOptions = null;
+      this.securityService.GetStockScreenerResult(this.stockScreenerSearchResourceParameters).subscribe(stockPurchaseOptions => {
+        this.stockPurchaseOptions = stockPurchaseOptions;
+
+        var purchaseOptionsCount = this.stockPurchaseOptions.length;
+        for (var i = 0; i < purchaseOptionsCount; i++) {
+          this.stockPurchaseOptions[i].peakRangeDetail.sort((a, b) => Number(a.rangeName.substring(0, 2).replace('%', '')) - Number(b.rangeName.substring(0, 2).replace('%', '')));
+        }
+      });
+
+
+
+    }
+    else {
+
+      this.stockPurchaseOptions = null;
+      this.securityService.getStockPurchaseOptions(this.stockPurchaseOptResourceParams).subscribe(stockPurchaseOptions => {
+        this.stockPurchaseOptions = stockPurchaseOptions;
+
+        var purchaseOptionsCount = this.stockPurchaseOptions.length;
+        for (var i = 0; i < purchaseOptionsCount; i++) {
+          this.stockPurchaseOptions[i].peakRangeDetail.sort((a, b) => Number(a.rangeName.substring(0, 2).replace('%', '')) - Number(b.rangeName.substring(0, 2).replace('%', '')));
+        }
+      });
+    }
     
 
   }
