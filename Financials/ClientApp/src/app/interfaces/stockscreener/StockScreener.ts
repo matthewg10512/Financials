@@ -3,6 +3,6 @@ export class StockScreener {
   name: string;
   alertType: number;
   autoTrade: Boolean;
-  onlyPreferred: Boolean;
+  
 }
 

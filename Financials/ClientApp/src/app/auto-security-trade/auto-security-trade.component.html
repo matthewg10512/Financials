@@ -10,116 +10,6 @@
 
     </div>
 
-    <!--
-  <span *ngFor="let autoSecurityTradeGroup of autoSecurityTradeGroups;let i = index">
-
-    { {autoSecurityTradeGroup.securityName }} -  { {autoSecurityTradeGroup.totalSold}}
-    <br />
-  </span>
-      -->
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="autoSecurityTradeGroups">
-      <thead>
-        <tr>
-          <th width="300px">Name</th>
-          <th width="150px">Total Profit</th>
-          <th width="150px">Open Position Loss</th>
-          
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let autoSecurityTradeGroup of autoSecurityTradeGroups">
-          <td width="300px">{{ autoSecurityTradeGroup.securityName }}</td>
-          <td width="150px">
-            {{ (autoSecurityTradeGroup.totalSold - autoSecurityTradeGroup.totalBought)| number:'1.1-2'}}
-
-            <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
-                    [ngbPopover]="securityCostBasis" popoverTitle="{{ autoSecurityTradeGroup.securityName }}">
-              <i class="cil-info"></i>
-            </button>
-
-            <ng-template style="width:800px" #securityCostBasis>
-              <table class="table">
-                <tr>
-                  <th>
-                    # of Trades:
-                  </th>
-                  <td>
-                    {{ autoSecurityTradeGroup.tradeCount | number:'1.1-2'}}
-                  </td>
-                </tr>
-                <tr>
-                  <th>
-                    Total Bought:
-                  </th>
-                  <td>
-                    {{ autoSecurityTradeGroup.totalBought | number:'1.1-2'}}
-                  </td>
-                </tr>
-                <tr>
-                  <th>
-                    Total Sold:
-                  </th>
-                  <td>
-                    {{( autoSecurityTradeGroup.totalSold) | number:'1.1-2'}}
-                  </td>
-                </tr>
-
-              </table>
-            </ng-template>
-
-
-          </td>
-
-          
-          <td width="150px">
-            <span>
-              {{( autoSecurityTradeGroup.sharePrices > 0 ? (autoSecurityTradeGroup.currentShares * autoSecurityTradeGroup.currentPrice) - autoSecurityTradeGroup.sharePrices     : 0 ) | number:'1.1-2'}}
-
-
-            </span>
-            <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
-                    [ngbPopover]="securityPriceDetails" popoverTitle="{{ autoSecurityTradeGroup.securityName }}">
-              <i class="cil-info"></i>
-            </button>
-            <ng-template style="width:800px" #securityPriceDetails>
-              <table class="table">
-                <tr>
-                  <th>
-                    Current Shares:
-                  </th>
-                  <td>
-                    {{ autoSecurityTradeGroup.currentShares | number:'1.1-2'}}
-                  </td>
-                </tr>
-                <tr>
-                  <th>
-                    Current Price:
-                  </th>
-                  <td>
-                    {{ autoSecurityTradeGroup.currentPrice | number:'1.1-2'}}
-                  </td>
-                </tr>
-                <tr>
-                  <th>
-                    Average Share Price:
-                  </th>
-                  <td>
-                    {{( autoSecurityTradeGroup.sharePrices > 0 ? autoSecurityTradeGroup.sharePrices / autoSecurityTradeGroup.currentShares : 0 ) | number:'1.1-2'}}
-                  </td>
-                </tr>
-
-              </table>
-            </ng-template>
-            
-
-          </td>
-
-
-        </tr>
-      </tbody>
-    </table>
-
 
     <!--<div style="height:250px;overflow-y: auto" >-->
     <div style="overflow-x:auto;width:100%;overflow-y:auto;height:400px;">
@@ -146,6 +36,124 @@
       <select name="selectedQuantity" id="aantal" [(ngModel)]="selectedQuantity">
         <option *ngFor="let option of tranType" [value]="option">{{option}}</option>
       </select>
+
+
+
+
+
+
+
+      <!--
+    <span *ngFor="let autoSecurityTradeGroup of autoSecurityTradeGroups;let i = index">
+
+      { {autoSecurityTradeGroup.securityName }} -  { {autoSecurityTradeGroup.totalSold}}
+      <br />
+    </span>
+        -->
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="autoSecurityTradeGroups">
+        <thead>
+          <tr>
+            <th width="300px">Name</th>
+            <th width="150px">Total Profit</th>
+            <th width="150px">Open Position Loss</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let autoSecurityTradeGroup of autoSecurityTradeGroups">
+            <td width="300px">{{ autoSecurityTradeGroup.securityName }}</td>
+            <td width="150px">
+              {{ (autoSecurityTradeGroup.totalSold - autoSecurityTradeGroup.totalBought)| number:'1.1-2'}}
+
+              <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+                      [ngbPopover]="securityCostBasis" popoverTitle="{{ autoSecurityTradeGroup.securityName }}">
+                <i class="cil-info"></i>
+              </button>
+
+              <ng-template style="width:800px" #securityCostBasis>
+                <table class="table">
+                  <tr>
+                    <th>
+                      # of Trades:
+                    </th>
+                    <td>
+                      {{ autoSecurityTradeGroup.tradeCount | number:'1.1-2'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      Total Bought:
+                    </th>
+                    <td>
+                      {{ autoSecurityTradeGroup.totalBought | number:'1.1-2'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      Total Sold:
+                    </th>
+                    <td>
+                      {{( autoSecurityTradeGroup.totalSold) | number:'1.1-2'}}
+                    </td>
+                  </tr>
+
+                </table>
+              </ng-template>
+
+
+            </td>
+
+
+            <td width="150px">
+              <span>
+                {{( autoSecurityTradeGroup.sharePrices > 0 ? (autoSecurityTradeGroup.currentShares * autoSecurityTradeGroup.currentPrice) - autoSecurityTradeGroup.sharePrices     : 0 ) | number:'1.1-2'}}
+
+
+              </span>
+              <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
+                      [ngbPopover]="securityPriceDetails" popoverTitle="{{ autoSecurityTradeGroup.securityName }}">
+                <i class="cil-info"></i>
+              </button>
+              <ng-template style="width:800px" #securityPriceDetails>
+                <table class="table">
+                  <tr>
+                    <th>
+                      Current Shares:
+                    </th>
+                    <td>
+                      {{ autoSecurityTradeGroup.currentShares | number:'1.1-2'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      Current Price:
+                    </th>
+                    <td>
+                      {{ autoSecurityTradeGroup.currentPrice | number:'1.1-2'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      Average Share Price:
+                    </th>
+                    <td>
+                      {{( autoSecurityTradeGroup.sharePrices > 0 ? autoSecurityTradeGroup.sharePrices / autoSecurityTradeGroup.currentShares : 0 ) | number:'1.1-2'}}
+                    </td>
+                  </tr>
+
+                </table>
+              </ng-template>
+
+
+            </td>
+
+
+          </tr>
+        </tbody>
+      </table>
+
+
 
       <table>
         <tr>

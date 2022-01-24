@@ -89,7 +89,7 @@ namespace Financials.Controllers
         {
 
             List<StockPurchaseOptionDto> purchaseOptions = new List<StockPurchaseOptionDto>();
-
+            var boolvalue = bool.Parse("true");
 
 
             _authentication.AuthenticationToken(_configuration);
@@ -172,7 +172,7 @@ namespace Financials.Controllers
                         break;
                     case "Boolean":
                         bool recValueBool = (bool)propertyValue;
-                        valueRec = recValueBool ? "1" : "0";
+                        valueRec = recValueBool ? "true" : "false";
                         break;
                     case "Nullable`1":
                         var recValueNull = propertyValue;
@@ -228,7 +228,7 @@ namespace Financials.Controllers
                     break;
                 case "Boolean":
                     bool recValueBool = (bool)propertyValue;
-                    valueRec = recValueBool ? "1" : "0";
+                    valueRec = recValueBool ? "true" : "false";
                     break;
 
             }

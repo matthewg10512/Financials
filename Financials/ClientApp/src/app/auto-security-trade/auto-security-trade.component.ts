@@ -282,6 +282,7 @@ export class AutoSecurityTradeComponent implements OnInit {
   GetAutoSecurityTrades(): void {
     let autosecuritytradesresourceparameter: autosecuritytradesresourceparameters = new autosecuritytradesresourceparameters();
     autosecuritytradesresourceparameter.positionSold = this.selectedQuantity;
+    autosecuritytradesresourceparameter.rangePurchaseDateStart = '1/20/2022';
     this.securityService.searchAutoSecurityTrades(autosecuritytradesresourceparameter).subscribe(result => {
       this.autoSecurityTradeSecurities = result;
 
@@ -307,7 +308,7 @@ export class AutoSecurityTradeComponent implements OnInit {
 
     let autosecuritytradesresourceparameter:  autosecuritytradesresourceparameters  = new autosecuritytradesresourceparameters();
 
-    
+    autosecuritytradesresourceparameter.rangePurchaseDateStart = '1/20/2022';
     autosecuritytradesresourceparameter.positionSold = this.selectedQuantity;
      
     this.securityService.searchAutoSecurityTrades(autosecuritytradesresourceparameter).subscribe(result => {

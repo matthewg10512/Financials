@@ -19,13 +19,14 @@ export class StockScreenerComponent implements OnInit {
   percentDropTypesList: any[] = [];
   calculatedPercentDropTypeList: any[] = [];
 
-  public stockScreenerSPO: StockPurchaseOptionsResourceParameters;
+ 
 
   screenerCritierias: ScreenerCriteria[];
+
+  templateScreenerCritierias: ScreenerCriteria[];
   
   
   
-  stockOptions: StockPurchaseOption[];
   stockScreenerRec: StockScreenerRecordDto;
 
 
@@ -37,6 +38,8 @@ export class StockScreenerComponent implements OnInit {
   ngOnInit() {
     var d = new Date;
     d.setDate(d.getDate() - 1);
+
+    /*
     this.stockScreenerSPO = new StockPurchaseOptionsResourceParameters();
     this.stockScreenerSPO.priorPurchaseEstimateSharesRangeLow = "10";
     this.stockScreenerSPO.securityVolumeRangeLow = '100000';
@@ -44,6 +47,8 @@ export class StockScreenerComponent implements OnInit {
     this.stockScreenerSPO.securitypercentChangeRangeHigh = '0';
     this.stockScreenerSPO.priorPurchaseEstimateYearlyPercentRangeLow = '10';
     this.stockScreenerSPO.securityPercentDropperType = 'percent5CurrentPrice';
+*/
+
 
     this.GetAllScreenerCriterias();
     
@@ -78,11 +83,11 @@ export class StockScreenerComponent implements OnInit {
 
     this.AddCalcPercentDropList('average', 'Average Drop');
 
-    this.AddCalcPercentDropList('averagetimesoneandhalfpercent', 'One and A Half Percent (150%) Average Drop');
-    this.AddCalcPercentDropList('averagedroplowaverage', 'Average Drop Below Average Drop');
-    this.AddCalcPercentDropList('percentile5', '5th Percentile of Lowest Droppers');
-    this.AddCalcPercentDropList('percentile10', '10th Percentile of Lowest Historic Dropper');
-    this.AddCalcPercentDropList('percentile15', '15th Percentile of Lowest Historic Dropper');
+    this.AddCalcPercentDropList('averagetimesoneandhalfpercent', '(150%) from Average Drop');
+    this.AddCalcPercentDropList('averagedroplowaverage', 'Avg Drop Below Average Drop');
+    this.AddCalcPercentDropList('percentile5', '5th Percentile of Droppers');
+    this.AddCalcPercentDropList('percentile10', '10th Percentile of Dropper');
+    this.AddCalcPercentDropList('percentile15', '15th Percentile of  Dropper');
     
 
 
@@ -97,7 +102,14 @@ export class StockScreenerComponent implements OnInit {
     this.calculatedPercentDropTypeList.push(calcPercentDropRec)
   }
 
+  ResetStockScreenerRecord(): void {
 
+
+    this.stockScreenerRec = new StockScreenerRecordDto();
+
+    this.GetAllScreenerCriterias();
+
+  }
 
 
   UpsertStockScreenerRecord(): void {
@@ -110,7 +122,12 @@ export class StockScreenerComponent implements OnInit {
       for (var i = 0; i < detailLen; i++) {
         var jsonName = this.stockScreenerRec.stockScreenerSearchDetails[i].screenerCriteria.jsonObjectName;  
         if (jsonName == this.screenerCritierias[i2].jsonObjectName) {
-          this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value;
+
+          if (this.screenerCritierias[i2].objectType == 'bool') {
+            this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].boolValue + '';
+          } else {
+            this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value + '';
+          }
           criteriaFound = true;
         }
       
@@ -124,8 +141,14 @@ export class StockScreenerComponent implements OnInit {
             info.screenerCriteria = this.screenerCritierias[iscreen];
             info.stockScreenerSearchDetail = new StockScreenerSearchDetail();
             info.stockScreenerSearchDetail.screenerCriteriaId = this.screenerCritierias[iscreen].id;
-            info.stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value;
-            info.stockScreenerSearchDetail.stockScreenerId = this.stockScreenerRec.stockScreener.id ? this.stockScreenerRec.stockScreener.id : 0 ;
+            info.stockScreenerSearchDetail.stockScreenerId = this.stockScreenerRec.stockScreener.id ? this.stockScreenerRec.stockScreener.id : 0;
+
+            if (this.screenerCritierias[iscreen].objectType == 'bool') {
+              info.stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].boolValue + '';
+            } else {
+              info.stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value + '';
+            }
+
             this.stockScreenerRec.stockScreenerSearchDetails.push(info);
           }
         }
@@ -146,12 +169,15 @@ export class StockScreenerComponent implements OnInit {
 
   GetAllScreenerCriterias(): void {
     this.securityService.GetAllScreenerCriterias().subscribe(screenerCritieriaResults => {
-      let localScreenerCriteria: ScreenerCriteria[]= screenerCritieriaResults;
-      for (var i = 0; i < localScreenerCriteria.length; i++) {
-        localScreenerCriteria[i].value = '';
+      this.templateScreenerCritierias = screenerCritieriaResults;
+      for (var i = 0; i < this.templateScreenerCritierias.length; i++) {
+        this.templateScreenerCritierias[i].value = '';
+        this.templateScreenerCritierias[i].boolValue = false;
+        
       }
-
-      this.screenerCritierias = localScreenerCriteria;
+      this.templateScreenerCritierias.sort((a, b) => a.sortPriority - b.sortPriority);
+      
+      this.screenerCritierias = JSON.parse(JSON.stringify(this.templateScreenerCritierias));
       this.SetInitialStockScreener();
     });
 
@@ -176,25 +202,12 @@ export class StockScreenerComponent implements OnInit {
 
 
 
-  RunScreenerSearch(): void {
-    this.stockScreenerParams =  new StockScreenerSearchResourceParameters();
-    var screenCritLen = this.screenerCritierias.length;
-
-    for (var i2 = 0; i2 < screenCritLen; i2++) {
-      var jsonName = this.screenerCritierias[i2].jsonObjectName
-       
-      this.stockScreenerParams[jsonName] = this.screenerCritierias[i2].value;
-    }
-    this.securityService.GetStockScreenerResult(this.stockScreenerParams).subscribe(stockOptions => {
-      this.stockOptions = stockOptions;
-
-
-    });
-  }
 
 
 
   GetStockScreenerRecord(stockScreenerId): void {
+
+    this.screenerCritierias = JSON.parse(JSON.stringify(this.templateScreenerCritierias));
     this.securityService.GetStockScreenerRecord(stockScreenerId).subscribe(priorPurchaseEstimate => {
       this.stockScreenerRec = priorPurchaseEstimate;
 
@@ -202,10 +215,15 @@ export class StockScreenerComponent implements OnInit {
       for (var i = 0; i < screenDetailsLength; i++) {
         var jsonName = this.stockScreenerRec.stockScreenerSearchDetails[i].screenerCriteria.jsonObjectName;
         var searchValue = this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue;
-        this.stockScreenerSPO[jsonName] = searchValue;
+        //this.stockScreenerSPO[jsonName] = searchValue;
         for (var i2 = 0; i2 < this.screenerCritierias.length; i2++) {
           if (this.screenerCritierias[i2].jsonObjectName == jsonName) {
-            this.screenerCritierias[i2].value = searchValue;
+
+            if (this.screenerCritierias[i2].objectType == 'bool') {
+              this.screenerCritierias[i2].boolValue = (searchValue == 'true' ? true : false);
+            } else {
+              this.screenerCritierias[i2].value = searchValue;
+            }
           }
         }
       }

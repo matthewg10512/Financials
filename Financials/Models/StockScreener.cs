@@ -11,6 +11,6 @@ namespace Financials.Models
         public string Name { get; set; }
         public int AlertType { get; set; }
         public bool AutoTrade { get; set; }
-        public bool OnlyPreferred { get; set; }
+        
     }
 }

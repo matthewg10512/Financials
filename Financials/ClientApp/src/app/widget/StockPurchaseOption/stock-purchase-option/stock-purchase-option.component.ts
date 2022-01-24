@@ -19,6 +19,8 @@ export class StockPurchaseOptionComponent implements OnInit {
   @Input() stockScreenerSearchResourceParameters: StockScreenerSearchResourceParameters;
   @Input() stockScreenerSearchCritieria: ScreenerCriteria[];
 
+  percentDropTypesList: any[] = [];
+  calculatedPercentDropTypeList: any[] = [];
   @Input() purOptionTabNum: number;
   sortNameDesc = false;
   sortPercentDesc = false;
@@ -28,6 +30,7 @@ export class StockPurchaseOptionComponent implements OnInit {
   ngOnInit() {
 
     this.processStockPurchaseOptions();
+    this.SetupDropLists();
 
   }
 
@@ -64,7 +67,12 @@ export class StockPurchaseOptionComponent implements OnInit {
       for (var i2 = 0; i2 < screenCritLen; i2++) {
         var jsonName = this.stockScreenerSearchCritieria[i2].jsonObjectName
 
-        this.stockScreenerSearchResourceParameters[jsonName] = this.stockScreenerSearchCritieria[i2].value;
+        if (this.stockScreenerSearchCritieria[i2].objectType == 'bool') {
+          this.stockScreenerSearchResourceParameters[jsonName] = this.stockScreenerSearchCritieria[i2].boolValue + '';
+          
+        } else {
+          this.stockScreenerSearchResourceParameters[jsonName] = this.stockScreenerSearchCritieria[i2].value;
+        }
       }
 
       this.stockPurchaseOptions = null;
@@ -130,5 +138,43 @@ export class StockPurchaseOptionComponent implements OnInit {
       );
     }
     this.sortPercentCurPerFromHigh = !this.sortPercentCurPerFromHigh;
+  }
+
+
+
+  SetupDropLists(): void {
+
+
+
+    let percentDropCurrent: any = {};
+    percentDropCurrent.id = 'current';
+    percentDropCurrent.name = 'Current';
+    this.percentDropTypesList.push(percentDropCurrent);
+
+    let percentDropDayLow: any = {};
+    percentDropDayLow.id = 'daylow';
+    percentDropDayLow.name = 'Day Low';
+    this.percentDropTypesList.push(percentDropDayLow);
+
+    this.AddCalcPercentDropList('average', 'Average Drop');
+
+    this.AddCalcPercentDropList('averagetimesoneandhalfpercent', '(150%) from Average Drop');
+    this.AddCalcPercentDropList('averagedroplowaverage', 'Avg Drop Below Average Drop');
+    this.AddCalcPercentDropList('percentile5', '5th Percentile of Droppers');
+    this.AddCalcPercentDropList('percentile10', '10th Percentile of Dropper');
+    this.AddCalcPercentDropList('percentile15', '15th Percentile of  Dropper');
+
+
+
+  }
+
+
+  AddCalcPercentDropList(id: string, name: string): void {
+
+    let calcPercentDropRec: any = {};
+    calcPercentDropRec.id = id;
+    calcPercentDropRec.name = name;
+
+    this.calculatedPercentDropTypeList.push(calcPercentDropRec)
   }
 }

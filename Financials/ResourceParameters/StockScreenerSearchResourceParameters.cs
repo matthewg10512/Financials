@@ -19,7 +19,12 @@ namespace Financials.ResourceParameters
 
         public string percentDropType { get; set; }
         public string calculatedPercentDropType { get; set; }
+        public decimal? percentFrom52WeekLowRangeLow { get; set; }
+        public decimal? percentFrom52WeekLowRangeHigh { get; set; }
 
+        public decimal? percentFrom52WeekHighRangeLow { get; set; }
+        public decimal? percentFrom52WeekHighRangeHigh { get; set; }
+        public bool? onlyPreferred { get; set; }
 
     }
 }

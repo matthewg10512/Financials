@@ -13,9 +13,13 @@ export class StockScreenerSearchResourceParameters {
   calculatedPercentDropType: string;
   
   
+  percentFrom52WeekLowRangeLow: string;
+  percentFrom52WeekLowRangeHigh: string;
   
-  
-  
+  percentFrom52WeekHighRangeLow: string;
+  percentFrom52WeekHighRangeHigh: string;
+
+  onlyPreferred: string;
 
 
   

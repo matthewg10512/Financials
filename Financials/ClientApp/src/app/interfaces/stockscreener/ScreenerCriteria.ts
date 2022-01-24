@@ -6,4 +6,6 @@ export class ScreenerCriteria {
   jsonObjectName: string;
   objectType: string;
   value: string;
+  boolValue: boolean;
+  sortPriority: number;
 }

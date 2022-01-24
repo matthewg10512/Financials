@@ -4,5 +4,5 @@ export class StockScreenerAlertType {
   stockScreenerId: number;
   frequency: number;
   awsSNSURL: string;
-
+  alertType: string;
 }

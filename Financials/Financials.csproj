@@ -127,6 +127,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\interfaces\investmentprojection\" />
     <Folder Include="ClientApp\src\app\widget\invest-projections\" />
     <Folder Include="ClientApp\src\app\widget\security-details\" />
   </ItemGroup>

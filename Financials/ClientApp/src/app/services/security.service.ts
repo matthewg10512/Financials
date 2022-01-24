@@ -462,6 +462,14 @@ export class SecurityService {
       searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
       searchQuery = searchQuery + "positionSold=false";
     }
+
+    if (autosecuritytradesresourceparameter.rangePurchaseDateStart + '' != '') {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + 'rangePurchaseDateStart=' +autosecuritytradesresourceparameter.rangePurchaseDateStart;
+    }
+
+
+    
      
     return this.http.get<AutoSecurityTradeSecurity[]>(this.baseUrl + 'security/SearchAutoSecurityTrades' + searchQuery);
 

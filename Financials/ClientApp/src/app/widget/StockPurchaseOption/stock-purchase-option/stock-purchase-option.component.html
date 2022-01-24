@@ -2,140 +2,218 @@
   <shared-loading-data></shared-loading-data>
 </div>
 <button type="button" class="btn btn-primary" data-toggle="modal" (click)="processStockPurchaseOptions()">
-  Refresh
+  <i class="icon-reload"></i>
+</button>
+<br/>
+<button type="button" class="btn btn-info" data-toggle="modal" [attr.data-target]="'#stockScreenerSearchCritieriaModal'">
+Criteria
 </button>
 
-<div *ngIf="stockPurchaseOptions" style="height:600px;overflow-y:auto">
-
-  
 
 
 
-  <div class="table-responsive" style="height:450px;width:1000px">
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stockPurchaseOptions">
-      <thead>
-        <tr>
-          <th class="cellshort" width="30px">#</th>
-          <th class="celllong" width="300px">
-            Name
-            <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-          </th>
-          <th width="150px">Current Price</th>
-          <th width="150px">
-            Percent Change
-            <i (click)="sortByPercentage()" [ngClass]="!sortPercentDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-          </th>
-          <th width="200px">
-            % from Last High
-            <i (click)="sortByCurPerFromHigh()" [ngClass]="!sortPercentCurPerFromHigh ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-          </th>
-          <th width="250px">% Avg Year Monthly Purchase</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let stockPurchaseOption of stockPurchaseOptions;let i = index">
-          <td class="cellshort" width="30px">{{i + 1 }}</td>
-          <td class="celllong" width="300px">
+  <div *ngIf="stockPurchaseOptions" style="height:600px;overflow-y:auto">
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#secDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
-              i
-            </button>
-            <span title="{{stockPurchaseOption.security.symbol}}">{{stockPurchaseOption.security.name}}</span>
 
-            <app-spo-sec-detail [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-sec-detail>
 
-          </td>
-          <td width="150px">
-            {{stockPurchaseOption.security.currentPrice | currency}}
-          </td>
-          <td width="150px">
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#secPurStats' + stockPurchaseOption.security.symbol + purOptionTabNum">
-              i
-            </button>
-            {{stockPurchaseOption.security.percentageChange}}
-            <app-spo-sec-pur-stat [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-sec-pur-stat>
-          </td>
-          <td width="200px">
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#peakRangeDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
-              i
-            </button>
-            <!-- Select a Security Modal -->
-            {{(((stockPurchaseOption.security.currentPrice - stockPurchaseOption.currentPeakRange.lastOpenHigh ) / stockPurchaseOption.currentPeakRange.lastOpenHigh) * 100) | number : '1.1-1'}}
-            <app-spo-peak-range [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-peak-range>
+    <div class="table-responsive" style="height:450px;width:1000px">
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stockPurchaseOptions">
+        <thead>
+          <tr>
+            <th class="cellshort" width="30px">#</th>
+            <th class="celllong" width="300px">
+              Name
+              <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            </th>
+            <th width="150px">Current Price</th>
+            <th width="150px">
+              Percent Change
+              <i (click)="sortByPercentage()" [ngClass]="!sortPercentDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            </th>
+            <th width="200px">
+              % from Last High
+              <i (click)="sortByCurPerFromHigh()" [ngClass]="!sortPercentCurPerFromHigh ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            </th>
+            <th width="250px">% Avg Year Monthly Purchase</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stockPurchaseOption of stockPurchaseOptions;let i = index">
+            <td class="cellshort" width="30px">{{i + 1 }}</td>
+            <td class="celllong" width="300px">
 
-          </td>
-          <td width="250px">
+              <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#secDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
+                i
+              </button>
+              <span title="{{stockPurchaseOption.security.symbol}}">{{stockPurchaseOption.security.name}}</span>
 
-            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#invProjection' + stockPurchaseOption.security.symbol + purOptionTabNum">
-              i
-            </button>
-            {{
+              <app-spo-sec-detail [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-sec-detail>
+
+            </td>
+            <td width="150px">
+              {{stockPurchaseOption.security.currentPrice | currency}}
+            </td>
+            <td width="150px">
+
+              <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#secPurStats' + stockPurchaseOption.security.symbol + purOptionTabNum">
+                i
+              </button>
+              {{stockPurchaseOption.security.percentageChange}}
+              <app-spo-sec-pur-stat [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-sec-pur-stat>
+            </td>
+            <td width="200px">
+
+              <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#peakRangeDetails' + stockPurchaseOption.security.symbol + purOptionTabNum">
+                i
+              </button>
+              <!-- Select a Security Modal -->
+              {{(((stockPurchaseOption.security.currentPrice - stockPurchaseOption.currentPeakRange.lastOpenHigh ) / stockPurchaseOption.currentPeakRange.lastOpenHigh) * 100) | number : '1.1-1'}}
+              <app-spo-peak-range [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-peak-range>
+
+            </td>
+            <td width="250px">
+
+              <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#invProjection' + stockPurchaseOption.security.symbol + purOptionTabNum">
+                i
+              </button>
+              {{
           ((((stockPurchaseOption.priorPurchaseEstimate.shares * stockPurchaseOption.security.currentPrice) - stockPurchaseOption.priorPurchaseEstimate.purchasePrice)
           / stockPurchaseOption.priorPurchaseEstimate.purchasePrice) * 100 ) / ( stockPurchaseOption.priorPurchaseEstimate.shares / 12)
           | number : '1.1-1'
-            }}
-            ({{stockPurchaseOption.priorPurchaseEstimate.shares}})
+              }}
+              ({{stockPurchaseOption.priorPurchaseEstimate.shares}})
 
-            <app-spo-invest-projection [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-invest-projection>
+              <app-spo-invest-projection [purOptionTabNum]="purOptionTabNum" [stockPurchaseOption]="stockPurchaseOption"></app-spo-invest-projection>
 
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+
+
+
+
+
+  <div class="modal fade" id="stockScreenerSearchCritieriaModal" *ngIf="stockScreenerSearchCritieria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Search Criteria</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+
+          <div *ngIf="stockScreenerSearchCritieria">
+            <form class="row g-3 needs-validation" standalone novalidate>
+
+              <div *ngFor="let screenerCritieria of stockScreenerSearchCritieria">
+
+
+
+                <div class="col-md-12" *ngIf="screenerCritieria.objectType=='bool'">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="{{screenerCritieria.jsonObjectName}}" [(ngModel)]="screenerCritieria.boolValue" name="{{screenerCritieria.jsonObjectName}}">
+                    <label class="form-check-label" for="{{screenerCritieria.jsonObjectName}}">
+                      Only Preferred Stocks
+                    </label>
+                  </div>
+                  <br />
+                </div>
+                <div class="col-md-12" *ngIf="screenerCritieria.objectType!='bool'">
+                  <label class="form-label" for="screenerCritieria.jsonObjectName">{{screenerCritieria.criteriaName}}</label>
+
+                  <!--<input class="form-control" id="{{screenerCritieria.jsonObjectName}}" type="text" value="Mark">-->
+
+                  <span *ngIf="screenerCritieria.jsonObjectName=='percentDropType'">
+
+                    <!--(change)="onInvestProjectionChange(t.value)"-->
+                    <select class="form-control" name="percentDropTypesList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
+                      <option *ngFor="let option of percentDropTypesList" [value]="option.id">{{option.name}}</option>
+                    </select>
+                  </span>
+                  <span *ngIf="screenerCritieria.jsonObjectName=='calculatedPercentDropType'">
+                    <select class="form-control" name="calculatedPercentDropTypeList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
+                      <option *ngFor="let option of calculatedPercentDropTypeList" [value]="option.id">{{option.name}}</option>
+                    </select>
+                  </span>
+                  <span *ngIf="!(screenerCritieria.jsonObjectName=='percentDropType') && !(screenerCritieria.jsonObjectName=='calculatedPercentDropType')">
+                    <input type="number" class="form-control" id="{{screenerCritieria.jsonObjectName}}"
+                           [(ngModel)]="screenerCritieria.value" name="{{screenerCritieria.jsonObjectName}}">
+                  </span>
+
+
+                  <div class="valid-feedback">Looks good!</div>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
 
 
 
-
-<!--
-  security: Security;
-          id: number;
-          name: string;
-          symbol: string;
-          lastModified: string;
-          dayLow: number;
-          dayHigh: number;
-          currentPrice: number;
-          preferred: boolean;
-          priorDayOpen: number;
-          percentageChange: number;
-          yearLow: number;
-          yearHigh: number;
-          dividend: Date;
-          dividendamount: number;
-          earning: string;
- securityPercentageStatistic: SecurityPercentageStatistic;
-          id: number;
-          securityId: number;
-          dateCreated: Date;
-          dateModified: Date;
-          averageDrop: number;
-          percent5 : number;
-          percent10 : number;
-          percent15 : number;
-          totalPercentSum : number;
-          highLowRangeAverage : number;
-          belowAverageCount : number;
- currentPeakRange: CurrentPeakRange;
-          id: number;
-          securityId: number;
-          rangeName: string;
-          dateCreated: Date;
-          dateModified: Date;
-          rangeLength: number;
-          rangeDateStart: Date;
-          peakRangeCurrentPercentage: number;
-  priorPurchaseEstimate: PriorPurchaseEstimate;
-          id: number;
-          securityId: number;
-          dateCreated: Date;
-          dateModified: Date;
-          shares: number;
-          purchasePrice: number;
--->
+  <!--
+    security: Security;
+            id: number;
+            name: string;
+            symbol: string;
+            lastModified: string;
+            dayLow: number;
+            dayHigh: number;
+            currentPrice: number;
+            preferred: boolean;
+            priorDayOpen: number;
+            percentageChange: number;
+            yearLow: number;
+            yearHigh: number;
+            dividend: Date;
+            dividendamount: number;
+            earning: string;
+   securityPercentageStatistic: SecurityPercentageStatistic;
+            id: number;
+            securityId: number;
+            dateCreated: Date;
+            dateModified: Date;
+            averageDrop: number;
+            percent5 : number;
+            percent10 : number;
+            percent15 : number;
+            totalPercentSum : number;
+            highLowRangeAverage : number;
+            belowAverageCount : number;
+   currentPeakRange: CurrentPeakRange;
+            id: number;
+            securityId: number;
+            rangeName: string;
+            dateCreated: Date;
+            dateModified: Date;
+            rangeLength: number;
+            rangeDateStart: Date;
+            peakRangeCurrentPercentage: number;
+    priorPurchaseEstimate: PriorPurchaseEstimate;
+            id: number;
+            securityId: number;
+            dateCreated: Date;
+            dateModified: Date;
+            shares: number;
+            purchasePrice: number;
+  -->

@@ -11,5 +11,6 @@ namespace Financials.Models
         public int StockScreenerId { get; set; }
         public int frequency { get; set; }
         public string awsSNSURL { get; set; }
+        public string AlertType { get; set; }
     }
 }

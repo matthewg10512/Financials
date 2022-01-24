@@ -14,5 +14,7 @@ namespace Financials.Models
 
         public string JSONObjectName { get; set; }
         public string ObjectType { get; set; }
+
+        public int SortPriority { get; set; }
     }
 }
