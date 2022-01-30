@@ -10,7 +10,6 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SecurityComponent } from './security/security-component';
 import { EarningComponent } from './earning/earning-component';
 
@@ -56,7 +55,6 @@ import { StockScreenerComponent } from './stock-screener/stock-screener.componen
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent,
     SecurityComponent,
     EarningWidgetComponent,
     SecurityDetailComponent,
@@ -94,7 +92,6 @@ import { StockScreenerComponent } from './stock-screener/stock-screener.componen
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
       { path: 'security', component: SecurityComponent },
       { path: 'earning', component: EarningComponent },
       { path: 'dividend', component: DividendComponent },

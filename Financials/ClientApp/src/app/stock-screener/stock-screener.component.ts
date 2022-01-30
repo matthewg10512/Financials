@@ -8,6 +8,8 @@ import { StockScreenerSearchResourceParameters } from '../interfaces/resourcepar
 import { StockScreener } from '../interfaces/stockscreener/StockScreener';
 import { ScreeneCriteriaDetailDto } from '../interfaces/stockscreener/ScreeneCriteriaDetailDto';
 import { StockScreenerSearchDetail } from '../interfaces/stockscreener/StockScreenerSearchDetail';
+import { StockScreenerAlertsHistorySearchResourceParameters } from '../interfaces/resourceparameters/StockScreenerAlertsHistorySearchResourceParameters';
+import { StockScreenerAlertsHistory } from '../interfaces/StockScreenerAlertsHistory';
 
 @Component({
   selector: 'app-stock-screener',
@@ -29,7 +31,7 @@ export class StockScreenerComponent implements OnInit {
   
   stockScreenerRec: StockScreenerRecordDto;
 
-
+  stockScreenerAlertsHistory: StockScreenerAlertsHistory[]
   
   stockScreeners: StockScreener[];
   stockScreenerParams: StockScreenerSearchResourceParameters = new StockScreenerSearchResourceParameters();
@@ -54,11 +56,21 @@ export class StockScreenerComponent implements OnInit {
     
     this.SetupDropLists();
     this.GetStockScreeners()
+    this.SearchStockScreenerAlertsHistory();
     
   }
 
 
+  SearchStockScreenerAlertsHistory(): void {
 
+    let stockScreenAlertsHistoryParams: StockScreenerAlertsHistorySearchResourceParameters = new StockScreenerAlertsHistorySearchResourceParameters();
+    stockScreenAlertsHistoryParams.stockScreenerId = 1;
+    
+    this.securityService.SearchStockScreenerAlertsHistory(stockScreenAlertsHistoryParams).subscribe(searchStockScreenerAlertsHistory => {
+      this.stockScreenerAlertsHistory = searchStockScreenerAlertsHistory;
+    });
+    
+  }
 
   GetStockScreeners(): void {
 

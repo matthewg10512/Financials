@@ -160,17 +160,13 @@ export class InvestProjection {
   }
 
   calculateNewShares(percentage: number ): void {
-    
-
     switch (Number(this.projectionTypeId)) {
       case 0:
         this.recommendCurrentPurchaseLevel = 1;
         break;
-
       case 1:
         this.recommendCurrentPurchaseLevel = this.currentPurchaseShares;
         break;
-
       case 2:
         let percentDrop: number = Math.floor((percentage / 5));
         this.recommendCurrentPurchaseLevel = 1 + percentDrop;
@@ -194,7 +190,6 @@ export class InvestProjection {
           if (this.currentPurchaseShares < 5) {
             this.currentPurchaseShares += 1;
           }
-
           break;
 
         case 2:
@@ -220,10 +215,7 @@ export class InvestProjection {
     this.AddShares(newCost, currentDayTrade);
   }
   
-  GetAverageCost(): number {
-    return this.GetTotalPurchaseAmount() / this.GetTotalShares();
-  
-  }
+ 
 
 
   GetTotalDividendProfit(): number {
@@ -247,15 +239,7 @@ export class InvestProjection {
 
 
 
-  GetTotalShares(): number {
-    let totalShares: number = 0;
-    let yearCount = this.purchaseYearlyAmount.length;
-    for (var i = 0; i < yearCount; i++) {
-      totalShares += this.purchaseYearlyAmount[i].totalShares();
-    }
-    return totalShares;
-  }
-
+ 
 
   AddFractionalShares(newCost: number, currentDayTrade: Date): void {
 
@@ -274,6 +258,7 @@ export class InvestProjection {
       sharePurchaseHistory.purchaseAmount = perShares * newCost * this.currentPurchaseShares;
       sharePurchaseHistory.purchaseDate = currentDayTrade;
       sharePurchaseHistory.sharePurchaseLevel = this.currentPurchaseShares;
+      sharePurchaseHistory.shareCost = newCost;
       purchaseYearlyNew.sharePurchaseHistory.push(sharePurchaseHistory);
       
       this.purchaseYearlyAmount[index] = purchaseYearlyNew;
@@ -292,6 +277,7 @@ export class InvestProjection {
       sharePurchaseHistory.shares = this.currentPurchaseShares;
       sharePurchaseHistory.purchaseAmount = newCost * this.currentPurchaseShares;
       sharePurchaseHistory.purchaseDate = currentDayTrade;
+      sharePurchaseHistory.shareCost = newCost;
       this.purchaseYearlyAmount[index].sharePurchaseHistory.push(sharePurchaseHistory);
 
       this.lastPurchaseDate = currentDayTrade;
@@ -334,14 +320,27 @@ export class InvestProjection {
       let purchaseYearlyNew: purchaseYearly = new purchaseYearly();
       purchaseYearlyNew.year = currentYear;
       purchaseYearlyNew.dividendProfit = dividend * this.GetTotalShares()
-      //purchaseYearlyNew.purchaseAmount = 0;
       
-      //purchaseYearlyNew.shares = 0;
       if (purchaseYearlyNew.dividendProfit) {
         this.purchaseYearlyAmount.push(purchaseYearlyNew);
       }
     }
 
+
+  }
+
+
+  GetTotalShares(): number {
+    let totalShares: number = 0;
+    let yearCount = this.purchaseYearlyAmount.length;
+    for (var i = 0; i < yearCount; i++) {
+      totalShares += this.purchaseYearlyAmount[i].totalShares();
+    }
+    return totalShares;
+  }
+
+  GetAverageCost(): number {
+    return this.GetTotalPurchaseAmount() / this.GetTotalShares();
 
   }
 

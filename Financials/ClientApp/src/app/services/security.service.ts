@@ -33,6 +33,9 @@ import { ScreenerCriteria } from '../interfaces/stockscreener/ScreenerCriteria';
 import { ScreeneCriteriaDetailDto } from '../interfaces/stockscreener/ScreeneCriteriaDetailDto';
 import { StockScreenerSearchResourceParameters } from '../interfaces/resourceparameters/StockScreenerSearchResourceParameters';
 import { StockScreener } from '../interfaces/stockscreener/StockScreener';
+import { InvestProjectionModel } from '../classes/InvestmentProjection/InvestProjectionModel';
+import { StockScreenerAlertsHistory } from '../interfaces/StockScreenerAlertsHistory';
+import { StockScreenerAlertsHistorySearchResourceParameters } from '../interfaces/resourceparameters/StockScreenerAlertsHistorySearchResourceParameters';
 
 //import { MessageService } from './message.service';
 
@@ -246,6 +249,35 @@ export class SecurityService {
 
   getEarnings(val: string): Observable<Earning[]> {
     return this.http.get<Earning[]>(this.baseUrl + 'security/' + val + '/earning');
+  }
+
+
+
+  
+  SearchStockScreenerAlertsHistory(stockScreenAlertsHistoryParams: StockScreenerAlertsHistorySearchResourceParameters): Observable<StockScreenerAlertsHistory[]> {
+
+    let searchQuery: string = '';
+
+    if (stockScreenAlertsHistoryParams.stockScreenerId) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "stockScreenerId=" + stockScreenAlertsHistoryParams.stockScreenerId;
+    }
+    if (stockScreenAlertsHistoryParams.alertDate) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "alertDate=" + stockScreenAlertsHistoryParams.alertDate;
+    }
+
+    if (stockScreenAlertsHistoryParams.alertDateRangeEnd) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "alertDateRangeEnd=" + stockScreenAlertsHistoryParams.alertDateRangeEnd;
+    }
+
+    if (stockScreenAlertsHistoryParams.alertDateRangeStart) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "alertDateRangeStart=" + stockScreenAlertsHistoryParams.alertDateRangeStart;
+    }
+
+    return this.http.get<StockScreenerAlertsHistory[]>(this.baseUrl + 'StockScreenerAlertsHistory' + searchQuery);
   }
 
 
@@ -594,7 +626,7 @@ export class SecurityService {
 
 
   /** GET heroes from the server */
-  getInvestmentProjectionsSecurities(investmentProjectionSearch: investmentprojectionsresourceparameters): Observable<InvestProjectionStockFactory[]> {
+  getInvestmentProjectionsSecurities(investmentProjectionSearch: investmentprojectionsresourceparameters): Observable<InvestProjectionModel[]> {
     let searchQuery: string = '';
 
     //searchQuery = this.SetSearchSecurityQuery(securitySearch);
@@ -606,7 +638,7 @@ export class SecurityService {
     }
 
 
-    return this.http.get<InvestProjectionStockFactory[]>(this.baseUrl + 'investmentprojection' + searchQuery)
+    return this.http.get<InvestProjectionModel[]>(this.baseUrl + 'investmentprojection' + searchQuery)
       //  .pipe(
       //  tap(_ => this.log('fetched heroes')),
       // catchError(this.handleError<Security[]>('getHeroes', []))

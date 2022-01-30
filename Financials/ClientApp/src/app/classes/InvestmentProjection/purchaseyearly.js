@@ -6,9 +6,6 @@ var purchaseYearly = /** @class */ (function () {
         this.percentageShares = 1;
         this.dividendProfit = 0;
     }
-    purchaseYearly.prototype.GetAverageCost = function () {
-        return this.totalPurchase() / this.totalShares();
-    };
     purchaseYearly.prototype.totalShares = function () {
         var shareAmount = 0;
         var shareCount = this.sharePurchaseHistory.length;
@@ -24,6 +21,9 @@ var purchaseYearly = /** @class */ (function () {
             shareAmount += this.sharePurchaseHistory[i].purchaseAmount;
         }
         return shareAmount;
+    };
+    purchaseYearly.prototype.GetAverageCost = function () {
+        return this.totalPurchase() / this.totalShares();
     };
     return purchaseYearly;
 }());

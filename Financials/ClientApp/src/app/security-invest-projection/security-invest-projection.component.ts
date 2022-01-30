@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from '../services/security.service';
-import { HistoricalPrice } from '../interfaces/historicalprice';
 import { Security } from '../interfaces/security';
-import { Dividend } from '../interfaces/dividend';
 
 
 import { ViewChild } from '@angular/core';
 import { InvestProjectionStockFactory } from '../classes/InvestmentProjection/investprojectionstockfactory';
 import { InvestProjectionStock } from '../classes/InvestmentProjection/investprojectionstock';
 import { investmentprojectionsresourceparameters } from '../interfaces/resourceparameters/investmentprojectionsresourceparameters';
-import { InvestProjection } from '../classes/InvestmentProjection/investprojection';
 import { investmentprojectionforupdate } from '../interfaces/investmentprojectionforupdate';
 import { investmentprojectionforadd } from '../interfaces/investmentprojectionforadd';
+import { InvestProjection } from '../classes/InvestmentProjection/investprojection';
 @Component({
   selector: 'app-security-invest-projection',
   templateUrl: './security-invest-projection.component.html',
@@ -50,29 +48,21 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
   ngOnInit() {
 
-    //this.getHistoricalPrices();
-    /*
-    let securityList: number[] = [];
-    securityList.push(175); //amazon
-    securityList.push(251);//apple
-    securityList.push(2348);//netflix
-    securityList.push(814);//costco
-    
-    let securityCount: number = securityList.length;
-    for (var i = 0; i < securityCount; i++) {
-      this.addSecurity(securityList[i]);
-    }
-    */
-
-
-
     let invprojRP: investmentprojectionsresourceparameters = new investmentprojectionsresourceparameters();
     invprojRP.userId = 1;
     this.prefSecurityService.getInvestmentProjectionsSecurities(invprojRP).subscribe(investProjections => {
       this.investProjectionStockFactoryList = [];
-      this.investProjectionStockFactoryList.push(new InvestProjectionStockFactory());
-      this.investProjectionStockFactoryList.push(...investProjections);
+      let blankProjectionFactory: InvestProjectionStockFactory = new InvestProjectionStockFactory();
       
+      this.investProjectionStockFactoryList.push(blankProjectionFactory);
+
+      var projectionLength = investProjections.length;
+      for (var i = 0; i < projectionLength;i++) {
+        let projectionFactory: InvestProjectionStockFactory = new InvestProjectionStockFactory();
+        projectionFactory.investProjectionModel = investProjections[i];
+       this.investProjectionStockFactoryList.push(projectionFactory);
+       // this.investProjectionStockFactoryList.push(...investProjections);
+      }
       
 
     });
@@ -83,51 +73,47 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
   onInvestProjectionChange(value: number): void {
     this.investProjectionStockFactory = new InvestProjectionStockFactory();
-
-
-
     this.selectSavedInvestProjection(Number(value));
-
-
-
-    
   }
 
   selectSavedInvestProjection(projectionId: number): void {
     this.investProjectionStockFactory = new InvestProjectionStockFactory();
 
-    let index = this.investProjectionStockFactoryList.findIndex(x => x.id === projectionId);
+    let index = this.investProjectionStockFactoryList.findIndex(x => x.investProjectionModel.id === projectionId);
     if (index == -1) {
       return;
     }
     
 
-    this.investProjectionStockFactory.repeatInvestmentFrequency = this.investProjectionStockFactoryList[index].repeatInvestmentFrequency;
+    this.investProjectionStockFactory.investProjectionModel.repeatInvestmentFrequency = this.investProjectionStockFactoryList[index].investProjectionModel.repeatInvestmentFrequency;
 
-    this.investProjectionStockFactory.purchaseFrequency = this.investProjectionStockFactoryList[index].purchaseFrequency;
-    this.investProjectionStockFactory.repeatInvestmentAmount = this.investProjectionStockFactoryList[index].repeatInvestmentAmount;
-    this.investProjectionStockFactory.yearRangeHigh = this.investProjectionStockFactoryList[index].yearRangeHigh;
-    this.investProjectionStockFactory.yearRangeLow = this.investProjectionStockFactoryList[index].yearRangeLow;
-    this.investProjectionStockFactory.projectionName = this.investProjectionStockFactoryList[index].projectionName;
-    this.investProjectionStockFactory.id = this.investProjectionStockFactoryList[index].id;
+    this.investProjectionStockFactory.investProjectionModel.purchaseFrequency = this.investProjectionStockFactoryList[index].investProjectionModel.purchaseFrequency;
+    this.investProjectionStockFactory.investProjectionModel.repeatInvestmentAmount = this.investProjectionStockFactoryList[index].investProjectionModel.repeatInvestmentAmount;
+    this.investProjectionStockFactory.investProjectionModel.yearRangeHigh = this.investProjectionStockFactoryList[index].investProjectionModel.yearRangeHigh;
+    this.investProjectionStockFactory.investProjectionModel.yearRangeLow = this.investProjectionStockFactoryList[index].investProjectionModel.yearRangeLow;
+    this.investProjectionStockFactory.investProjectionModel.projectionName = this.investProjectionStockFactoryList[index].investProjectionModel.projectionName;
+    this.investProjectionStockFactory.investProjectionModel.id = this.investProjectionStockFactoryList[index].investProjectionModel.id;
     this.investProjectionStockFactory.userId = this.investProjectionStockFactoryList[index].userId;
 
-    var securityLength = this.investProjectionStockFactoryList[index].securities.length;
+    var securityLength = this.investProjectionStockFactoryList[index].investProjectionModel.securities.length;
     for (var i = 0; i < securityLength; i++) {
-      this.addSecurity(this.investProjectionStockFactoryList[index].securities[i].id);
+      this.addSecurity(this.investProjectionStockFactoryList[index].investProjectionModel.securities[i].id, securityLength);
     }
+
+    
+
   }
 
   newInvestmentProjection(): void {
     
     let investmentprojectionforadddto: investmentprojectionforadd = new investmentprojectionforadd();
     investmentprojectionforadddto.userId = this.investProjectionStockFactory.userId;
-    investmentprojectionforadddto.projectionName = this.investProjectionStockFactory.projectionName;
-    investmentprojectionforadddto.repeatInvestmentAmount = Number(this.investProjectionStockFactory.repeatInvestmentAmount);
-    investmentprojectionforadddto.repeatInvestmentFrequency = Number(this.investProjectionStockFactory.repeatInvestmentFrequency);
-    investmentprojectionforadddto.purchaseFrequency = Number(this.investProjectionStockFactory.purchaseFrequency);
-    investmentprojectionforadddto.yearRangeLow = Number(this.investProjectionStockFactory.yearRangeLow);
-    investmentprojectionforadddto.yearRangeHigh = Number(this.investProjectionStockFactory.yearRangeHigh);
+    investmentprojectionforadddto.projectionName = this.investProjectionStockFactory.investProjectionModel.projectionName;
+    investmentprojectionforadddto.repeatInvestmentAmount = Number(this.investProjectionStockFactory.investProjectionModel.repeatInvestmentAmount);
+    investmentprojectionforadddto.repeatInvestmentFrequency = Number(this.investProjectionStockFactory.investProjectionModel.repeatInvestmentFrequency);
+    investmentprojectionforadddto.purchaseFrequency = Number(this.investProjectionStockFactory.investProjectionModel.purchaseFrequency);
+    investmentprojectionforadddto.yearRangeLow = Number(this.investProjectionStockFactory.investProjectionModel.yearRangeLow);
+    investmentprojectionforadddto.yearRangeHigh = Number(this.investProjectionStockFactory.investProjectionModel.yearRangeHigh);
     investmentprojectionforadddto.securities = [];
 
     let projStockCount = this.investProjectionStockFactory.investProjectionStocks.length;
@@ -139,11 +125,11 @@ export class SecurityInvestProjectionComponent implements OnInit {
     this.prefSecurityService.addInvestmentProjection(investmentprojectionforadddto).subscribe(prefsecurities => {
 
 
-      this.investProjectionStockFactory.id = Number(prefsecurities);
+      this.investProjectionStockFactory.investProjectionModel.id = Number(prefsecurities);
       let stockCount = this.investProjectionStockFactory.investProjectionStocks.length;
 
       for (var i = 0; i < stockCount; i++) {
-        this.investProjectionStockFactory.securities.push(this.investProjectionStockFactory.investProjectionStocks[i].securityRecord);
+        this.investProjectionStockFactory.investProjectionModel.securities.push(this.investProjectionStockFactory.investProjectionStocks[i].securityRecord);
       }
       
 
@@ -162,14 +148,14 @@ export class SecurityInvestProjectionComponent implements OnInit {
   updateInvestmentProjection(): void {
     let investmentprojectionforupdatedto: investmentprojectionforupdate = new investmentprojectionforupdate();
 
-    investmentprojectionforupdatedto.id = this.investProjectionStockFactory.id;
+    investmentprojectionforupdatedto.id = this.investProjectionStockFactory.investProjectionModel.id;
     investmentprojectionforupdatedto.userId = this.investProjectionStockFactory.userId;
-    investmentprojectionforupdatedto.projectionName = this.investProjectionStockFactory.projectionName;
-    investmentprojectionforupdatedto.repeatInvestmentAmount = Number(this.investProjectionStockFactory.repeatInvestmentAmount);
-    investmentprojectionforupdatedto.repeatInvestmentFrequency = Number(this.investProjectionStockFactory.repeatInvestmentFrequency);
-    investmentprojectionforupdatedto.purchaseFrequency = Number(this.investProjectionStockFactory.purchaseFrequency);
-    investmentprojectionforupdatedto.yearRangeLow = Number(this.investProjectionStockFactory.yearRangeLow);
-    investmentprojectionforupdatedto.yearRangeHigh = Number(this.investProjectionStockFactory.yearRangeHigh);
+    investmentprojectionforupdatedto.projectionName = this.investProjectionStockFactory.investProjectionModel.projectionName;
+    investmentprojectionforupdatedto.repeatInvestmentAmount = Number(this.investProjectionStockFactory.investProjectionModel.repeatInvestmentAmount);
+    investmentprojectionforupdatedto.repeatInvestmentFrequency = Number(this.investProjectionStockFactory.investProjectionModel.repeatInvestmentFrequency);
+    investmentprojectionforupdatedto.purchaseFrequency = Number(this.investProjectionStockFactory.investProjectionModel.purchaseFrequency);
+    investmentprojectionforupdatedto.yearRangeLow = Number(this.investProjectionStockFactory.investProjectionModel.yearRangeLow);
+    investmentprojectionforupdatedto.yearRangeHigh = Number(this.investProjectionStockFactory.investProjectionModel.yearRangeHigh);
     investmentprojectionforupdatedto.securities = [];
 
     let projStockCount = this.investProjectionStockFactory.investProjectionStocks.length;
@@ -191,12 +177,12 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
 
   deleteCalculations(): void {
-    let investmentProjectionId: number = this.investProjectionStockFactory.id;
+    let investmentProjectionId: number = this.investProjectionStockFactory.investProjectionModel.id;
     if (investmentProjectionId > 0) {
       this.prefSecurityService.deleteInvestmentProjection(investmentProjectionId).subscribe(security => {
         this.investProjectionStockFactory = new InvestProjectionStockFactory();
 
-        let index = this.investProjectionStockFactoryList.findIndex(x => x.id === investmentProjectionId);
+        let index = this.investProjectionStockFactoryList.findIndex(x => x.investProjectionModel.id === investmentProjectionId);
         if (index > -1) {
           this.investProjectionStockFactoryList.splice(index, 1);
         }
@@ -212,29 +198,29 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
   saveCalculations(): void {
 
-    if (this.investProjectionStockFactory.id > 0) {
+    if (this.investProjectionStockFactory.investProjectionModel.id > 0) {
       this.updateInvestmentProjection();
     } else {
       this.newInvestmentProjection();
     }
    
   }
-  addSecurity(securityId: number): void {
-    this.prefSecurityService.getSecurity(securityId)
+  addSecurity(securityId: number, securityLength: number): void {
+     this.prefSecurityService.getSecurity(securityId)
       .subscribe(security => {
-        this.setSecurityId(security);
+        this.setSecurityId(security, securityLength);
       });
   }
 
   refreshCalculations(): void {
 
     if (this.investProjectionStockFactory.investProjectionStocks.length == 0) {
-      alert("Select A Security");
+      //alert("Select A Security");
       return;
     }
     
 
-    this.UpdateStockPrices();
+    this.investProjectionStockFactory.UpdateStockPrices();
     
     
     
@@ -247,116 +233,68 @@ export class SecurityInvestProjectionComponent implements OnInit {
         this.investProjectionStockFactory.investProjectionStocks.splice(index, 1);
     }
 
-  }
-  RetrieveStockData(securityId: number): void{
-    this.prefSecurityService.getDividends(securityId).subscribe(dividends => {
-      //this.dividends = dividends;
-      let index = this.investProjectionStockFactory.investProjectionStocks.findIndex(x => x.securityRecord.id === securityId);
-      if (index > -1) {
-        this.investProjectionStockFactory.investProjectionStocks[index].dividends = dividends;
-        this.getHistoricalPrices(securityId);
-      }
 
-      
-    });
-}
+    var securityLength = this.investProjectionStockFactory.investProjectionStocks.length;
+    this.investProjectionStockFactory.investProjectionModel.totalStocks = securityLength;
+    
+    for (var i = 0; i < securityLength; i++) {
+      this.investProjectionStockFactory.investProjectionStocks[i].investProjectionModel = this.investProjectionStockFactory.investProjectionModel;
+
+      this.investProjectionStockFactory.investProjectionStocks[i].UpdateStockPrices();
+    }
+
+
+
+
+
+  }
+ 
   
-  setSecurityId(security: Security) {
+  setSecurityId(security: Security, securityLength: number) {
    // this.securityId = security.id;
 
     let index = this.investProjectionStockFactory.investProjectionStocks.findIndex(x => x.securityRecord.id === security.id);
     if (index == -1) {
 
+      if (securityLength) {
+        this.investProjectionStockFactory.investProjectionModel.totalStocks = securityLength;
+        let investProjectionStock: InvestProjectionStock = new InvestProjectionStock(this.prefSecurityService, this.investProjectionStockFactory.investProjectionModel);
+        investProjectionStock.securityRecord = security;
 
-      let investProjectionStock: InvestProjectionStock = new InvestProjectionStock();
-      investProjectionStock.securityRecord = security;
+        this.investProjectionStockFactory.investProjectionStocks.push(investProjectionStock);
+        if (securityLength == this.investProjectionStockFactory.investProjectionStocks.length) {
 
-      this.investProjectionStockFactory.investProjectionStocks.push(investProjectionStock);
-      this.RetrieveStockData(security.id);
+
+          for (var i = 0; i < securityLength; i++) {
+            this.investProjectionStockFactory.investProjectionStocks[i].RetrieveStockData();
+          }
+
+
+        }
+      }
+      else {
+
+        this.investProjectionStockFactory.investProjectionModel.totalStocks = this.investProjectionStockFactory.investProjectionStocks.length + 1;
+        let investProjectionStock: InvestProjectionStock = new InvestProjectionStock(this.prefSecurityService, this.investProjectionStockFactory.investProjectionModel);
+        investProjectionStock.securityRecord = security;
+
+        this.investProjectionStockFactory.investProjectionStocks.push(investProjectionStock);
+        securityLength = this.investProjectionStockFactory.investProjectionStocks.length
+        for (var i = 0; i < securityLength - 1; i++) {
+          this.investProjectionStockFactory.investProjectionStocks[i].investProjectionModel = this.investProjectionStockFactory.investProjectionModel;
+            this.investProjectionStockFactory.investProjectionStocks[i].UpdateStockPrices();
+        }
+        this.investProjectionStockFactory.investProjectionStocks[securityLength-1].RetrieveStockData();
+      }
+      
      
     }
     // this.modalClose.nativeElement.click();
     
   }
 
-  getHistoricalPrices(securityId: number): void {
-
-   
-    let historyDays: number = 365 * 10;
-    this.prefSecurityService.getHistoricalPrices(Number(securityId), historyDays)
-      .subscribe(historicalPrices => {
-        //this.historicalPrices = historicalPrices;
-        //this.historicalPrices = historicalPrices;
-        let index = this.investProjectionStockFactory.investProjectionStocks.findIndex(x => x.securityRecord.id === securityId);
-        if (index > -1) {
-          this.investProjectionStockFactory.investProjectionStocks[index].historicalPrices = historicalPrices;
-          this.investProjectionStockFactory.investProjectionStocks[index].historicalPrices.sort((a, b) => new Date(a.historicDate).getTime() - new Date(b.historicDate).getTime());
-          this.investProjectionStockFactory.investProjectionStocks[index].getTodayAverageGainsFromPastYears();
-
-          this.prefSecurityService.GetPeakRangeDetails(this.investProjectionStockFactory.investProjectionStocks[index].securityRecord.id).subscribe(peakRangeDetails => {
-            this.investProjectionStockFactory.investProjectionStocks[index].peakRanges = peakRangeDetails;
-          });
-
-          this.prefSecurityService.GetCurrentPeakRanges(this.investProjectionStockFactory.investProjectionStocks[index].securityRecord.id).subscribe(currentPeakRanges => {
-            if (currentPeakRanges.length > 0) {
-              this.investProjectionStockFactory.investProjectionStocks[index].currentPeakRange = currentPeakRanges[0];
-            }
-          });
-
-          this.UpdateStockPrices();
-        }
-       
+ 
 
 
-      }
-        , error => {
-          console.error(error)
-        }
-
-      );
-  }
-
-
-  UpdateStockPrices(): void {
-    let stockCount: number = this.investProjectionStockFactory.investProjectionStocks.length;
-    for (var i = 0; i < stockCount; i++) {
-      this.investProjectionStockFactory.SetupInvestmentProjections(this.investProjectionStockFactory.investProjectionStocks[i]);
-      this.investProjectionStockFactory.GetPrices(i);
-
-    
-      //this.GetPrices(this.investProjectionStockFactory.investProjectionStocks[i]);
-    }
-
-   this.investProjectionStockFactory.priceFractionalCost();
-
-    for (var i = 0; i < stockCount; i++) {
-
-     this.investProjectionStockFactory.ResetShares(this.investProjectionStockFactory.investProjectionStocks[i]);
-
-      
-      this.investProjectionStockFactory.investProjectionStocks[i].priorCost = 0;
-      this.investProjectionStockFactory.UpdateFractionalPrices(i);
-      //this.GetPrices(this.investProjectionStockFactory.investProjectionStocks[i]);
-      this.investProjectionStockFactory.investProjectionStocks[i].setNextPurchasePrices();
-      this.investProjectionStockFactory.investProjectionStocks[i].setNextDate(this.investProjectionStockFactory.purchaseFrequency);
-
-    
-
-      
-      
-      
-      
-
-
-      //this.investProjectionStockFactory.investProjectionStocks[i].calculatePeaks( this.prefSecurityService);
-      
-      
-    }
-
-    
-
-    
-
-  }
   
 }

@@ -17,7 +17,7 @@
             <u>Saved Projections</u>
             <br />
             <select name="selectedPurchaseType" id="info" #t (change)="onInvestProjectionChange(t.value)">
-              <option *ngFor="let option of investProjectionStockFactoryList" [value]="option.id">{{option.projectionName}}</option>
+              <option *ngFor="let option of investProjectionStockFactoryList" [value]="option.investProjectionModel.id">{{option.investProjectionModel.projectionName}}</option>
             </select>
           </div>
 
@@ -27,89 +27,30 @@
 
 
           <p>
-            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
-                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+            <!--            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+      Projection Settings
+    </button>
+      -->
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectSettingsModal">
               Projection Settings
             </button>
+
           </p>
-          <div id="collapseExample" [ngbCollapse]="isCollapsed">
-            <div class="card">
-              <div class="card-body">
-                <button class="btn btn-primary" (click)="newCalculation()">New</button>
-
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInvestmentProjection">
-                  Delete
-                </button>
-
-                <table>
-                  <tr>
-                    <td colspan="2">
-                      Projection Name
-                    </td>
-                    <td>
-                      <input type="text" [(ngModel)]="investProjectionStockFactory.projectionName" />
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="2">
-                      Frequency
-                    </td>
-                    <td>
-                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.purchaseFrequency" />
-                    </td>
-                  </tr>
-
-
-                  <tr>
-                    <td colspan="2">
-                      Total Investment
-                    </td>
-                    <td>
-                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.repeatInvestmentAmount">
-                      <span>{{(investProjectionStockFactory.repeatInvestmentAmount / 52) | number: '1.1-2' }} a week</span>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="2">
-                      Year Range Start
-                    </td>
-                    <td>
-                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.yearRangeLow">
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="2">
-                      Year Range End
-                    </td>
-                    <td>
-                      <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.yearRangeHigh">
-                    </td>
-                  </tr>
-
-
-                </table>
-
-                <button class="btn btn-primary" (click)="saveCalculations()">Save</button>
-
-
-
-              </div>
-            </div>
-          </div>
+          <!--<div id="collapseExample" [ngbCollapse]="isCollapsed">-->
+          
 
 
           <div style="text-align: center;">
 
             <u>Projection Name</u> <br />
-            {{investProjectionStockFactory.projectionName}}
+            {{investProjectionStockFactory.investProjectionModel.projectionName}}
             <br />
 
 
             Stocks Selected <span style="cursor: pointer;"><i class="cil-plus" data-toggle="modal" data-target="#securitySearchModal"></i></span>
-            <br/>
+            <br />
             <span style="padding-left:10px;" *ngFor="let projectionStock of investProjectionStockFactory.investProjectionStocks"><span title="{{projectionStock.securityRecord.name}}">{{projectionStock.securityRecord.symbol}} </span></span>
 
           </div>
@@ -217,7 +158,7 @@
 
                     </td>
                     <td>
-                      <span title="{{investProjectionStock.averageRisePrice}}% a year increase">
+                      <span title="{{investProjectionStock.yearlyaAveragePercent}}% a year increase">
                         <!--//Matt jump back on this-->
                         {{ investProjectionStock.getPotentialFutureValue() | number: '1.1-2'}} ({{investProjectionStock.getNextPurchasePrice()}})
                       </span>
@@ -316,6 +257,111 @@
               </div>
             </div>
           </div>
+
+
+
+          <!-- Select a Security Modal -->
+          <div class="modal fade" id="projectSettingsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Projection Settings</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+
+
+
+                  <div>
+                    <div class="card">
+                      <div class="card-body">
+                        <button class="btn btn-primary" (click)="newCalculation()">New</button>
+
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInvestmentProjection">
+                          Delete
+                        </button>
+
+                        <table>
+                          <tr>
+                            <td colspan="2">
+                              Projection Name
+                            </td>
+                            <td>
+                              <input type="text" [(ngModel)]="investProjectionStockFactory.investProjectionModel.projectionName" />
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td colspan="2">
+                              Frequency
+                            </td>
+                            <td>
+                              <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.investProjectionModel.purchaseFrequency" />
+                            </td>
+                          </tr>
+
+
+                          <tr>
+                            <td colspan="2">
+                              Total Investment
+                            </td>
+                            <td>
+                              <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.investProjectionModel.repeatInvestmentAmount">
+                              <span>{{(investProjectionStockFactory.investProjectionModel.repeatInvestmentAmount / 52) | number: '1.1-2' }} a week</span>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td colspan="2">
+                              Year Range Start
+                            </td>
+                            <td>
+                              <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.investProjectionModel.yearRangeLow">
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td colspan="2">
+                              Year Range End
+                            </td>
+                            <td>
+                              <input type="text" (change)="refreshCalculations()" [(ngModel)]="investProjectionStockFactory.investProjectionModel.yearRangeHigh">
+                            </td>
+                          </tr>
+
+
+                        </table>
+
+                        <button class="btn btn-primary" (click)="saveCalculations()">Save</button>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 
 
 

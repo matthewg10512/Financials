@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\classes\InvestmentProjection\InvestProjectionModel.ts" />
     <None Remove="ClientApp\src\app\classes\InvestmentProjection\investprojectionstock.ts" />
     <None Remove="ClientApp\src\app\classes\InvestmentProjection\investprojectionstockfactory.ts" />
     <None Remove="ClientApp\src\app\classes\InvestmentProjection\purchaseyearly.ts" />
@@ -55,12 +56,14 @@
     <None Remove="ClientApp\src\app\interfaces\PriorPurchaseEstimate.ts" />
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\StockPurchaseOptionsResourceParameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\resourceparameters\StockScreenerAlertsHistorySearchResourceParameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\StockScreenerSearchResourceParameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\security.ts" />
     <None Remove="ClientApp\src\app\interfaces\securitydate.ts" />
     <None Remove="ClientApp\src\app\interfaces\SecurityPercentageStatistic.ts" />
     <None Remove="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\StockPurchaseOption.ts" />
+    <None Remove="ClientApp\src\app\interfaces\StockScreenerAlertsHistory.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockscreener\ScreeneCriteriaDetailDto.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockscreener\ScreenerCriteria.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockscreener\StockScreener.ts" />
@@ -79,6 +82,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\InvestProjectionModel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\investprojectionstock.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\investprojectionstockfactory.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\purchaseyearly.ts" />
@@ -102,6 +106,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\StockPurchaseOptionsResourceParameters.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\StockScreenerAlertsHistorySearchResourceParameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\StockScreenerSearchResourceParameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securitydate.ts" />
@@ -109,6 +114,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\PriorPurchaseEstimate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\StockPurchaseOption.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\StockScreenerAlertsHistory.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockscreener\ScreeneCriteriaDetailDto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockscreener\ScreenerCriteria.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockscreener\StockScreener.ts" />

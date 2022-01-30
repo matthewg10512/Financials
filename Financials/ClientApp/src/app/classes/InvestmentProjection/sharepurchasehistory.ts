@@ -3,4 +3,5 @@ export class SharePurchaseHistory {
   purchaseAmount: number;
   purchaseDate: Date;
   sharePurchaseLevel: number;
+  shareCost: number;
 }
