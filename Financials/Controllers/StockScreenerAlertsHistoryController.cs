@@ -30,11 +30,11 @@ namespace Financials.Controllers
         [HttpGet()]
         //  [HttpHead]
        
-        public async Task<List<StockScreenerAlertsHistoryDto>> SearchStockScreenerAlerts([FromQuery] StockScreenerAlertsHistorySearchResourceParameters screenerHistorySearchResourceParams)
+        public async Task<List<StockScreenerAlertsHistorySecurityJoinDto>> SearchStockScreenerAlerts([FromQuery] StockScreenerAlertsHistorySearchResourceParameters screenerHistorySearchResourceParams)
         {
 
             _authentication.AuthenticationToken(_configuration);
-            List<StockScreenerAlertsHistoryDto> stockScreenersAlertsHistory = new List<StockScreenerAlertsHistoryDto>();
+            List<StockScreenerAlertsHistorySecurityJoinDto> stockScreenersAlertsHistory = new List<StockScreenerAlertsHistorySecurityJoinDto>();
             string details = "";
 
             using (var client = new HttpClient())
@@ -91,7 +91,7 @@ namespace Financials.Controllers
                     {
 
                         stockScreenersAlertsHistory =
-                              JsonConvert.DeserializeObject<List<StockScreenerAlertsHistoryDto>>(responseString);
+                              JsonConvert.DeserializeObject<List<StockScreenerAlertsHistorySecurityJoinDto>>(responseString);
 
                     }
                     catch (Exception ex)

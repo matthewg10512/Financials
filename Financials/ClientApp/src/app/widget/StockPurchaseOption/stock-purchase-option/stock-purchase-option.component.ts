@@ -13,12 +13,13 @@ import { StockScreenerSearchResourceParameters } from '../../../interfaces/resou
 })
 export class StockPurchaseOptionComponent implements OnInit {
   
-  private stockPurchaseOptions: StockPurchaseOption[];
-  @Input() stockPurchaseOptResourceParams: StockPurchaseOptionsResourceParameters;
-
+  public stockPurchaseOptions: StockPurchaseOption[];
+  
   @Input() stockScreenerSearchResourceParameters: StockScreenerSearchResourceParameters;
   @Input() stockScreenerSearchCritieria: ScreenerCriteria[];
 
+
+  templateScreenerCritierias: ScreenerCriteria[];
   percentDropTypesList: any[] = [];
   calculatedPercentDropTypeList: any[] = [];
   @Input() purOptionTabNum: number;
@@ -31,21 +32,45 @@ export class StockPurchaseOptionComponent implements OnInit {
 
     this.processStockPurchaseOptions();
     this.SetupDropLists();
-
+    
   }
 
 
+
+  GetAllScreenerCriterias(): void {
+    this.securityService.GetAllScreenerCriterias().subscribe(screenerCritieriaResults => {
+      this.templateScreenerCritierias = screenerCritieriaResults;
+      for (var i = 0; i < this.templateScreenerCritierias.length; i++) {
+        this.templateScreenerCritierias[i].value = '';
+        this.templateScreenerCritierias[i].boolValue = false;
+
+      }
+      this.templateScreenerCritierias.sort((a, b) => a.sortPriority - b.sortPriority);
+      if (!this.stockScreenerSearchCritieria) {
+        this.stockScreenerSearchCritieria = JSON.parse(JSON.stringify(this.templateScreenerCritierias));
+      }
+      this.processStockPurchaseOptions();
+    });
+
+
+
+  }
+
   processStockPurchaseOptions(): void {
 
+    if (!this.stockScreenerSearchResourceParameters) {
+      this.stockScreenerSearchResourceParameters = new StockScreenerSearchResourceParameters();
+    }
 
 
 
     //stockScreenerSearchCritieria
 
-    if (this.stockPurchaseOptResourceParams == null) {
+    
 
       if (!this.stockScreenerSearchCritieria) {
         this.stockPurchaseOptions = [];
+        this.GetAllScreenerCriterias();
         return;
 
       }
@@ -67,7 +92,11 @@ export class StockPurchaseOptionComponent implements OnInit {
       for (var i2 = 0; i2 < screenCritLen; i2++) {
         var jsonName = this.stockScreenerSearchCritieria[i2].jsonObjectName
 
-        if (this.stockScreenerSearchCritieria[i2].objectType == 'bool') {
+        if (this.stockScreenerSearchCritieria[i2].objectType == 'date' && this.stockScreenerSearchCritieria[i2].dateValue) {
+          this.stockScreenerSearchResourceParameters[jsonName] =
+            (this.stockScreenerSearchCritieria[i2].dateValue.getMonth() + 1) + '/' + this.stockScreenerSearchCritieria[i2].dateValue.getDate() + '/' + this.stockScreenerSearchCritieria[i2].dateValue.getFullYear();
+        }
+        else if (this.stockScreenerSearchCritieria[i2].objectType == 'bool') {
           this.stockScreenerSearchResourceParameters[jsonName] = this.stockScreenerSearchCritieria[i2].boolValue + '';
           
         } else {
@@ -87,7 +116,9 @@ export class StockPurchaseOptionComponent implements OnInit {
 
 
 
-    }
+    
+
+    /*
     else {
 
       this.stockPurchaseOptions = null;
@@ -100,7 +131,7 @@ export class StockPurchaseOptionComponent implements OnInit {
         }
       });
     }
-    
+    */
 
   }
 

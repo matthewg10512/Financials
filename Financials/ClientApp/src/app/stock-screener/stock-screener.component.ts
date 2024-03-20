@@ -10,6 +10,11 @@ import { ScreeneCriteriaDetailDto } from '../interfaces/stockscreener/ScreeneCri
 import { StockScreenerSearchDetail } from '../interfaces/stockscreener/StockScreenerSearchDetail';
 import { StockScreenerAlertsHistorySearchResourceParameters } from '../interfaces/resourceparameters/StockScreenerAlertsHistorySearchResourceParameters';
 import { StockScreenerAlertsHistory } from '../interfaces/StockScreenerAlertsHistory';
+import { StockScreenerAlertsHistorySecurityJoin } from '../interfaces/StockScreenerAlertsHistorySecurityJoinDto';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { StockScreenerAlertType } from '../interfaces/stockscreener/StockScreenerAlertType';
 
 @Component({
   selector: 'app-stock-screener',
@@ -21,17 +26,25 @@ export class StockScreenerComponent implements OnInit {
   percentDropTypesList: any[] = [];
   calculatedPercentDropTypeList: any[] = [];
 
- 
+  screenerAlertType: any[] = [];
+  isCollapsed: boolean = true;
+  sortNameDesc: boolean = false;
 
+  date: any;
+  stockScreenersAlertTypes: StockScreenerAlertType[];
+  confirmDeleteStockScreener: boolean = false;
+  stockScreenerFrequencyTypes: any[] = [] ;
   screenerCritierias: ScreenerCriteria[];
 
   templateScreenerCritierias: ScreenerCriteria[];
   
-  
+
+  stockScreenAlertsHistoryParams: StockScreenerAlertsHistorySearchResourceParameters;
+
   
   stockScreenerRec: StockScreenerRecordDto;
 
-  stockScreenerAlertsHistory: StockScreenerAlertsHistory[]
+  alertsSecurityHistory: StockScreenerAlertsHistorySecurityJoin[]
   
   stockScreeners: StockScreener[];
   stockScreenerParams: StockScreenerSearchResourceParameters = new StockScreenerSearchResourceParameters();
@@ -40,37 +53,31 @@ export class StockScreenerComponent implements OnInit {
   ngOnInit() {
     var d = new Date;
     d.setDate(d.getDate() - 1);
-
-    /*
-    this.stockScreenerSPO = new StockPurchaseOptionsResourceParameters();
-    this.stockScreenerSPO.priorPurchaseEstimateSharesRangeLow = "10";
-    this.stockScreenerSPO.securityVolumeRangeLow = '100000';
-    this.stockScreenerSPO.securityLastModifiedRangeLow = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
-    this.stockScreenerSPO.securitypercentChangeRangeHigh = '0';
-    this.stockScreenerSPO.priorPurchaseEstimateYearlyPercentRangeLow = '10';
-    this.stockScreenerSPO.securityPercentDropperType = 'percent5CurrentPrice';
-*/
+    this.GetStockScreenerAlertTypes();
 
 
     this.GetAllScreenerCriterias();
     
     this.SetupDropLists();
     this.GetStockScreeners()
-    this.SearchStockScreenerAlertsHistory();
+    var dt = new Date;
+   
+    this.stockScreenAlertsHistoryParams = new StockScreenerAlertsHistorySearchResourceParameters();
+    //Tue Feb 01 2022 21:16:02 GMT-0500 (Eastern Standard Time) {}
     
+    this.stockScreenAlertsHistoryParams.alertDate = new Date(dt.toDateString());
+    //Tue Feb 01 2022 00: 00: 00 GMT - 0500(Eastern Standard Time) { }
   }
 
 
-  SearchStockScreenerAlertsHistory(): void {
+  GetStockScreenerAlertTypes(): void{
 
-    let stockScreenAlertsHistoryParams: StockScreenerAlertsHistorySearchResourceParameters = new StockScreenerAlertsHistorySearchResourceParameters();
-    stockScreenAlertsHistoryParams.stockScreenerId = 1;
-    
-    this.securityService.SearchStockScreenerAlertsHistory(stockScreenAlertsHistoryParams).subscribe(searchStockScreenerAlertsHistory => {
-      this.stockScreenerAlertsHistory = searchStockScreenerAlertsHistory;
+    this.securityService.GetStockScreenerAlertTypes().subscribe(stockScreenersAlertTypes => {
+      this.stockScreenersAlertTypes = stockScreenersAlertTypes;
     });
-    
-  }
+
+
+}
 
   GetStockScreeners(): void {
 
@@ -78,6 +85,16 @@ export class StockScreenerComponent implements OnInit {
       this.stockScreeners = stockScreeners;
     });
     
+  }
+
+  sortByName(): void {
+    if (this.sortNameDesc) {
+      this.alertsSecurityHistory.sort((a, b) => a.security.name.localeCompare(b.security.name));
+
+    } else {
+      this.alertsSecurityHistory.sort((a, b) => b.security.name.localeCompare(a.security.name));
+    }
+    this.sortNameDesc = !this.sortNameDesc;
   }
   SetupDropLists(): void  {
 
@@ -101,8 +118,42 @@ export class StockScreenerComponent implements OnInit {
     this.AddCalcPercentDropList('percentile10', '10th Percentile of Dropper');
     this.AddCalcPercentDropList('percentile15', '15th Percentile of  Dropper');
     
+    this.AddFrequencyTypeList(1, 'Instant');
+    this.AddFrequencyTypeList(2, 'Hourly');
+    this.AddFrequencyTypeList(3, 'Daily');
+    this.AddFrequencyTypeList(4, 'Weekly');
+
+  }
 
 
+  DeleteStockScreener(): void {
+
+
+    if (!this.confirmDeleteStockScreener) {
+      return;
+    }
+
+    if (this.stockScreenerRec.stockScreener.id && this.stockScreenerRec.stockScreener.id > 0) {
+      this.securityService.DeleteStockScreener(this.stockScreenerRec.stockScreener.id).subscribe(security => {
+        this.ResetStockScreenerRecord();
+        this.GetStockScreeners();
+    
+      
+
+    });
+
+    }
+  }
+
+  AddFrequencyTypeList(id: number, frequencyType: string):void {
+
+
+    let frequencyTypeRec: any = {};
+    frequencyTypeRec.id = id;
+    frequencyTypeRec.frequencyType = frequencyType;
+
+    this.stockScreenerFrequencyTypes.push(frequencyTypeRec)
+    
   }
 
   AddCalcPercentDropList(id: string, name: string): void {
@@ -120,7 +171,7 @@ export class StockScreenerComponent implements OnInit {
     this.stockScreenerRec = new StockScreenerRecordDto();
 
     this.GetAllScreenerCriterias();
-
+    this.confirmDeleteStockScreener = false;
   }
 
 
@@ -135,7 +186,13 @@ export class StockScreenerComponent implements OnInit {
         var jsonName = this.stockScreenerRec.stockScreenerSearchDetails[i].screenerCriteria.jsonObjectName;  
         if (jsonName == this.screenerCritierias[i2].jsonObjectName) {
 
-          if (this.screenerCritierias[i2].objectType == 'bool') {
+          if (this.screenerCritierias[i2].objectType == 'date') {
+            this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue =
+              this.screenerCritierias[i2].dateValue ?
+                (this.screenerCritierias[i2].dateValue.getMonth() + 1) + '/' + this.screenerCritierias[i2].dateValue.getDate() + '/' + this.screenerCritierias[i2].dateValue.getFullYear() : '';
+              
+          }
+          else if (this.screenerCritierias[i2].objectType == 'bool') {
             this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].boolValue + '';
           } else {
             this.stockScreenerRec.stockScreenerSearchDetails[i].stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value + '';
@@ -155,7 +212,13 @@ export class StockScreenerComponent implements OnInit {
             info.stockScreenerSearchDetail.screenerCriteriaId = this.screenerCritierias[iscreen].id;
             info.stockScreenerSearchDetail.stockScreenerId = this.stockScreenerRec.stockScreener.id ? this.stockScreenerRec.stockScreener.id : 0;
 
-            if (this.screenerCritierias[iscreen].objectType == 'bool') {
+            if (this.screenerCritierias[iscreen].objectType == 'date') {
+              info.stockScreenerSearchDetail.searchValue =
+                this.screenerCritierias[i2].dateValue ?
+                  (this.screenerCritierias[i2].dateValue.getMonth() + 1) + '/' + this.screenerCritierias[i2].dateValue.getDate() + '/' + this.screenerCritierias[i2].dateValue.getFullYear() : '';
+
+            }
+           else if (this.screenerCritierias[iscreen].objectType == 'bool') {
               info.stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].boolValue + '';
             } else {
               info.stockScreenerSearchDetail.searchValue = this.screenerCritierias[i2].value + '';
@@ -168,12 +231,22 @@ export class StockScreenerComponent implements OnInit {
     }
 
 
+    this.stockScreenerRec.stockScreener.frequency = Number(this.stockScreenerRec.stockScreener.frequency);
+    this.stockScreenerRec.stockScreener.alertType = Number(this.stockScreenerRec.stockScreener.alertType);
 
 
+    if (!this.stockScreenerRec.stockScreener.frequency || !this.stockScreenerRec.stockScreener.alertType ||
+      !this.stockScreenerRec.stockScreener.name
+    ) {
+      alert("Enter all in required fields");
+      return;
+    }
 
     
     this.securityService.UpsertStockScreenerRecord(this.stockScreenerRec).subscribe(screenerCritieriaResults => {
       console.log('Test info');
+      this.ResetStockScreenerRecord();
+      this.GetStockScreeners();
     });
     
   }
@@ -212,8 +285,20 @@ export class StockScreenerComponent implements OnInit {
   }
 
 
+  SetStockScreenerAlertHistory(stockScreenerId: number): void {
+    this.stockScreenAlertsHistoryParams.stockScreenerId = stockScreenerId;
+    this.GetStockScreenerAlertHistory();
+  }
 
+  GetStockScreenerAlertHistory(): void {
+    
 
+    this.securityService.SearchStockScreenerAlertsHistory(this.stockScreenAlertsHistoryParams).subscribe(searchStockScreenerAlertsHistory => {
+      this.alertsSecurityHistory = searchStockScreenerAlertsHistory;
+      this.alertsSecurityHistory.sort((a, b) => new Date(a.stockScreenerAlertsHistory.dateRecorded).getTime() - new Date(b.stockScreenerAlertsHistory.dateRecorded).getTime());
+    });
+
+  }
 
 
 
@@ -231,7 +316,10 @@ export class StockScreenerComponent implements OnInit {
         for (var i2 = 0; i2 < this.screenerCritierias.length; i2++) {
           if (this.screenerCritierias[i2].jsonObjectName == jsonName) {
 
-            if (this.screenerCritierias[i2].objectType == 'bool') {
+            if (this.screenerCritierias[i2].objectType == 'date') {
+              this.screenerCritierias[i2].dateValue = (searchValue != '' ? new Date(searchValue) : null); 
+            }
+            else if (this.screenerCritierias[i2].objectType == 'bool') {
               this.screenerCritierias[i2].boolValue = (searchValue == 'true' ? true : false);
             } else {
               this.screenerCritierias[i2].value = searchValue;

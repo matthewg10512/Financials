@@ -1,8 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
     <div class="col-md-12">
-
-
       <div class="card">
         <div class="card-header">
           <strong>
@@ -10,9 +8,7 @@
           </strong>
         </div>
         <div class="card-body" style=" overflow: hidden;">
-
           <button (click)="peakRangeInfo()">Click Here</button>
-
           <div *ngIf="investProjectionStockFactoryList">
             <u>Saved Projections</u>
             <br />
@@ -23,32 +19,16 @@
 
           <br />
           <br />
-
-
-
           <p>
-            <!--            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
-            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-      Projection Settings
-    </button>
-      -->
-
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectSettingsModal">
               Projection Settings
             </button>
-
           </p>
           <!--<div id="collapseExample" [ngbCollapse]="isCollapsed">-->
-          
-
-
           <div style="text-align: center;">
-
             <u>Projection Name</u> <br />
             {{investProjectionStockFactory.investProjectionModel.projectionName}}
             <br />
-
-
             Stocks Selected <span style="cursor: pointer;"><i class="cil-plus" data-toggle="modal" data-target="#securitySearchModal"></i></span>
             <br />
             <span style="padding-left:10px;" *ngFor="let projectionStock of investProjectionStockFactory.investProjectionStocks"><span title="{{projectionStock.securityRecord.name}}">{{projectionStock.securityRecord.symbol}} </span></span>
@@ -172,6 +152,7 @@
 
                 </table>
               </div>
+
               <app-security-projection [investProjectionStock]="investProjectionStock"></app-security-projection>
 
 
@@ -221,7 +202,7 @@
                 </div>
                 <div class="modal-body">
                   <security-search [actionItem]="currentActionItem"
-                                   (securitySelectEvent)="setSecurityId($event)"></security-search>
+                                   (securitySelectEvent)="setSecurityId($event,0)"></security-search>
                 </div>
                 <div class="modal-footer">
                   <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -229,7 +210,7 @@
               </div>
             </div>
           </div>
-
+            
 
 
 
@@ -257,7 +238,7 @@
               </div>
             </div>
           </div>
-
+            
 
 
           <!-- Select a Security Modal -->
@@ -358,9 +339,11 @@
                   <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
               </div>
+
+
+
             </div>
           </div>
-
 
 
 

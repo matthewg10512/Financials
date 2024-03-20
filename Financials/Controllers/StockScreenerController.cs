@@ -154,5 +154,36 @@ namespace Financials.Controllers
 
             return NoContent();
         }
+
+
+        [HttpDelete("{stockScreenerId}", Name = "DeleteStockScreener")]
+        public async Task<IActionResult> DeleteStockScreener(int stockScreenerId)
+        {
+
+            _authentication.AuthenticationToken(_configuration);
+
+            string apiUrl = _configuration.GetValue<string>("APIURL");
+            var url = apiUrl + "StockScreener/" + stockScreenerId.ToString();
+
+
+            var client = new RestClient(url);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Accept", "application/json");
+
+            request.AddHeader("Content-Type", "application/json");
+            _authentication.SetBearerTokenRest(request, _configuration);
+            request.AddParameter("application/json", "{\"stockScreenerId\":" + stockScreenerId.ToString() + "}", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+
+            return Ok();
+        }
+
+
+
+
+
+
     }
 }

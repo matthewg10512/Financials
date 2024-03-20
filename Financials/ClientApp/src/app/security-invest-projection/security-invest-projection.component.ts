@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from '../services/security.service';
 import { Security } from '../interfaces/security';
-
-
 import { ViewChild } from '@angular/core';
 import { InvestProjectionStockFactory } from '../classes/InvestmentProjection/investprojectionstockfactory';
 import { InvestProjectionStock } from '../classes/InvestmentProjection/investprojectionstock';
@@ -26,12 +24,8 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
  // investProjections: InvestProjection[];
   @ViewChild('myModalClose', { static: false }) modalClose;
-
-
   constructor(
     private prefSecurityService: SecurityService) {
-
-    
     this.investProjectionStockFactory = new InvestProjectionStockFactory();
   }
 
@@ -248,8 +242,8 @@ export class SecurityInvestProjectionComponent implements OnInit {
 
 
   }
- 
-  
+
+
   setSecurityId(security: Security, securityLength: number) {
    // this.securityId = security.id;
 

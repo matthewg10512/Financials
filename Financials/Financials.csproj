@@ -6,6 +6,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->
@@ -48,6 +49,7 @@
     <None Remove="ClientApp\src\app\interfaces\earning.ts" />
     <None Remove="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
+    <None Remove="ClientApp\src\app\interfaces\fullsecurityanalytic.ts" />
     <None Remove="ClientApp\src\app\interfaces\historicalprice.ts" />
     <None Remove="ClientApp\src\app\interfaces\investmentprojectionforadd.ts" />
     <None Remove="ClientApp\src\app\interfaces\investmentprojectionforupdate.ts" />
@@ -58,12 +60,16 @@
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\StockPurchaseOptionsResourceParameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\StockScreenerAlertsHistorySearchResourceParameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\resourceparameters\StockScreenerSearchResourceParameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\resourceparameters\topmoversresourceparameters.ts" />
     <None Remove="ClientApp\src\app\interfaces\security.ts" />
+    <None Remove="ClientApp\src\app\interfaces\securityanalytic.ts" />
     <None Remove="ClientApp\src\app\interfaces\securitydate.ts" />
     <None Remove="ClientApp\src\app\interfaces\SecurityPercentageStatistic.ts" />
     <None Remove="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
+    <None Remove="ClientApp\src\app\interfaces\SecurityYearOverYearComparison.ts" />
     <None Remove="ClientApp\src\app\interfaces\StockPurchaseOption.ts" />
     <None Remove="ClientApp\src\app\interfaces\StockScreenerAlertsHistory.ts" />
+    <None Remove="ClientApp\src\app\interfaces\StockScreenerAlertsHistorySecurityJoinDto.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockscreener\ScreeneCriteriaDetailDto.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockscreener\ScreenerCriteria.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockscreener\StockScreener.ts" />
@@ -71,6 +77,8 @@
     <None Remove="ClientApp\src\app\interfaces\stockscreener\StockScreenerRecordDto.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockscreener\StockScreenerSearchDetail.ts" />
     <None Remove="ClientApp\src\app\interfaces\stockTranHistory.ts" />
+    <None Remove="ClientApp\src\app\interfaces\topmovercategory.ts" />
+    <None Remove="ClientApp\src\app\interfaces\topmoverconcat.ts" />
     <None Remove="ClientApp\src\app\security-detail\security-detail.component.ts" />
     <None Remove="ClientApp\src\app\security\security-component.ts" />
     <None Remove="ClientApp\src\app\services\security.service.ts" />
@@ -94,27 +102,44 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividend.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\dividendsecurity.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earning.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningresourceparameters.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earningsecuritypercentage.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earnings\earning.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earnings\earningresourceparameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\earnings\earningsecuritypercentage.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\historicalprice.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\classes\InvestmentProjection\investprojection.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\investmentprojectionforadd.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\investmentprojectionforupdate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\peakrangedetail.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\topmoversresourceparameters.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\investmentprojectionsresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\StockPurchaseOptionsResourceParameters.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\StockScreenerAlertsHistorySearchResourceParameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\resourceparameters\StockScreenerSearchResourceParameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\topmovercategory.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\topmoverconcat.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\security.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\fullsecurityanalytic.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityanalytic.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securitydate.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\SecurityYearOverYearComparison.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\SecurityPercentageStatistic.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\PriorPurchaseEstimate.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\securityresourceparameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\StockPurchaseOption.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\StockScreenerAlertsHistory.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\StockScreenerAlertsHistorySecurityJoinDto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockscreener\ScreeneCriteriaDetailDto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockscreener\ScreenerCriteria.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\stockscreener\StockScreener.ts" />
@@ -133,9 +158,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\fetch-data\" />
     <Folder Include="ClientApp\src\app\interfaces\investmentprojection\" />
     <Folder Include="ClientApp\src\app\widget\invest-projections\" />
     <Folder Include="ClientApp\src\app\widget\security-details\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\src\app\interfaces\fullsecurityanalytic.js">
+      <DependentUpon>fullsecurityanalytic.ts</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\interfaces\fullsecurityanalytic.js.map">
+      <DependentUpon>fullsecurityanalytic.js</DependentUpon>
+    </None>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

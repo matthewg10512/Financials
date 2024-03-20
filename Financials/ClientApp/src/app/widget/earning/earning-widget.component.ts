@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from '../../services/security.service';
 import { ActivatedRoute } from '@angular/router';
-import { Earning } from '../../interfaces/earning';
-import { EarningSecurityPercentage } from '../../interfaces/earningsecuritypercentage';
+import { Earning } from '../../interfaces/earnings/earning';
+import { EarningSecurityPercentage } from '../../interfaces/earnings/earningsecuritypercentage';
 
    
 
@@ -58,7 +58,8 @@ export class EarningWidgetComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     this.securityService.getEarnings(id.toString())
       .subscribe(earnings => {
-        this.earnings = earnings
+        this.earnings = earnings;
+        this.earnings.sort((a, b) => new Date(b.actualEarningsDate).getTime() - new Date(a.actualEarningsDate).getTime());
 
       });
 

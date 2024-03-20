@@ -70,7 +70,7 @@ export class SecurityDetailComponent implements OnInit {
   ngOnInit(): void {
     this.getHistoryPriceName();
     this.getSecurity();
-    this.getHistoricalPrices(365 * 10);
+    this.getHistoricalPrices(3);//(365 * 10);
   }
 
   getHistoryPriceName(): void {
@@ -168,67 +168,10 @@ export class SecurityDetailComponent implements OnInit {
     return daysBack;
   }
 
-  /*
-  calculatePeaks(): void {
-    this.peakRanges = [];
-
-
-    //  rangeName: string;
-     // rangeCount: number;
-
-    let rangeStart: Date;
-    var historicPrices = this.historicalPrices.length;
-    var highRange = 0;
-    var lowRange = 0;
-    for (var i = 0; i < historicPrices; i++) {
-      if (this.historicalPrices[i].open > highRange) {
-
-        if (highRange != 0 && highRange != lowRange) {
-          var percentLevel = (highRange - lowRange) / highRange;
-          if (percentLevel > .009) {
-
-
-            
-
-            var newRange = new Date(this.historicalPrices[i].historicDate);
-
-            var daysRange = (newRange.getTime() - rangeStart.getTime()) / (1000 * 3600 * 24);
-
-            
-            let percentRanking:number  = Math.floor((percentLevel * 100) / 5)
-            if (this.peakRanges[percentRanking]) {
-              let peakrangedetails: peakrangedetail = this.peakRanges[percentRanking];
-              peakrangedetails.rangeLength += daysRange;
-              if (peakrangedetails.maxRangeLength < daysRange) {
-                peakrangedetails.maxRangeLength = daysRange;
-              }
-              peakrangedetails.rangeCount += 1;
-              this.peakRanges[percentRanking] = peakrangedetails;
-            } else {
-              let peakrangedetails: peakrangedetail = new peakrangedetail();
-              peakrangedetails.rangeName = (percentRanking * 5).toString() + '% - ' + ((percentRanking * 5) + 4.99).toFixed(2).toString() + '%'
-              peakrangedetails.rangeLength = daysRange;
-              peakrangedetails.maxRangeLength = daysRange;
-              peakrangedetails.rangeCount = 1;
-              this.peakRanges[percentRanking] = peakrangedetails;
-            }
-
-           // this.peakRanges.push(percentLevel);
-          }
-          
-        }
-        rangeStart = new Date(this.historicalPrices[i].historicDate);
-        highRange = this.historicalPrices[i].open;
-        lowRange = this.historicalPrices[i].open;
-      }
-      if (this.historicalPrices[i].open < lowRange) {
-        lowRange = this.historicalPrices[i].open;
-      }
-    }
-  }
-  */
+  
   getHistoricalPrices(historyDays: number ): void {
     const id = +this.route.snapshot.paramMap.get('id');
+    /*
     this.prefSecurityService.getHistoricalPrices(id, historyDays !=0 ? historyDays: this.getHistoryDaysBack())
       .subscribe(historicalPrices => {
         this.historicalPrices = historicalPrices;
@@ -244,7 +187,7 @@ export class SecurityDetailComponent implements OnInit {
         }
 
     );
-
+    */
 
 
   }

@@ -5,7 +5,7 @@
   <i class="icon-reload"></i>
 </button>
 <br/>
-<button type="button" class="btn btn-info" data-toggle="modal" [attr.data-target]="'#stockScreenerSearchCritieriaModal'">
+<button type="button" class="btn btn-info" data-toggle="modal" [attr.data-target]="'#stockScreenerSearchCritieriaModal' + purOptionTabNum">
 Criteria
 </button>
 
@@ -98,7 +98,7 @@ Criteria
 
 
 
-  <div class="modal fade" id="stockScreenerSearchCritieriaModal" *ngIf="stockScreenerSearchCritieria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="stockScreenerSearchCritieriaModal{{purOptionTabNum}}" *ngIf="stockScreenerSearchCritieria" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -118,6 +118,20 @@ Criteria
 
 
 
+                <div class="col-md-4" *ngIf="screenerCritieria.objectType=='date'">
+                  <label class="form-check-label" for="dateSelect">
+                    {{screenerCritieria.criteriaName}}
+                  </label>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="screenerCritieria.dateValue" name="{{screenerCritieria.jsonObjectName}}" id="{{screenerCritieria.jsonObjectName}}">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+
+                </div>
+
+
                 <div class="col-md-12" *ngIf="screenerCritieria.objectType=='bool'">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="{{screenerCritieria.jsonObjectName}}" [(ngModel)]="screenerCritieria.boolValue" name="{{screenerCritieria.jsonObjectName}}">
@@ -127,7 +141,7 @@ Criteria
                   </div>
                   <br />
                 </div>
-                <div class="col-md-12" *ngIf="screenerCritieria.objectType!='bool'">
+                <div class="col-md-12" *ngIf="screenerCritieria.objectType!='bool'  && screenerCritieria.objectType!='date'">
                   <label class="form-label" for="screenerCritieria.jsonObjectName">{{screenerCritieria.criteriaName}}</label>
 
                   <!--<input class="form-control" id="{{screenerCritieria.jsonObjectName}}" type="text" value="Mark">-->

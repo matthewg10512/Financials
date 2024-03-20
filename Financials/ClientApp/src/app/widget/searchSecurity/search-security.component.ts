@@ -7,8 +7,8 @@ import { trigger, transition, animate, style, state } from '@angular/animations'
 import { SecurityService } from '../../services/security.service';
 import { DividendSecurity } from '../../interfaces/dividendsecurity';
 import { dividendresourceparameters } from '../../interfaces/dividendresourceparameters';
-import { earningresourceparameters } from '../../interfaces/earningresourceparameters';
-import { EarningSecurity } from '../../interfaces/earningsecurity';
+import { earningresourceparameters } from '../../interfaces/earnings/earningresourceparameters';
+import { EarningSecurity } from '../../interfaces/earnings/earningsecurity';
 import { Router } from '@angular/router';
 
 
@@ -48,6 +48,9 @@ export class SearchSecurityComponent {
   buttons: boolean[]
   sortNameDesc = false;
   sortPercentageDesc = false;
+  
+
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private securityService: SecurityService
     , private router: Router//, private route: ActivatedRoute
 

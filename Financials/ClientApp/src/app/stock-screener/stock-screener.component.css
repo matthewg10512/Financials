@@ -4,3 +4,11 @@
     text-decoration:underline;
     cursor:pointer;
 }
+
+.cdk-overlay-pane {
+  z-index: 2000 !important;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 2000;
+}

@@ -5,6 +5,230 @@
   <div class="row">
 
 
+
+
+
+    <div class="col-md-8">
+
+
+      <div class="card">
+        <div class="card-header ">
+          Screener Criteria
+
+          <br />
+
+
+
+
+          <div class="card-body" style="height:450px;overflow-y:auto">
+
+
+            
+
+
+
+            <div *ngIf="stockScreenerRec">
+              <form class="row g-4 needs-validation" standalone>
+
+
+                <div class="col-md-3">
+                  <label class="form-label" for="stockScreenerName">Screener Name</label>
+                  <input type="text" class="form-control" id="stockScreenerName"
+                         [(ngModel)]="stockScreenerRec.stockScreener.name" name="stockScreenerName" required>
+                  <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="col-md-2">
+                  <label class="form-label" for="stockScreenAlertType">Alert Type</label>
+
+                  <select class="form-control" name="stockScreenAlertType" id="stockScreenAlertType" #t [(ngModel)]="stockScreenerRec.stockScreener.alertType">
+                    <option *ngFor="let option of stockScreenersAlertTypes" [value]="option.id">{{option.alertType}}</option>
+                  </select>
+                  <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label" for="stockScreenerName">Frequency</label>
+
+                  <select class="form-control" name="stockScreenerfrequency" id="stockScreenerfrequency" #t [(ngModel)]="stockScreenerRec.stockScreener.frequency">
+                    <option *ngFor="let option of stockScreenerFrequencyTypes" [value]="option.id">{{option.frequencyType}}</option>
+                  </select>
+
+
+
+
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-check">
+                    <br />
+                    <input class="form-check-input" type="checkbox" id="stockScreenAutoTrade" [(ngModel)]="stockScreenerRec.stockScreener.autoTrade" name="stockScreenAutoTrade">
+                    <label class="form-check-label" for="stockScreenAutoTrade">
+                      Auto Trade
+                    </label>
+                  </div>
+
+                </div>
+
+
+
+
+
+              </form>
+              <div *ngIf="stockScreenerRec">
+                <button class="btn btn-primary" type="submit" (click)="UpsertStockScreenerRecord()">
+                  {{stockScreenerRec.stockScreener.id == 0 ? 'Save New' : 'Save Changes'}}
+                </button>
+                <button class="btn btn-danger" (click)="ResetStockScreenerRecord()">
+                  {{stockScreenerRec.stockScreener.id == 0 ? 'Clear' : 'Cancel'}}
+                </button>
+
+                <br/>
+                <span *ngIf="stockScreenerRec.stockScreener  && stockScreenerRec.stockScreener.id">
+                  <button class="btn btn-danger" (click)="DeleteStockScreener()">
+                    Delete
+                  </button>
+                  <span style="padding-right:20px"></span>
+                  <input class="form-check-input" type="checkbox" id="confirmDeleteStockScreener" [(ngModel)]="confirmDeleteStockScreener" name="confirmDeleteStockScreener">
+                  <label class="form-check-label" for="confirmDeleteStockScreener">
+                    Confirm Deletion
+                  </label>
+                </span>
+
+
+              </div>
+            </div>
+
+            <br />
+            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+              Criteria
+            </button>
+            <br />
+            <div id="collapseExample" [ngbCollapse]="isCollapsed">
+
+
+              <div *ngIf="screenerCritierias">
+                <form class="row g-3 needs-validation" standalone novalidate>
+
+                  <div *ngFor="let screenerCritieria of screenerCritierias">
+
+
+                    <div class="col-md-4" *ngIf="screenerCritieria.objectType=='date'">
+                      <label class="form-check-label" for="dateSelect">
+                        {{screenerCritieria.criteriaName}}
+                      </label>
+                      <mat-form-field appearance="fill">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="screenerCritieria.dateValue" name="{{screenerCritieria.jsonObjectName}}" id="{{screenerCritieria.jsonObjectName}}">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+
+                    </div>
+
+                    <div class="col-md-12" *ngIf="screenerCritieria.objectType=='bool'">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="{{screenerCritieria.jsonObjectName}}" [(ngModel)]="screenerCritieria.boolValue" name="{{screenerCritieria.jsonObjectName}}">
+                        <label class="form-check-label" for="{{screenerCritieria.jsonObjectName}}">
+                          Only Preferred Stocks
+                        </label>
+                      </div>
+                      <br />
+                    </div>
+
+                    <div class="col-md-12" *ngIf="screenerCritieria.objectType!='bool'  && screenerCritieria.objectType!='date'">
+                      <label class="form-label" for="screenerCritieria.jsonObjectName">{{screenerCritieria.criteriaName}}</label>
+
+                      <!--<input class="form-control" id="{{screenerCritieria.jsonObjectName}}" type="text" value="Mark">-->
+
+                      <span *ngIf="screenerCritieria.jsonObjectName=='percentDropType'">
+
+                        <!--(change)="onInvestProjectionChange(t.value)"-->
+                        <select class="form-control" name="percentDropTypesList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
+                          <option *ngFor="let option of percentDropTypesList" [value]="option.id">{{option.name}}</option>
+                        </select>
+                      </span>
+                      <span *ngIf="screenerCritieria.jsonObjectName=='calculatedPercentDropType'">
+                        <select class="form-control" name="calculatedPercentDropTypeList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
+                          <option *ngFor="let option of calculatedPercentDropTypeList" [value]="option.id">{{option.name}}</option>
+                        </select>
+                      </span>
+                      <span *ngIf="!(screenerCritieria.jsonObjectName=='percentDropType') && !(screenerCritieria.jsonObjectName=='calculatedPercentDropType')">
+                        <input type="number" class="form-control" id="{{screenerCritieria.jsonObjectName}}"
+                               [(ngModel)]="screenerCritieria.value" name="{{screenerCritieria.jsonObjectName}}">
+                      </span>
+                      <div class="valid-feedback">Looks good!</div>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+
+
+
+            </div>
+
+
+
+
+
+            <!--
+
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="screenerCritierias">
+            <thead>
+              <tr>
+                <th width="300px">Search</th>
+                <th width="150px">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let screenerCritieria of screenerCritierias">
+                <td width="300px">
+                  {{screenerCritieria.criteriaName}}
+
+
+                </td>
+                <td width="150px">
+
+
+                  <div *ngIf="screenerCritieria.jsonObjectName=='percentDropType'">
+                    <!--(change)="onInvestProjectionChange(t.value)"- ->
+                    <select name="percentDropTypesList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
+                      <option *ngFor="let option of percentDropTypesList" [value]="option.id">{{option.name}}</option>
+                    </select>
+                  </div>
+                  <div *ngIf="screenerCritieria.jsonObjectName=='calculatedPercentDropType'">
+                    <select name="calculatedPercentDropTypeList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
+                      <option *ngFor="let option of calculatedPercentDropTypeList" [value]="option.id">{{option.name}}</option>
+                    </select>
+                  </div>
+                  <div *ngIf="!(screenerCritieria.jsonObjectName=='percentDropType') && !(screenerCritieria.jsonObjectName=='calculatedPercentDropType')">
+                    <input type="text" class="form-control" id="{{screenerCritieria.jsonObjectName}}"
+                           [(ngModel)]="screenerCritieria.value">
+                  </div>
+                </td>
+
+
+
+              </tr>
+            </tbody>
+          </table>
+
+            -->
+
+
+
+
+
+
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <div class="col-md-4">
       <div class="card">
         <div class="card-header ">
@@ -16,6 +240,11 @@
                 <td>
                   <a class="text-decoration-underline linkDecoarate" (click)="GetStockScreenerRecord(stockScreener.id)">
                     {{stockScreener.name}}
+                  </a>
+
+                  <a class="text-decoration-underline linkDecoarate" (click)="SetStockScreenerAlertHistory(stockScreener.id)"
+                     data-toggle="modal" [attr.data-target]="'#stockScreenerHistory'">
+                    History
                   </a>
                 </td>
 
@@ -30,230 +259,10 @@
     </div>
 
 
-        <div class="col-md-8">
 
+  </div>
 
-          <div class="card">
-            <div class="card-header ">
-              Screener Criteria
-
-              <br />
-  
-
-              <div class="card-body" style="height:450px;overflow-y:auto">
-
-                <div *ngIf="stockScreenerRec">
-                  <form class="row g-3 needs-validation" standalone novalidate>
-
-
-                    <div class="col-md-4">
-                      <label class="form-label" for="stockScreenerName">Screener Name</label>
-                      <input type="text" class="form-control" id="stockScreenerName"
-                             [(ngModel)]="stockScreenerRec.stockScreener.name" name="stockScreenerName">
-                      <div class="valid-feedback">Looks good!</div>
-                    </div>
-
-                    <div class="col-md-2">
-                      <label class="form-label" for="stockScreenAlertType">Alert Type</label>
-                      <input type="number" class="form-control" id="stockScreenAlertType"
-                             [(ngModel)]="stockScreenerRec.stockScreener.alertType" name="stockScreenAlertType">
-                      <div class="valid-feedback">Looks good!</div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="form-check">
-                        <br/>
-                        <input class="form-check-input" type="checkbox" id="stockScreenAutoTrade" [(ngModel)]="stockScreenerRec.stockScreener.autoTrade" name="stockScreenAutoTrade">
-                        <label class="form-check-label" for="stockScreenAutoTrade">
-                          Auto Trade
-                        </label>
-                      </div>
-
-                    </div>
-
-                    <!--
-                    <div class="col-md-6">
-
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="stockScreenPreferredStocks" [(ngModel)]="stockScreenerRec.stockScreener.onlyPreferred" name="stockScreenPreferredStocks">
-                        <label class="form-check-label" for="stockScreenPreferredStocks">
-                          Only Preferred Stocks
-                        </label>
-                      </div>
-
-
-
-                      <!--
-      <input type="checkbox" class="custom-control-input" id="stockScreenPreferredStocks"
-             [(ngModel)]="stockScreenerRec.stockScreener.onlyPreferred">
-      <label class="custom-control-label" for="stockScreenPreferredStocks"></label>
-        -- >
-                    </div>-->
-
-
-
-                  </form>
-                </div>
-                <!--
-                <table *ngIf="stockScreenerRec">
-                  <tr>
-                    <td>
-                      Screener Name
-                    </td>
-                    <td>
-                      <input type="text" class="form-control" id="stockScreenerName"
-                             [(ngModel)]="stockScreenerRec.stockScreener.name">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Alert Type
-                    </td>
-                    <td>
-
-                      <input type="number" class="form-control" id="stockScreenAlertType"
-                             [(ngModel)]="stockScreenerRec.stockScreener.alertType">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      AutoTrade
-                    </td>
-                    <td style="text-align:center">
-
-                      <input type="checkbox" class="custom-control-input" id="stockScreenAutoTrade"
-                             [(ngModel)]="stockScreenerRec.stockScreener.autoTrade">
-                      <label class="custom-control-label" for="stockScreenAutoTrade"></label>
-                    </td>
-
-                  </tr>
-                  <tr>
-                    <td>
-                      Only Preferred Stocks
-                    </td>
-                    <td style="text-align:center">
-
-                      <input type="checkbox" class="custom-control-input" id="stockScreenPreferredStocks"
-                             [(ngModel)]="stockScreenerRec.stockScreener.onlyPreferred">
-                      <label class="custom-control-label" for="stockScreenPreferredStocks"></label>
-                    </td>
-                  </tr>
-
-                </table>
-                -->
-                <br/>
-                <div *ngIf="screenerCritierias">
-                  <form class="row g-3 needs-validation" standalone novalidate>
-
-                    <div *ngFor="let screenerCritieria of screenerCritierias">
-
-                      <div class="col-md-12" *ngIf="screenerCritieria.objectType=='bool'">
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="{{screenerCritieria.jsonObjectName}}" [(ngModel)]="screenerCritieria.boolValue" name="{{screenerCritieria.jsonObjectName}}">
-                            <label class="form-check-label" for="{{screenerCritieria.jsonObjectName}}">
-                              Only Preferred Stocks
-                            </label>
-                          </div>
-                        <br/>
-                      </div>
-                        <div class="col-md-12" *ngIf="screenerCritieria.objectType!='bool'">
-                          <label class="form-label" for="screenerCritieria.jsonObjectName">{{screenerCritieria.criteriaName}}</label>
-
-                          <!--<input class="form-control" id="{{screenerCritieria.jsonObjectName}}" type="text" value="Mark">-->
-
-                          <span *ngIf="screenerCritieria.jsonObjectName=='percentDropType'">
-                           
-                              <!--(change)="onInvestProjectionChange(t.value)"-->
-                            <select class="form-control" name="percentDropTypesList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
-                              <option *ngFor="let option of percentDropTypesList" [value]="option.id">{{option.name}}</option>
-                            </select>
-                          </span>
-                          <span *ngIf="screenerCritieria.jsonObjectName=='calculatedPercentDropType'">
-                            <select class="form-control" name="calculatedPercentDropTypeList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
-                              <option *ngFor="let option of calculatedPercentDropTypeList" [value]="option.id">{{option.name}}</option>
-                            </select>
-                          </span>
-                          <span *ngIf="!(screenerCritieria.jsonObjectName=='percentDropType') && !(screenerCritieria.jsonObjectName=='calculatedPercentDropType')">
-                            <input type="number" class="form-control" id="{{screenerCritieria.jsonObjectName}}"
-                                   [(ngModel)]="screenerCritieria.value" name="{{screenerCritieria.jsonObjectName}}">
-                          </span>
-                          
-                           
-
-
-                          <div class="valid-feedback">Looks good!</div>
-                        </div>
-                      </div>
-
-</form>
-                </div>
-                <div *ngIf="stockScreenerRec">
-                  <button class="btn btn-primary" (click)="UpsertStockScreenerRecord()">
-                    {{stockScreenerRec.stockScreener.id == 0 ? 'Save New' : 'Save Changes'}}
-                  </button>
-                  <button class="btn btn-danger"  (click)="ResetStockScreenerRecord()">
-                    {{stockScreenerRec.stockScreener.id == 0 ? 'Clear' : 'Cancel'}}
-                  </button>
-                </div>
-
-                <!--
-
-  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="screenerCritierias">
-    <thead>
-      <tr>
-        <th width="300px">Search</th>
-        <th width="150px">Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let screenerCritieria of screenerCritierias">
-        <td width="300px">
-          {{screenerCritieria.criteriaName}}
-
-
-        </td>
-        <td width="150px">
-
-
-          <div *ngIf="screenerCritieria.jsonObjectName=='percentDropType'">
-            <!--(change)="onInvestProjectionChange(t.value)"- ->
-            <select name="percentDropTypesList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
-              <option *ngFor="let option of percentDropTypesList" [value]="option.id">{{option.name}}</option>
-            </select>
-          </div>
-          <div *ngIf="screenerCritieria.jsonObjectName=='calculatedPercentDropType'">
-            <select name="calculatedPercentDropTypeList" id="{{screenerCritieria.jsonObjectName}}" #t [(ngModel)]="screenerCritieria.value">
-              <option *ngFor="let option of calculatedPercentDropTypeList" [value]="option.id">{{option.name}}</option>
-            </select>
-          </div>
-          <div *ngIf="!(screenerCritieria.jsonObjectName=='percentDropType') && !(screenerCritieria.jsonObjectName=='calculatedPercentDropType')">
-            <input type="text" class="form-control" id="{{screenerCritieria.jsonObjectName}}"
-                   [(ngModel)]="screenerCritieria.value">
-          </div>
-        </td>
-
-
-
-      </tr>
-    </tbody>
-  </table>
-
-    -->
-
-
-
-
-
-
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
+</div>
 
 
 
@@ -270,6 +279,9 @@
           Screener Results
         </div>
         <div class="card-body" style="height:750px;">
+
+
+
           <app-stock-purchase-option [stockScreenerSearchResourceParameters]="stockScreenerParams" [stockScreenerSearchCritieria]="screenerCritierias" [purOptionTabNum]="8"></app-stock-purchase-option>
           <br />
           <br />
@@ -294,113 +306,100 @@
 
 
 
+<div class="modal fade" id="stockScreenerHistory" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"> Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <button class="btn btn-primary" mat-button (click)="GetStockScreenerAlertHistory()"><i class="icon-reload"></i></button>
+        <form class="row g-3 needs-validation" standalone novalidate>
 
 
-<!--
+          <div class="col-md-12">
+            <div class="valid-feedback">Looks good!</div>
+            <label class="form-check-label" for="alertTypeHistoryScreenerList">
+              Screener Type
+            </label>
 
-           <table>
-              <tr>
-                <td>
-                  Prior Estimate Shares Range Low
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="shareRangesLow"
-                         [(ngModel)]="stockScreenerSPO.priorPurchaseEstimateSharesRangeLow">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Volume Range Low
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="securityVolumeRangeLow"
-                         [(ngModel)]="stockScreenerSPO.securityVolumeRangeLow">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Last Modified Range Low
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="securityLastModifiedRangeLow"
-                         [(ngModel)]="stockScreenerSPO.securityLastModifiedRangeLow">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Security % Change Range High
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="securitypercentChangeRangeHigh"
-                         [(ngModel)]="stockScreenerSPO.securitypercentChangeRangeHigh">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Prior Purchase Estimate Yearly % Range Low
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="priorPurchaseEstimateYearlyPercentRangeLow"
-                         [(ngModel)]="stockScreenerSPO.priorPurchaseEstimateYearlyPercentRangeLow">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Security % Dropper Type
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="securityPercentDropperType"
-                         [(ngModel)]="stockScreenerSPO.securityPercentDropperType">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  % Drop Type
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="securityPercentDropperType"
-                         [(ngModel)]="stockScreenerSPO.percentDropType">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Calculated % Drop Type
-                </td>
-                <td>
-                  <input type="text" class="form-control" id="securityPercentDropperType"
-                         [(ngModel)]="stockScreenerSPO.calculatedPercentDropType">
-                </td>
-              </tr>
-            </table>
-          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="screenerCritierias">
-              <thead>
-                <tr>
-                  <th width="300px">Criteria Name</th>
-                  <th width="150px">Description</th>
-                  <th width="100px">JSON Object</th>
-                  <th width="150px">Object Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let screenerCritieria of screenerCritierias">
-                  <td width="300px">
-                    {{
- screenerCritieria.criteriaName
-                    }}
-                  </td>
-                  <td width="150px">{{ screenerCritieria.description}}</td>
-                  <td width="100px">{{ screenerCritieria.jsonObjectName }}</td>
-                  <td width="150px">{{ screenerCritieria.objectType}}</td>
+            <select class="form-control" name="alertTypeHistoryScreenerList" id="alertTypeHistoryScreenerList" #t [(ngModel)]="stockScreenAlertsHistoryParams.stockScreenerId">
+              <option *ngFor="let option of stockScreeners" [value]="option.id">{{option.name}}</option>
+            </select>
+
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-check-label" for="dateSelect">
+              Alert Date
+            </label>
+            <mat-form-field appearance="fill">
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="stockScreenAlertsHistoryParams.alertDate" name="dateSelect" id="dateSelect">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+
+
+        </form>
 
 
 
-                </tr>
-              </tbody>
-            </table>
+        <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="alertsSecurityHistory">
+          <thead>
+            <tr>
+              <th width="300px">
+                Stock Name
+                <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+              </th>
+              <th width="150px">Alert Price</th>
+              <th width="150px">Alert Date</th>
+              <th width="150px">Current Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let alertSecurityHistory of alertsSecurityHistory">
+              <td width="300px">
+                <span title="{{alertSecurityHistory.security.symbol}}">
+                  {{alertSecurityHistory.security.name}}
+                </span>
+
+              </td>
+              <td width="150px">
+                <span title="{{alertSecurityHistory.stockScreenerAlertsHistory.alertPercent}}">
+                  {{alertSecurityHistory.stockScreenerAlertsHistory.alertPrice | currency}}
+                </span>
+              </td>
+              <td width="150px">
+                <span title="{{alertSecurityHistory.stockScreenerAlertsHistory.dateRecorded | date: 'long'}}">
+                  {{alertSecurityHistory.stockScreenerAlertsHistory.dateRecorded |  date: 'MM/dd/yyyy'}}
+                </span>
+              </td>
+              <td width="150px">
+                {{alertSecurityHistory.security.currentPrice | currency}}
+              </td>
+
+
+          </tbody>
+
+        </table>
 
 
 
 
 
 
--->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

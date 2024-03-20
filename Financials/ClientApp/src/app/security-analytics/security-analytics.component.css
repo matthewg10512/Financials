@@ -1,0 +1,22 @@
+.droppersToBuy {
+  background-color: lightgreen;
+  color: black;
+}
+.linkDecoarate {
+  color: cornflowerblue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.dayGainer{
+    color:green
+}
+
+.dayLoser {
+  color: red
+}
+
+
+.highlightCell {
+  background-color: aquamarine;
+}

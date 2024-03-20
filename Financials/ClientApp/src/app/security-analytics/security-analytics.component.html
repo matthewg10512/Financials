@@ -1,0 +1,191 @@
+
+
+<div *ngIf="!fullSecurityAnalytics">
+  <shared-loading-data></shared-loading-data>
+</div>
+
+  <div *ngIf="topMoverCategories">
+    <mat-form-field>
+      <mat-label>Movers</mat-label>
+      <mat-select (selectionChange)="filterCategories()" [formControl]="toppings" multiple [(ngModel)]="selectedMoverCategories">
+
+        <span *ngFor="let topMoverCategory of topMoverCategories">
+
+          <mat-option [value]="topMoverCategory">{{topMoverCategory.movingCategory}}</mat-option>
+        </span>
+
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div style="text-align:center" *ngIf="recordsReturned">
+
+    
+
+    {{numberOfPages}}
+    <br />
+    <br />
+    <span style="padding-left:20px" *ngFor="let page of pagingArray">
+      <a style="font-weight:bold" *ngIf="page == pageSelected"> {{page}}</a>
+      <a *ngIf="page != pageSelected" style="cursor:pointer;color:blue;" (click)="pageRecords(page)">
+        {{page}}
+      </a>
+    </span>
+  </div>
+
+  <div style="overflow-x:auto;width:100%;overflow-y:auto;height:500px;">
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="pagedSecurityAnalytics">
+      <thead>
+        <tr>
+
+
+          <th style="width:100px"><span class="spanPeakRangeTableSpace">Symbol</span></th>
+          <th style="width:200px">
+            <span class="spanPeakRangeTableSpace">
+              <i (click)="sortData('name')" [ngClass]="!sortName ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+              Name
+            </span>
+          </th>
+          <th style="width:150px">
+            <span class="spanPeakRangeTableSpace">
+              <i (click)="sortData('price')" [ngClass]="!sortPrice ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+              Price
+            </span>
+          </th>
+          
+          <th style="width:150px">
+            <span class="spanPeakRangeTableSpace">
+              <i (click)="sortData('percentchange')" [ngClass]="!sortPercentChange ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+              % Change
+            </span>
+          </th>
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">10 Day</span></th>
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">50 Day</span></th>
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">200 Day</span></th>
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">1 Year</span></th>
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">2 Year</span></th>
+
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">5th Percentile</span></th>
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">2 Year Sum</span></th>
+          <th style="width:150px">
+            <span class="spanPeakRangeTableSpace">
+              Year Count
+              <i (click)="sortData('yearCount')" [ngClass]="!sortYearCount ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            </span>
+          </th>
+          <th style="width:150px"><span class="spanPeakRangeTableSpace">YOY AVG Up</span></th>
+          <th style="width:150px">
+            <span class="spanPeakRangeTableSpace">
+              Average Return YOY
+              <i (click)="sortData('returnYoY')" [ngClass]="!sortReturnYoY ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            </span>
+          </th>
+          <th style="width:150px">
+            <span class="spanPeakRangeTableSpace">
+              <i (click)="sortData('earningsDate')" [ngClass]="!sortEarningsDate ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+              Earnings Date
+            </span>
+          </th>
+
+          <th style="width:150px">
+            <span class="spanPeakRangeTableSpace">
+              Current Peak %
+              <i (click)="sortData('currentPeakPercent')" [ngClass]="!sortCurrentPeak ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            </span>
+          </th>
+          <th style="width:150px">
+            <span class="spanPeakRangeTableSpace">
+              Days since last Peak
+              <i (click)="sortData('daysRange')" [ngClass]="!sortPeakDayRange ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            </span>
+          </th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pagedSecurityAnalytic of pagedSecurityAnalytics">
+          <td style="width:100px" [ngClass]="{'droppersToBuy': IsBuyingOpportunity(pagedSecurityAnalytic)  }">
+            <a class="linkDecoarate" (click)="goToLink(pagedSecurityAnalytic.id)">
+              {{ pagedSecurityAnalytic?.symbol}}
+
+              <!--{ { MoverDetails(pagedSecurityAnalytic)} }-->
+            </a>
+          </td>
+          <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
+            {{ pagedSecurityAnalytic?.name}}
+          </td>
+          <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
+            {{ pagedSecurityAnalytic?.currentPrice  | number : '1.1-1'}}({{ pagedSecurityAnalytic?.percentageChange  | number : '1.1-1'}}%)
+          </td>
+          <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
+            {{ pagedSecurityAnalytic?.percentageChange  | number : '1.1-1'}}%
+          </td>
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.movingAverageDay10  | number : '1.1-1'}}-->
+            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay10) ) | number : '1.1-1'}} - {{ ((pagedSecurityAnalytic?.securityAnalytic.movingAverageDay10) ) | number : '1.1-1'}}
+          </td>
+
+          <td style="width:150px">
+            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay50) )  | number : '1.1-1'}} - {{ (( pagedSecurityAnalytic?.securityAnalytic.movingAverageDay50) ) | number : '1.1-1'}}
+          </td>
+          <td style="width:150px">
+            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay200)) | number : '1.1-1'}} - {{ ((pagedSecurityAnalytic?.securityAnalytic.movingAverageDay200) ) | number : '1.1-1'}}
+          </td>
+          <td style="width:150px">
+            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceYear1) ) | number : '1.1-1'}} - {{ (( pagedSecurityAnalytic?.securityAnalytic.movingAverageYear1)) | number : '1.1-1'}}
+          </td>
+          <td style="width:150px">
+            {{ (( pagedSecurityAnalytic?.securityAnalytic.minPriceYear2) ) | number : '1.1-1'}} - {{ (( pagedSecurityAnalytic?.securityAnalytic.movingAverageYear2) ) | number : '1.1-1'}}
+
+          </td>
+          <td style="width:150px" [ngClass]="pagedSecurityAnalytic.securityPercentageStatistic.percent5 > pagedSecurityAnalytic?.percentageChange ? 'highlightCell' : ''">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.securityPercentageStatistic.percent5 | number : '1.1-1'}}%
+
+          </td>
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.securityPercentageStatistic.totalPercentSum | number : '1.1-1'}}%
+
+          </td>
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.securityYearOverYearComparison.yearCount | number : '1.0'}}  years
+
+          </td>
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.securityYearOverYearComparison.avgYOYUp | number : '1.0'}}
+
+          </td>
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.securityYearOverYearComparison.avgReturnYOY | number : '1.1-1'}} %
+
+          </td>
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.earningsDate | date:'shortDate'}}
+
+          </td>
+
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.currentPeakRange.peakRangeCurrentPercentage }}
+
+          </td>
+          <td style="width:150px">
+            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+            {{ pagedSecurityAnalytic.currentPeakRange.rangeLength}}
+
+          </td>
+
+
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+

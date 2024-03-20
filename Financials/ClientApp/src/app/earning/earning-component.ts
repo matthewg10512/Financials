@@ -3,8 +3,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import { SecurityService } from '../services/security.service';
-import { earningresourceparameters } from '../interfaces/earningresourceparameters';
-import { EarningSecurity } from '../interfaces/earningsecurity';
+import { earningresourceparameters } from '../interfaces/earnings/earningresourceparameters';
+import { EarningSecurity } from '../interfaces/earnings/earningsecurity';
 
 
 

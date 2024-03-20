@@ -7,5 +7,6 @@ export class ScreenerCriteria {
   objectType: string;
   value: string;
   boolValue: boolean;
+  dateValue: Date;
   sortPriority: number;
 }

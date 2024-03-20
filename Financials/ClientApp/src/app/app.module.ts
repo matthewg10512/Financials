@@ -1,7 +1,7 @@
 /// <reference path="../../node_modules/@coreui/angular/lib/sidebar/app-sidebar-nav/app-sidebar-nav-item-class.pipe.d.ts" />
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -46,6 +46,19 @@ import { SpoSecDetailComponent } from './widget/StockPurchaseOption/spo-sec-deta
 import { StockScreenerComponent } from './stock-screener/stock-screener.component';
 
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
+
+import { MatSelectModule } from '@angular/material/select';
+
+
+import { MatNativeDateModule } from '@angular/material/core';
+import { SecurityAnalyticsComponent } from './security-analytics/security-analytics.component';
+
+
 //'./widget/historicdDate/update-historical-date.component';
 
 @NgModule({
@@ -81,6 +94,7 @@ import { StockScreenerComponent } from './stock-screener/stock-screener.componen
     SpoInvestProjectionComponent,
     SpoSecDetailComponent,
     StockScreenerComponent,
+    SecurityAnalyticsComponent,
     
     
   ],
@@ -89,6 +103,7 @@ import { StockScreenerComponent } from './stock-screener/stock-screener.componen
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
@@ -99,16 +114,21 @@ import { StockScreenerComponent } from './stock-screener/stock-screener.componen
       { path: 'auto-security-trade', component: AutoSecurityTradeComponent },
       { path: 'security-invest-projection', component: SecurityInvestProjectionComponent }
       ,
-      { path: 'stock-screener', component: StockScreenerComponent }
+      { path: 'stock-screener', component: StockScreenerComponent },
+      { path: 'security-analytics', component: SecurityAnalyticsComponent }
       
 
 
     ]),
     BrowserAnimationsModule,
     NgbModule,
-    ChartsModule
+    ChartsModule,
 
-
+     MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -162,8 +162,8 @@ namespace Financials.Controllers
                         valueRec =  recValueStr;
                         break;
                     case "DateTime":
-                        string recValuestr = ((DateTime)propertyValue).ToString("yyyy-MM-dd HH:mm:ss");
-                        valueRec = "'" + recValuestr + "'";
+                        string recValuestr = ((DateTime)propertyValue).ToString("MM/dd/yyyy");
+                        valueRec = "" + recValuestr + "";
                         break;
                     case "Decimal":
                         decimal recValueDec = (decimal)propertyValue;
@@ -219,8 +219,8 @@ namespace Financials.Controllers
                     break;
                 case "DateTime":
 
-                    string recValuestr = ((DateTime)propertyValue).ToString("yyyy-MM-dd HH:mm:ss");
-                    valueRec = "'" + recValuestr + "'";
+                    string recValuestr = ((DateTime)propertyValue).ToString("MM/dd/yyyy");
+                    valueRec = "" + recValuestr + "";
                     break;
                 case "Decimal":
                     decimal recValueDec = (decimal)propertyValue;

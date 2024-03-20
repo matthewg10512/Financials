@@ -21,6 +21,6 @@ export class StockScreenerSearchResourceParameters {
 
   onlyPreferred: string;
 
-
+  ipoDateRangeStart: string;
   
 }

@@ -7,13 +7,13 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Security } from '../interfaces/security';
 import { HistoricalPrice } from '../interfaces/historicalprice';
 import { SecurityResourceParameters } from '../interfaces/securityresourceparameters';
-import { Earning } from '../interfaces/earning';
-import { earningresourceparameters } from '../interfaces/earningresourceparameters';
+import { Earning } from '../interfaces/earnings/earning';
+import { earningresourceparameters } from '../interfaces/earnings/earningresourceparameters';
 import { DividendSecurity } from '../interfaces/dividendsecurity';
 import { dividendresourceparameters } from '../interfaces/dividendresourceparameters';
 import { Dividend } from '../interfaces/dividend';
-import { EarningSecurity } from '../interfaces/earningsecurity';
-import { EarningSecurityPercentage } from '../interfaces/earningsecuritypercentage';
+import { EarningSecurity } from '../interfaces/earnings/earningsecurity';
+import { EarningSecurityPercentage } from '../interfaces/earnings/earningsecuritypercentage';
 import { AutoSecurityTradeSecurity } from '../interfaces/autosecuritytradesecurity';
 import { autosecuritytradesresourceparameters } from '../interfaces/autosecuritytradesresourceparameters';
 import { InvestProjection } from '../classes/InvestmentProjection/investprojection';
@@ -36,6 +36,13 @@ import { StockScreener } from '../interfaces/stockscreener/StockScreener';
 import { InvestProjectionModel } from '../classes/InvestmentProjection/InvestProjectionModel';
 import { StockScreenerAlertsHistory } from '../interfaces/StockScreenerAlertsHistory';
 import { StockScreenerAlertsHistorySearchResourceParameters } from '../interfaces/resourceparameters/StockScreenerAlertsHistorySearchResourceParameters';
+import { StockScreenerAlertsHistorySecurityJoin } from '../interfaces/StockScreenerAlertsHistorySecurityJoinDto';
+import { StockScreenerAlertType } from '../interfaces/stockscreener/StockScreenerAlertType';
+import { SecurityAnalytic } from '../interfaces/securityanalytic';
+import { FullSecurityAnalytic } from '../interfaces/fullsecurityanalytic';
+import { TopMoversResourceParameters } from '../interfaces/resourceparameters/topmoversresourceparameters';
+import { TopMoverConcat } from '../interfaces/topmoverconcat';
+import { TopMoverCategory } from '../interfaces/topmovercategory';
 
 //import { MessageService } from './message.service';
 
@@ -155,6 +162,11 @@ export class SecurityService {
   }
 
 
+  GetStockScreenerAlertTypes(): Observable<any> {
+    let screenerUrl: string = this.baseUrl + 'StockScreenerAlertTypes';
+    return this.http.get<StockScreenerAlertType>(screenerUrl);
+  }
+
   GetStockScreenerResultsFromId(stockScreenerId: number): Observable<any>{
     let screenerUrl: string = this.baseUrl + 'stockscreener/' + stockScreenerId +'/StockScreenerResults' ;
     return this.http.get<StockPurchaseOption>(screenerUrl);
@@ -209,6 +221,22 @@ export class SecurityService {
   }
 
 
+  DeleteStockScreener(stockScreenerId: number): Observable<any> {
+
+    const params = new HttpParams().set('stockScreenerId', stockScreenerId + '');
+    const body = { stockScreenerId: stockScreenerId };
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+
+    return this.http.delete(this.baseUrl + 'stockscreener/' + stockScreenerId, { headers, params })
+      .pipe(
+        tap(_ => this.log(`delete stock screener`))
+        //,
+        //catchError(this.handleError<any>('addInvestmentProjection'))
+      );
+
+
+  }
+
   UpsertStockScreenerRecord(stockScreenerRecord: StockScreenerRecordDto): Observable<any> {
   //  let screenerUrl: string = this.baseUrl + 'StockScreener/' + stockScreenerId;
     //return this.http.get<StockScreenerRecordDto>(screenerUrl);
@@ -254,7 +282,7 @@ export class SecurityService {
 
 
   
-  SearchStockScreenerAlertsHistory(stockScreenAlertsHistoryParams: StockScreenerAlertsHistorySearchResourceParameters): Observable<StockScreenerAlertsHistory[]> {
+  SearchStockScreenerAlertsHistory(stockScreenAlertsHistoryParams: StockScreenerAlertsHistorySearchResourceParameters): Observable<StockScreenerAlertsHistorySecurityJoin[]> {
 
     let searchQuery: string = '';
 
@@ -264,7 +292,8 @@ export class SecurityService {
     }
     if (stockScreenAlertsHistoryParams.alertDate) {
       searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
-      searchQuery = searchQuery + "alertDate=" + stockScreenAlertsHistoryParams.alertDate;
+      var d = stockScreenAlertsHistoryParams.alertDate;
+      searchQuery = searchQuery + "alertDate=" + (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
     }
 
     if (stockScreenAlertsHistoryParams.alertDateRangeEnd) {
@@ -277,9 +306,14 @@ export class SecurityService {
       searchQuery = searchQuery + "alertDateRangeStart=" + stockScreenAlertsHistoryParams.alertDateRangeStart;
     }
 
-    return this.http.get<StockScreenerAlertsHistory[]>(this.baseUrl + 'StockScreenerAlertsHistory' + searchQuery);
+    return this.http.get<StockScreenerAlertsHistorySecurityJoin[]>(this.baseUrl + 'StockScreenerAlertsHistory' + searchQuery);
   }
 
+  getFullSecurityAnalytics(): Observable<FullSecurityAnalytic[]> {
+
+
+    return this.http.get<FullSecurityAnalytic[]>(this.baseUrl + 'security/FullSecurityAnalytics');
+  }
 
   searchEarnings(earningSearch: earningresourceparameters): Observable<EarningSecurity[]> {
 
@@ -480,6 +514,44 @@ export class SecurityService {
     */
   
   }
+
+  getTopMoverCategories(): Observable<TopMoverCategory[]> {
+
+
+ 
+
+    return this.http.get<TopMoverCategory[]>(this.baseUrl + 'security/gettopmovercategories');
+
+
+  }
+
+  searchTopMovers(topMoverParameter: TopMoversResourceParameters): Observable<TopMoverConcat[]> {
+
+
+    let searchQuery: string = '';
+
+    if (topMoverParameter.securityId + '' != '') {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "securityId=" + topMoverParameter.securityId;
+    }
+
+    if (topMoverParameter.dateAddedMax) {
+      var d = topMoverParameter.dateAddedMax;
+      
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "dateAddedMax=" + (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+    }
+    if (topMoverParameter.dateAddedMin) {
+      var d = topMoverParameter.dateAddedMin;
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "dateAddedMin=" + (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+    }
+
+    return this.http.get<TopMoverConcat[]>(this.baseUrl + 'security/gettopmovers' + searchQuery);
+
+
+  }
+
 
   searchAutoSecurityTrades(autosecuritytradesresourceparameter: autosecuritytradesresourceparameters): Observable<AutoSecurityTradeSecurity[]> {
 
