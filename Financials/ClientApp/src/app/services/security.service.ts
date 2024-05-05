@@ -43,6 +43,7 @@ import { FullSecurityAnalytic } from '../interfaces/fullsecurityanalytic';
 import { TopMoversResourceParameters } from '../interfaces/resourceparameters/topmoversresourceparameters';
 import { TopMoverConcat } from '../interfaces/topmoverconcat';
 import { TopMoverCategory } from '../interfaces/topmovercategory';
+import { BullBearRun } from '../interfaces/bullbearrun';
 
 //import { MessageService } from './message.service';
 
@@ -430,7 +431,11 @@ export class SecurityService {
 
 
 
+  getBullBearRuns(securityId: number): Observable<BullBearRun[]> {
 
+
+    return this.http.get<BullBearRun[]>(this.baseUrl + 'security/' + securityId + '/bullbearrun');
+  }
 
 
   getDividends(securityId: number): Observable<Dividend[]>{
@@ -824,6 +829,16 @@ export class SecurityService {
       searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
       searchQuery = searchQuery + "minVolume=" + securitySearch.minVolume;
     }
+
+    if (securitySearch.currentPriceMin) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "currentPriceMin=" + securitySearch.currentPriceMin;
+    }
+    if (securitySearch.currentPriceMax) {
+      searchQuery = searchQuery + (searchQuery == "" ? "?" : "&");
+      searchQuery = searchQuery + "currentPriceMax=" + securitySearch.currentPriceMax;
+    }
+    
 
 
     return searchQuery;

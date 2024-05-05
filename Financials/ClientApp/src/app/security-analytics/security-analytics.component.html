@@ -3,189 +3,539 @@
 <div *ngIf="!fullSecurityAnalytics">
   <shared-loading-data></shared-loading-data>
 </div>
+<table>
+  <tr>
+  <td>
+    <div *ngIf="topMoverCategories">
+      <mat-form-field>
+        <mat-label>Movers</mat-label>
+        <mat-select (selectionChange)="filterCategories()" [formControl]="toppings" multiple [(ngModel)]="selectedMoverCategories">
 
-  <div *ngIf="topMoverCategories">
-    <mat-form-field>
-      <mat-label>Movers</mat-label>
-      <mat-select (selectionChange)="filterCategories()" [formControl]="toppings" multiple [(ngModel)]="selectedMoverCategories">
+          <span *ngFor="let topMoverCategory of topMoverCategories">
 
-        <span *ngFor="let topMoverCategory of topMoverCategories">
+            <mat-option [value]="topMoverCategory">{{topMoverCategory.movingCategory}}</mat-option>
+          </span>
 
-          <mat-option [value]="topMoverCategory">{{topMoverCategory.movingCategory}}</mat-option>
-        </span>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </td>
+  <td>
+    Stock Name
+    <input type="text" [(ngModel)]="stockName">
+  </td>
+  <td>
+    Stock Symbol
+    <input type="text" [(ngModel)]="stockSymbol">
+  </td>
+  <td>
+    Select All
+    <input type="checkbox"  (click)="selectAllYearCount()" id="customSwitches" [(ngModel)]="selectedAllYearCount">
+    <div *ngIf="yearCountFilters">
+      <mat-form-field>
+        <mat-label>Year Count</mat-label>
+        <mat-select (selectionChange)="filterCategories()" [formControl]="yearCounts" multiple [(ngModel)]="selectedyearCounts">
 
-      </mat-select>
-    </mat-form-field>
-  </div>
+          <span *ngFor="let yearCountFilter of yearCountFilters">
 
-  <div style="text-align:center" *ngIf="recordsReturned">
+            <mat-option [value]="yearCountFilter">{{yearCountFilter}}</mat-option>
+          </span>
 
-    
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </td>
+  <td><button class="btn btn-primary" mat-button (click)="filterCategories()"><i class="icon-reload"></i></button>  </td>
+</tr>
+       <tr>
+         <td>
+           <div *ngIf="currentBullRunOptions">
+             <mat-form-field>
+               <mat-label>Run Types</mat-label>
+               <mat-select (selectionChange)="filterCategories()" [formControl]="bullRunOption" multiple [(ngModel)]="selectedcurrentBullRunOptions">
 
-    {{numberOfPages}}
-    <br />
-    <br />
-    <span style="padding-left:20px" *ngFor="let page of pagingArray">
-      <a style="font-weight:bold" *ngIf="page == pageSelected"> {{page}}</a>
-      <a *ngIf="page != pageSelected" style="cursor:pointer;color:blue;" (click)="pageRecords(page)">
-        {{page}}
-      </a>
-    </span>
-  </div>
+                 <span *ngFor="let currentBullRunOption of currentBullRunOptions">
 
-  <div style="overflow-x:auto;width:100%;overflow-y:auto;height:500px;">
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="pagedSecurityAnalytics">
-      <thead>
-        <tr>
+                   <mat-option [value]="currentBullRunOption.runType">{{ bullBearType(currentBullRunOption.runType)}}</mat-option>
+                 </span>
 
-
-          <th style="width:100px"><span class="spanPeakRangeTableSpace">Symbol</span></th>
-          <th style="width:200px">
-            <span class="spanPeakRangeTableSpace">
-              <i (click)="sortData('name')" [ngClass]="!sortName ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-              Name
-            </span>
-          </th>
-          <th style="width:150px">
-            <span class="spanPeakRangeTableSpace">
-              <i (click)="sortData('price')" [ngClass]="!sortPrice ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-              Price
-            </span>
-          </th>
-          
-          <th style="width:150px">
-            <span class="spanPeakRangeTableSpace">
-              <i (click)="sortData('percentchange')" [ngClass]="!sortPercentChange ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-              % Change
-            </span>
-          </th>
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">10 Day</span></th>
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">50 Day</span></th>
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">200 Day</span></th>
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">1 Year</span></th>
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">2 Year</span></th>
-
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">5th Percentile</span></th>
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">2 Year Sum</span></th>
-          <th style="width:150px">
-            <span class="spanPeakRangeTableSpace">
-              Year Count
-              <i (click)="sortData('yearCount')" [ngClass]="!sortYearCount ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-            </span>
-          </th>
-          <th style="width:150px"><span class="spanPeakRangeTableSpace">YOY AVG Up</span></th>
-          <th style="width:150px">
-            <span class="spanPeakRangeTableSpace">
-              Average Return YOY
-              <i (click)="sortData('returnYoY')" [ngClass]="!sortReturnYoY ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-            </span>
-          </th>
-          <th style="width:150px">
-            <span class="spanPeakRangeTableSpace">
-              <i (click)="sortData('earningsDate')" [ngClass]="!sortEarningsDate ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-              Earnings Date
-            </span>
-          </th>
-
-          <th style="width:150px">
-            <span class="spanPeakRangeTableSpace">
-              Current Peak %
-              <i (click)="sortData('currentPeakPercent')" [ngClass]="!sortCurrentPeak ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-            </span>
-          </th>
-          <th style="width:150px">
-            <span class="spanPeakRangeTableSpace">
-              Days since last Peak
-              <i (click)="sortData('daysRange')" [ngClass]="!sortPeakDayRange ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-            </span>
-          </th>
-
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let pagedSecurityAnalytic of pagedSecurityAnalytics">
-          <td style="width:100px" [ngClass]="{'droppersToBuy': IsBuyingOpportunity(pagedSecurityAnalytic)  }">
-            <a class="linkDecoarate" (click)="goToLink(pagedSecurityAnalytic.id)">
-              {{ pagedSecurityAnalytic?.symbol}}
-
-              <!--{ { MoverDetails(pagedSecurityAnalytic)} }-->
-            </a>
-          </td>
-          <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
-            {{ pagedSecurityAnalytic?.name}}
-          </td>
-          <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
-            {{ pagedSecurityAnalytic?.currentPrice  | number : '1.1-1'}}({{ pagedSecurityAnalytic?.percentageChange  | number : '1.1-1'}}%)
-          </td>
-          <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
-            {{ pagedSecurityAnalytic?.percentageChange  | number : '1.1-1'}}%
-          </td>
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.movingAverageDay10  | number : '1.1-1'}}-->
-            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay10) ) | number : '1.1-1'}} - {{ ((pagedSecurityAnalytic?.securityAnalytic.movingAverageDay10) ) | number : '1.1-1'}}
-          </td>
-
-          <td style="width:150px">
-            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay50) )  | number : '1.1-1'}} - {{ (( pagedSecurityAnalytic?.securityAnalytic.movingAverageDay50) ) | number : '1.1-1'}}
-          </td>
-          <td style="width:150px">
-            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay200)) | number : '1.1-1'}} - {{ ((pagedSecurityAnalytic?.securityAnalytic.movingAverageDay200) ) | number : '1.1-1'}}
-          </td>
-          <td style="width:150px">
-            {{ ((pagedSecurityAnalytic?.securityAnalytic.minPriceYear1) ) | number : '1.1-1'}} - {{ (( pagedSecurityAnalytic?.securityAnalytic.movingAverageYear1)) | number : '1.1-1'}}
-          </td>
-          <td style="width:150px">
-            {{ (( pagedSecurityAnalytic?.securityAnalytic.minPriceYear2) ) | number : '1.1-1'}} - {{ (( pagedSecurityAnalytic?.securityAnalytic.movingAverageYear2) ) | number : '1.1-1'}}
-
-          </td>
-          <td style="width:150px" [ngClass]="pagedSecurityAnalytic.securityPercentageStatistic.percent5 > pagedSecurityAnalytic?.percentageChange ? 'highlightCell' : ''">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.securityPercentageStatistic.percent5 | number : '1.1-1'}}%
-
-          </td>
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.securityPercentageStatistic.totalPercentSum | number : '1.1-1'}}%
-
-          </td>
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.securityYearOverYearComparison.yearCount | number : '1.0'}}  years
-
-          </td>
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.securityYearOverYearComparison.avgYOYUp | number : '1.0'}}
-
-          </td>
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.securityYearOverYearComparison.avgReturnYOY | number : '1.1-1'}} %
-
-          </td>
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.earningsDate | date:'shortDate'}}
-
-          </td>
-
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.currentPeakRange.peakRangeCurrentPercentage }}
-
-          </td>
-          <td style="width:150px">
-            <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
-            {{ pagedSecurityAnalytic.currentPeakRange.rangeLength}}
-
-          </td>
+               </mat-select>
+             </mat-form-field>
+           </div>
 
 
 
-        </tr>
-      </tbody>
-    </table>
-  </div>
+         </td>
+         <td>
+           Peak Range Days<br/>
+           <input style="width:50px" type="text" [(ngModel)]="peakRangeLow"> - <input style="width:50px" type="text" [(ngModel)]="peakRangeHigh">
+         </td>
+         <td>
+           Select All
+           <input type="checkbox" (click)="selectAllYOYCount()" id="customSwitches" [(ngModel)]="selectedAllYOYCount">
+           <div *ngIf="yearCountFilters">
+             <mat-form-field>
+               <mat-label>YOY Count</mat-label>
+               <mat-select (selectionChange)="filterCategories()" [formControl]="yearCounts" multiple [(ngModel)]="selectedYOYCounts">
+
+                 <span *ngFor="let yoyCountFilter of yoyCountFilters">
+
+                   <mat-option [value]="yoyCountFilter">{{yoyCountFilter}}</mat-option>
+                 </span>
+
+               </mat-select>
+             </mat-form-field>
+           </div>
+         </td>
+         <td>
+           <mat-form-field>
+             <mat-label>Earnings Start Date</mat-label>
+             <input matInput (dateChange)="updateEarningsDate($event)"  [matDatepicker]="picker">
+             <mat-hint>MM/DD/YYYY</mat-hint>
+             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+             <mat-datepicker #picker></mat-datepicker>
+           </mat-form-field>
+         </td>
+         <td>
+         </td>
+       </tr>
+       <tr>
+         <td>
+           Stock Price Range<br />
+           <input style="width:50px" type="text" [(ngModel)]="stockPriceLow"> - <input style="width:50px" type="text" [(ngModel)]="stockPriceHigh">
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+         <td>
+         </td>
+       </tr>
+</table>
+<div style="text-align:center" *ngIf="recordsReturned">
+
+
+
+
+  <br />
+  <br />
+  <span style="padding-left:20px" *ngFor="let page of pagingArray">
+    <a style="font-weight:bold" *ngIf="page == pageSelected"> {{page}}</a>
+    <a *ngIf="page != pageSelected" style="cursor:pointer;color:blue;" (click)="pageRecords(page)">
+      {{page}}
+    </a>
+  </span>
+</div>
+
+<div style="overflow-x:auto;width:100%;overflow-y:auto;height:500px;">
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="pagedSecurityAnalytics">
+    <thead>
+      <tr>
+
+
+        <th style="width:100px"><span class="spanPeakRangeTableSpace">Symbol</span></th>
+        <th style="width:200px">
+          <span class="spanPeakRangeTableSpace">
+            <i (click)="sortData('name')" [ngClass]="!sortName ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            Name
+          </span>
+        </th>
+        <th style="width:150px">
+          <span class="spanPeakRangeTableSpace">
+            <i (click)="sortData('price')" [ngClass]="!sortPrice ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            Price
+          </span>
+        </th>
+
+        <th style="width:150px">
+          <span class="spanPeakRangeTableSpace">
+            <i (click)="sortData('percentchange')" [ngClass]="!sortPercentChange ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            % Change
+          </span>
+        </th>
+        <th style="width:150px"><span class="spanPeakRangeTableSpace">Ranges</span></th>
+        <!-- <th style="width:150px"><span class="spanPeakRangeTableSpace">10 Day</span></th>
+  <th style="width:150px"><span class="spanPeakRangeTableSpace">50 Day</span></th>
+  <th style="width:150px"><span class="spanPeakRangeTableSpace">200 Day</span></th>
+  <th style="width:150px"><span class="spanPeakRangeTableSpace">1 Year</span></th>
+  <th style="width:150px"><span class="spanPeakRangeTableSpace">2 Year</span></th>
+   -->
+        <th style="width:150px"><span class="spanPeakRangeTableSpace">5th Percentile</span></th>
+        <th style="width:150px"><span class="spanPeakRangeTableSpace">2 Year Sum</span></th>
+        <th style="width:150px">
+          <span class="spanPeakRangeTableSpace">
+            Year Count
+            <i (click)="sortData('yearCount')" [ngClass]="!sortYearCount ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+          </span>
+        </th>
+        <th style="width:150px"><span class="spanPeakRangeTableSpace">YOY AVG Up</span></th>
+        <th style="width:150px">
+          <span class="spanPeakRangeTableSpace">
+            Average Return YOY
+            <i (click)="sortData('returnYoY')" [ngClass]="!sortReturnYoY ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+          </span>
+        </th>
+        <th style="width:150px">
+          <span class="spanPeakRangeTableSpace">
+            <i (click)="sortData('earningsDate')" [ngClass]="!sortEarningsDate ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+            Earnings Date
+          </span>
+        </th>
+
+        <th style="width:150px">
+          <span class="spanPeakRangeTableSpace">
+            Current Peak %
+            <i (click)="sortData('currentPeakPercent')" [ngClass]="!sortCurrentPeak ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+          </span>
+        </th>
+        <th style="width:150px">
+          <span class="spanPeakRangeTableSpace">
+            Days since last Peak
+            <i (click)="sortData('daysRange')" [ngClass]="!sortPeakDayRange ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+          </span>
+        </th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pagedSecurityAnalytic of pagedSecurityAnalytics">
+
+
+
+
+
+        <td style="width:100px" [ngClass]="{'droppersToBuy': IsBuyingOpportunity(pagedSecurityAnalytic)  }">
+          <a class="linkDecoarate" (click)="goToLink(pagedSecurityAnalytic.id)">
+            {{ pagedSecurityAnalytic?.symbol}}
+
+            <!--{ { MoverDetails(pagedSecurityAnalytic)} }-->
+          </a>
+        </td>
+        <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
+          {{ pagedSecurityAnalytic?.name}}
+        </td>
+        <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
+          {{ pagedSecurityAnalytic?.currentPrice  | number : '1.1-1'}}
+        </td>
+        <td style="width:200px" [ngClass]="pagedSecurityAnalytic?.percentageChange > 0 ? 'dayGainer' : 'dayLoser'">
+          {{ pagedSecurityAnalytic?.percentageChange  | number : '1.1-1'}}%
+        </td>
+        <!-- <td style="width:150px">
+  <!--{ { pagedSecurityAnalytic?.securityAnalytic.movingAverageDay10  | number : '1.1-1'}}
+        { { ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay10) ) | number : '1.1-1'} } - { { ((pagedSecurityAnalytic?.securityAnalytic.movingAverageDay10) ) | number : '1.1-1'} }
+
+
+        
+  </td>
+  -->
+        <!--
+  <td style="width:150px">
+    { { ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay50) )  | number : '1.1-1'}} - { { (( pagedSecurityAnalytic?.securityAnalytic.movingAverageDay50) ) | number : '1.1-1'}}
+  </td>
+  <td style="width:150px">
+    { { ((pagedSecurityAnalytic?.securityAnalytic.minPriceDay200)) | number : '1.1-1'}} - { { ((pagedSecurityAnalytic?.securityAnalytic.movingAverageDay200) ) | number : '1.1-1'}}
+  </td>-->
+        <td style="width:150px">
+         
+          <button [matTooltipHideDelay]="2000" mat-raised-button
+                  [matTooltip]="getPriceRangesDetails(pagedSecurityAnalytic)"
+                  [matTooltipPosition]="position.value!"
+                  aria-label="Button that displays a tooltip in various positions"
+                  matTooltipClass="my-custom-tooltip">
+            View
+          </button>
+        </td>
+        <!-- <td style="width:150px">
+    { { (( pagedSecurityAnalytic?.securityAnalytic.minPriceYear2) ) | number : '1.1-1'}} - { { (( pagedSecurityAnalytic?.securityAnalytic.movingAverageYear2) ) | number : '1.1-1'}}
+
+  </td>-->
+  <td style="width:150px" [ngClass]="pagedSecurityAnalytic.securityPercentageStatistic.percent5 > pagedSecurityAnalytic?.percentageChange ? 'highlightCell' : ''">
+    <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+        {{ pagedSecurityAnalytic.securityPercentageStatistic.percent5 | number : '1.1-1'}}%
+
+        </td>
+        <td style="width:150px">
+          <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+          {{ pagedSecurityAnalytic.securityPercentageStatistic.totalPercentSum | number : '1.1-1'}}%
+
+        </td>
+        <td style="width:150px">
+          <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+          {{ pagedSecurityAnalytic.securityYearOverYearComparison.yearCount | number : '1.0'}}  years
+
+        </td>
+        <td style="width:150px">
+          <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+          {{ pagedSecurityAnalytic.securityYearOverYearComparison.avgYOYUp | number : '1.0'}}
+
+        </td>
+        <td style="width:150px">
+          <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'
+    }}-->
+          {{ pagedSecurityAnalytic.securityYearOverYearComparison.avgReturnYOY | number : '1.1-1'}} %
+
+        </td>
+        <td style="width:150px" [ngClass]="highPercentJumps(pagedSecurityAnalytic.earningsHistoricDates) ? 'highlightCell' : ''">
+          <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+          {{ pagedSecurityAnalytic.earningsDate | date:'shortDate'}}
+          <span *ngIf="pagedSecurityAnalytic.earningsHistoricDates && pagedSecurityAnalytic.earningsHistoricDates.length > 0">
+            <button type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#earnigsHistoryModal' + pagedSecurityAnalytic.securityYearOverYearComparison.securityId">
+              i
+            </button>
+          </span>
+          <div class="modal fade" id="earnigsHistoryModal{{pagedSecurityAnalytic.securityYearOverYearComparison.securityId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Earnings History
+                    {{ pagedSecurityAnalytic?.name}} ({{ pagedSecurityAnalytic?.symbol}})
+
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="pagedSecurityAnalytic.earningsHistoricDates">
+                    <thead>
+                      <tr>
+
+
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Date</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Historic Date</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Report Time</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Percent Change</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">EPS Estimate</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Reported EPS</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Revenue Estimate</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Actual Revenue</span></th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let earningsHistoricDate of pagedSecurityAnalytic.earningsHistoricDates">
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.earningsDate | date:'shortDate'}}</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.historicDate | date:'shortDate'}}</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.reportTime}}</span>
+                        </th>
+                        <th style="width:100px" [ngClass]="earningsHistoricDate.percentChange > 0 ? 'dayGainer' : 'dayLoser'">
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.percentChange}}</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.epsEstimate}}</span>
+                        </th>
+                        <th style="width:100px" [ngClass]="earningsHistoricDate.reportedEPS > earningsHistoricDate.epsEstimate ? 'dayGainer' : 'dayLoser'">
+
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.reportedEPS}}</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.revenueEstimate | number : '1.0' :'en-US'}}</span>
+                        </th>
+                        <th style="width:100px" [ngClass]="earningsHistoricDate.actualRevenue > earningsHistoricDate.revenueEstimate ? 'dayGainer' : 'dayLoser'">
+                          <span class="spanPeakRangeTableSpace">{{ earningsHistoricDate.actualRevenue | number : '1.0' :'en-US'}}</span>
+                        </th>
+                      </tr>
+                    </tbody>
+
+                  </table>
+
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+
+        <td style="width:150px">
+          <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+          {{ pagedSecurityAnalytic.currentPeakRange.peakRangeCurrentPercentage }}
+
+        </td>
+        <td style="width:150px">
+          <!--{ { pagedSecurityAnalytic?.securityAnalytic.minPriceYear2  | number : '1.1-1'}}-->
+          {{ pagedSecurityAnalytic.currentPeakRange.rangeLength}}
+
+          <span *ngIf="pagedSecurityAnalytic.currentBullBearRuns && pagedSecurityAnalytic.currentBullBearRuns.length > 0">
+            <button (click)="wipeBullBearRun()" type="button" class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#bullBearRunModal' + pagedSecurityAnalytic.securityYearOverYearComparison.securityId">
+              i
+            </button>
+          </span>
+          <div class="modal fade" id="bullBearRunModal{{pagedSecurityAnalytic.securityYearOverYearComparison.securityId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Bull Bear Runs
+                    {{ pagedSecurityAnalytic?.name}} ({{ pagedSecurityAnalytic?.symbol}})
+
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="pagedSecurityAnalytic.currentBullBearRuns">
+                    <thead>
+                      <tr>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Run Type</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Run Range</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Price Start End</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">High Price</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Low Price</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">% Range Check</span></th>
+                        <!--  runType: number;
+
+        dateCreated: Date;
+        dateModified: Date;
+        runStartDate: Date;
+        runEndDate: Date;
+
+        highDate: Date;
+        lowDate: Date;
+
+        startRunPrice: number;
+        endRunPrice: number;
+        lowPrice: number;
+        highPrice: number;
+        percentRangeCheck: number;-->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let currentBullBearRun of pagedSecurityAnalytic.currentBullBearRuns">
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{ bullBearType(currentBullBearRun.runType) }}</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">
+                            {{ currentBullBearRun.runStartDate | date:'shortDate'}} -
+                            <span class="spanPeakRangeTableSpace">{{ currentBullBearRun.runEndDate | date:'shortDate'}}</span>
+                          </span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">
+                            {{ currentBullBearRun.startRunPrice}} -
+                            {{ currentBullBearRun.endRunPrice}}
+                          </span>
+                        </th>
+                        <th style="width:100px">
+
+
+                          <span class="spanPeakRangeTableSpace">{{  currentBullBearRun.highPrice}} ({{ currentBullBearRun.highDate | date:'shortDate'}})</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{  currentBullBearRun.lowPrice}} ({{ currentBullBearRun.lowDate | date:'shortDate'}})</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{  currentBullBearRun.percentRangeCheck}}</span>
+                          <a data-toggle="tooltip" title="Tooltip Link" href="#">Link</a>
+                          <button class="btn btn-secondary" data-coreui-toggle="popover" title="Popover title" data-coreui-content="Popover body content is set in this attribute.">button</button>
+                          <button [matTooltipHideDelay]="2000" mat-raised-button
+                                  [matTooltip]="getBullBearRunPrices(currentBullBearRun)"
+                                  [matTooltipPosition]="positionModal.value!"
+                                  aria-label="Button that displays a tooltip in various positions"
+                                  matTooltipClass="my-custom-tooltip">
+                            i
+                          </button>
+                        </th>
+                      </tr>
+                    </tbody>
+
+                  </table>
+
+
+
+
+                  <button class="btn btn-primary" mat-button (click)="getFullBullBearRuns(pagedSecurityAnalytic.securityYearOverYearComparison.securityId)">Get Full Runs</button>
+
+
+                  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="bullBearRuns">
+                    <thead>
+                      <tr>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Run Type</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Run Range</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Price Start End</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">High Price</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">Low Price</span></th>
+                        <th style="width:100px"><span class="spanPeakRangeTableSpace">% Range Check</span></th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let bullBearRun of bullBearRuns">
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{ bullBearType(bullBearRun.runType) }}</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">
+                            {{ bullBearRun.runStartDate | date:'shortDate'}} -
+                            <span class="spanPeakRangeTableSpace">{{ bullBearRun.runEndDate | date:'shortDate'}}</span>
+
+                            ({{compareDates(bullBearRun.runStartDate, bullBearRun.runEndDate)}})
+                          </span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">
+                            {{ bullBearRun.startRunPrice}} -
+                            {{ bullBearRun.endRunPrice}}
+
+                            <!--
+  <button [matTooltipHideDelay]="2000" mat-raised-button
+          [matTooltip]="getBullBearRunPrices(bullBearRun)"
+          [matTooltipPosition]="position.value!"
+          aria-label="Button that displays a tooltip in various positions"
+          matTooltipClass="my-custom-tooltip">
+    i
+  </button>-->
+
+                          </span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{  bullBearRun.highPrice}} ({{ bullBearRun.highDate | date:'shortDate'}})</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{  bullBearRun.lowPrice}} ({{ bullBearRun.lowDate | date:'shortDate'}})</span>
+                        </th>
+                        <th style="width:100px">
+                          <span class="spanPeakRangeTableSpace">{{  bullBearRun.percentRangeCheck}}</span>
+                        </th>
+                      </tr>
+                    </tbody>
+
+                  </table>
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </td>
+
+
+
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 

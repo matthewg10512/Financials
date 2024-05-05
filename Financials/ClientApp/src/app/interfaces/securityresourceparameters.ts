@@ -12,5 +12,7 @@ export class SecurityResourceParameters {
   perFrom52WeekLow: number;
   perFrom52WeekHigh: number;
   minVolume: number;
+  currentPriceMin: number;
+  currentPriceMax: number;
 
 }

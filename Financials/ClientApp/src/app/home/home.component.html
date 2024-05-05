@@ -8,25 +8,35 @@
 <div class="animated fadeIn">
 
   <div class="row">
-    <div class="col-md-8">
+
+    <!--<div class="col-md-8">
       <security-search></security-search>
 
     </div>
+    -->
 
 
 
-
-    <div class="col-md-4">
+    <div class="col-md-6">
       <!--<top-movers></top-movers>-->
 
-      <widget-percentage-changers></widget-percentage-changers>
+      <widget-percentage-changers changeTitle="Stocks Near 52 Week Low" perChange52Week="15" percentChangeType="52WeekLow"></widget-percentage-changers>
       <!--    <update-security></update-security>
 
-  <update-historical-price></update-historical-price>
-  -->
+      <update-historical-price></update-historical-price>
+      -->
 
     </div><!--/.col-->
+    <div class="col-md-6">
+      <!--<top-movers></top-movers>-->
 
+      <widget-percentage-changers changeTitle="Stocks Near 52 Week High" perChange52Week="5" percentChangeType="52WeekHigh"></widget-percentage-changers>
+      <!--    <update-security></update-security>
+
+      <update-historical-price></update-historical-price>
+      -->
+
+    </div>
 
 
   </div><!--/.row-->
@@ -37,7 +47,7 @@
 
   <div class="row">
     <div class="col-md-6">
-      
+
     </div>
 
     <div class="col-md-3">
@@ -64,7 +74,7 @@
           Stocks Near 52 Week Low
 
 
-        
+
 
         </div>
         <div class="card-body" style="height:700px;">
@@ -76,14 +86,14 @@
             <li ngbNavItem [destroyOnHide]="false">
               <a ngbNavLink>Avg Drop Low</a>
               <ng-template ngbNavContent>
-                <app-stock-purchase-option [stockScreenerSearchResourceParameters]="averageDropLowParam" [stockScreenerSearchCritieria]="averageDropScreenerCritierias"  [purOptionTabNum]="1"></app-stock-purchase-option>
+                <app-stock-purchase-option [stockScreenerSearchResourceParameters]="averageDropLowParam" [stockScreenerSearchCritieria]="averageDropScreenerCritierias" [purOptionTabNum]="1"></app-stock-purchase-option>
               </ng-template>
             </li>
 
             <li ngbNavItem [destroyOnHide]="true">
               <a ngbNavLink>Average Drop Current</a>
               <ng-template ngbNavContent>
-                <app-stock-purchase-option [stockScreenerSearchCritieria]="averageDropCurrentScreenerCriterias"  [purOptionTabNum]="3"></app-stock-purchase-option>
+                <app-stock-purchase-option [stockScreenerSearchCritieria]="averageDropCurrentScreenerCriterias" [purOptionTabNum]="3"></app-stock-purchase-option>
               </ng-template>
             </li>
             <li ngbNavItem [destroyOnHide]="true">
@@ -96,7 +106,7 @@
             <li ngbNavItem [destroyOnHide]="true">
               <a ngbNavLink>15 Percent Current</a>
               <ng-template ngbNavContent>
-                <app-stock-purchase-option [stockScreenerSearchCritieria]="percent15DropCurrentScreenerCriterias"  [purOptionTabNum]="4"></app-stock-purchase-option>
+                <app-stock-purchase-option [stockScreenerSearchCritieria]="percent15DropCurrentScreenerCriterias" [purOptionTabNum]="4"></app-stock-purchase-option>
               </ng-template>
             </li>
 
@@ -104,21 +114,21 @@
             <li ngbNavItem [destroyOnHide]="true">
               <a ngbNavLink>10 Percent Low</a>
               <ng-template ngbNavContent>
-                <app-stock-purchase-option [stockScreenerSearchCritieria]="percent10DropLowScreenerCriterias"  [purOptionTabNum]="5"></app-stock-purchase-option>
+                <app-stock-purchase-option [stockScreenerSearchCritieria]="percent10DropLowScreenerCriterias" [purOptionTabNum]="5"></app-stock-purchase-option>
               </ng-template>
             </li>
 
             <li ngbNavItem [destroyOnHide]="true">
               <a ngbNavLink>10 Percent Current</a>
               <ng-template ngbNavContent>
-                <app-stock-purchase-option  [stockScreenerSearchCritieria]="percent10DropCurrentScreenerCriterias" [purOptionTabNum]="6"></app-stock-purchase-option>
+                <app-stock-purchase-option [stockScreenerSearchCritieria]="percent10DropCurrentScreenerCriterias" [purOptionTabNum]="6"></app-stock-purchase-option>
               </ng-template>
             </li>
 
             <li ngbNavItem [destroyOnHide]="true">
               <a ngbNavLink>5 Percent Low</a>
               <ng-template ngbNavContent>
-                <app-stock-purchase-option  [stockScreenerSearchCritieria]="percent5DropLowScreenerCriterias" [purOptionTabNum]="7"></app-stock-purchase-option>
+                <app-stock-purchase-option [stockScreenerSearchCritieria]="percent5DropLowScreenerCriterias" [purOptionTabNum]="7"></app-stock-purchase-option>
               </ng-template>
             </li>
 
@@ -150,7 +160,7 @@
 
     </div>
 
- 
+
 
 
   </div><!--/.row-->

@@ -16,13 +16,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { StockScreenerAlertType } from '../interfaces/stockscreener/StockScreenerAlertType';
 
+
+
 @Component({
   selector: 'app-stock-screener',
   templateUrl: './stock-screener.component.html',
   styleUrls: ['./stock-screener.component.css']
 })
 export class StockScreenerComponent implements OnInit {
-
+  
   percentDropTypesList: any[] = [];
   calculatedPercentDropTypeList: any[] = [];
 

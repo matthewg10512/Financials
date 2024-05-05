@@ -19,6 +19,8 @@ namespace Financials.ResourceParameters
         public decimal? perFrom52WeekLow { get; set; }
         public decimal? perFrom52WeekHigh { get; set; }
         public int? minVolume { get; set; }
+        public decimal? currentPriceMin { get; set; }
+        public decimal? currentPriceMax { get; set; }
 
 
     }

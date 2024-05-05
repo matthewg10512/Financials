@@ -2,11 +2,10 @@
 
 <div class="card">
   <div class="card-header ">
-    Stocks Near 52 Week Low
+    {{changeTitle}}
     <input type="text" [(ngModel)]="perChange52Week">
-
     <span class="card-header-actions">
-      <button class="btn btn-primary" mat-button (click)="get52WeekLow()"><i class="icon-reload"></i></button>
+      <button class="btn btn-primary" mat-button (click)="RunProcess()"><i class="icon-reload"></i></button>
     </span>
   </div>
   <div class="card-body">
@@ -20,22 +19,33 @@
             <tr>
               <th style="width:300px">Name</th>
               <th style="width:150px">Current Price</th>
-              <th style="width:100px">Week Low</th>
+              <th style="width:100px">52 Week Low</th>
+              <th style="width:100px">52 Week High</th>
+              <th style="width:100px">% From Low
+                <i (click)="sortData('perLow')" [ngClass]="!sortPerLow ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+              </th>
+              <th style="width:100px">% From High
+                <i (click)="sortData('perHigh')" [ngClass]="!sortPerHigh ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let weekLowSecurity of weekLowSecurities">
               <td style="width:300px">
                 <span class="d-inline-block text-truncate" style="max-width: 250px;">
-                  {{ weekLowSecurity.name }} ({{weekLowSecurity.symbol}})
-                </span>
-              </td>
-              <td style="width:150px">{{ weekLowSecurity.currentPrice | number : '1.1-1'}}</td>
-              <td style="width:100px">{{ weekLowSecurity.yearLow | number : '1.1-1'}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                  {{ weekLowSecurity.name
+    }} ({{weekLowSecurity.symbol}})
+    </span>
+    </td>
+    <td style="width:150px">${{ weekLowSecurity.currentPrice | number : '1.1-1'}}</td>
+    <td style="width:100px">${{ weekLowSecurity.yearLow | number : '1.1-1'}}</td>
+    <td style="width:100px">${{ weekLowSecurity.yearHigh | number : '1.1-1'}}</td>
+    <td style="width:100px">{{ (((weekLowSecurity.currentPrice - weekLowSecurity.yearLow) / weekLowSecurity.yearLow )* 100) | number : '1.1-1'}}</td>
+    <td style="width:100px">{{ (((weekLowSecurity.currentPrice- weekLowSecurity.yearHigh) / weekLowSecurity.yearHigh )* 100) | number : '1.1-1'}}</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
     </div>
   </div>
 

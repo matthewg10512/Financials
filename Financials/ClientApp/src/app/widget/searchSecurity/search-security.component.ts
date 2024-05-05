@@ -67,7 +67,7 @@ export class SearchSecurityComponent {
   ngOnInit() {
     this.getEarnings();
     this.GetFutureDividends();
-    this.getSecurities();
+   // this.getSecurities();
   }
 
 

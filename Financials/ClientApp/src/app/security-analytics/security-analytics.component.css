@@ -20,3 +20,27 @@
 .highlightCell {
   background-color: aquamarine;
 }
+.app-modal-window .modal-dialog {
+  width: 750px;
+}
+.modal-content {
+  width: 750px!important;
+}
+
+  button ::ng-deep .my-custom-tooltip {
+    white-space: pre-line;
+    max-width: 275px !important;
+    font-size: 15px !important;
+    z-index: 20151 !important;
+  }
+
+::ng-deep .my-custom-tooltip {
+  white-space: pre-line;
+  max-width: 275px !important;
+  font-size: 15px !important;
+  z-index: 20151 !important;
+}
+.mat-tooltip {
+  background-color: aqua !important;
+  max-width: unset !important;
+}

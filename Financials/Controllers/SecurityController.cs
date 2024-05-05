@@ -111,8 +111,16 @@ namespace Financials.Controllers
                 searchQuery += searchQuery == "" ? "?" : "&";
                 searchQuery += "minVolume=" + securitiesResourceParameters.minVolume;
             }
-
-
+            if (securitiesResourceParameters.currentPriceMin != null)
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "currentPriceMin=" + securitiesResourceParameters.currentPriceMin;
+            }
+            if (securitiesResourceParameters.currentPriceMax != null)
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "currentPriceMax=" + securitiesResourceParameters.currentPriceMax;
+            }
 
             using (var client = new HttpClient())
             {

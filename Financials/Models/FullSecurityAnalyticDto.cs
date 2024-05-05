@@ -26,5 +26,7 @@ namespace Financials.Models
         public SecurityPercentageStatistic SecurityPercentageStatistic { get; set; }
         public SecurityYearOverYearComparison SecurityYearOverYearComparison { get; set; }
         public CurrentPeakRange CurrentPeakRange { get; set; }
+        public List<EarningsHistoricDate> EarningsHistoricDates { get; set; }
+        public List<CurrentBullBearRun> CurrentBullBearRuns { get; set; }
     }
 }

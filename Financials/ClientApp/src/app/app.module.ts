@@ -53,7 +53,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 import { MatSelectModule } from '@angular/material/select';
-
+import { TooltipPosition, MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatNativeDateModule } from '@angular/material/core';
 import { SecurityAnalyticsComponent } from './security-analytics/security-analytics.component';
@@ -128,7 +128,8 @@ import { SecurityAnalyticsComponent } from './security-analytics/security-analyt
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTooltipModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
